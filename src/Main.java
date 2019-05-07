@@ -15,8 +15,7 @@ public class Main {
 		// user input AUTHENTICATION
 		String username = <yourusername>;
 		String password = <yourpassword>;
-		// String baseUrl = "http://okapi-s1.ddns.net:34570";
-		String baseUrl = "http://localhost:34568";
+		String baseUrl = "http://okapi.ddns.net:34569";		
 
 		// user input PASS PREDICTION
 		double altitude = 0.048;

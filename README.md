@@ -2,8 +2,9 @@
 Basic routines to init OKAPI services, send service execution requests and get results from the server.
 
 ### What you need to build
-* Java
+* Java SDK
 * imports: java.io.IOException, java.util.concurrent.TimeUnit, org.json.JSONException, org.json.JSONObject
+* Eclipse
 * we tested it with Eclipse 2019-03 under Ubuntu 18.04
 
 ### The build process
