@@ -1,3 +1,5 @@
+package space.okapiorbits;
+
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -7,35 +9,49 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.*;
 
-// Class with OKAPI connector
+/**
+ * This class provides helper methods to send and retrieve information to and from the OKAPI server.
+ * @author Christopher Kebschull
+ * @author Niels Perdijk
+ * @version v2019-08 beta
+ */
 public class OkapiConnector {
-	int response_code;
+	
+	int responseCode;
 
+	/**
+	 * Handles the error messages handed over from the OKAPI and Auth0 end points.
+	 * @author Niels Perdijk
+	 */
 	public static class ReportError extends Exception {
 		private static final long serialVersionUID = 2526489312574632854L;
 
 		public ReportError(String message) {
 			super(message);
 		}
-
 	}
 
-	// Routine to initialize OKAPI
-	public String Init(String username, String password) {
+	/**
+	 * Connect to the Auth0 identity provider {@link https://auth0.com} and retrieve an access token needed to communicate with the OKAPI end points.
+	 * @param username
+	 * @param password
+	 * @return an access token as {@link String}
+	 */
+	public String getToken(String username, String password) {
 		String accessTokenTransport = "blank";
 		String authURL = "https://okapi-development.eu.auth0.com/oauth/token/";
 		HttpURLConnection auth = null;
 
 		try {
-			JSONObject request_token_payload_json = new JSONObject();
-			request_token_payload_json.put("grant_type", "password");
-			request_token_payload_json.put("username", username);
-			request_token_payload_json.put("password", password);
-			request_token_payload_json.put("audience", "https://api.okapiorbits.space/picard");
-			request_token_payload_json.put("scope",
+			JSONObject requestTokenPayloadJson = new JSONObject();
+			requestTokenPayloadJson.put("grant_type", "password");
+			requestTokenPayloadJson.put("username", username);
+			requestTokenPayloadJson.put("password", password);
+			requestTokenPayloadJson.put("audience", "https://api.okapiorbits.space/picard");
+			requestTokenPayloadJson.put("scope",
 					"('pass_predictions pass_prediction_requests' 'neptune_propagation neptune_propagation_request' 'pass_predictions_long pass_prediction_requests_long')");
-			request_token_payload_json.put("client_id", "jrk0ZTrTuApxUstXcXdu9r71IX5IeKD3");
-			String requestTokenPayloadString = request_token_payload_json.toString();
+			requestTokenPayloadJson.put("client_id", "jrk0ZTrTuApxUstXcXdu9r71IX5IeKD3");
+			String requestTokenPayloadString = requestTokenPayloadJson.toString();
 
 			// Create connection
 			URL url = new URL(authURL);
@@ -53,26 +69,26 @@ public class OkapiConnector {
 
 			// Get Response
 			if (auth.getResponseCode() >= 300) {
-				InputStream is_err = auth.getErrorStream();
-				BufferedReader rd_err = new BufferedReader(new InputStreamReader(is_err));
+				InputStream isErr = auth.getErrorStream();
+				BufferedReader rdErr = new BufferedReader(new InputStreamReader(isErr));
 				StringBuffer response = new StringBuffer();
 				String line;
-				while ((line = rd_err.readLine()) != null) {
+				while ((line = rdErr.readLine()) != null) {
 					response.append(line);
 					response.append('\r');
 				}
-				rd_err.close();
-				String err_message = response.toString();
+				rdErr.close();
+				String errMessage = response.toString();
 				if (auth.getResponseCode() == 400) {
 					JSONObject error = new JSONObject();
-					error.put("message", err_message);
+					error.put("message", errMessage);
 					error.put("status", "FATAL");
 					error.put("web_status", auth.getResponseCode());
 					System.out.println(error.toString());
 					throw new ReportError("ERROR: " + auth.getResponseCode());
 				} else if (auth.getResponseCode() == 403) {
 					JSONObject error = new JSONObject();
-					error.put("message", err_message);
+					error.put("message", errMessage);
 					error.put("status", "FATAL");
 					error.put("web_status", auth.getResponseCode());
 					System.out.println(error.toString());
@@ -86,7 +102,7 @@ public class OkapiConnector {
 					throw new ReportError("ERROR: " + auth.getResponseCode());
 				} else if (auth.getResponseCode() == 422) {
 					JSONObject error = new JSONObject();
-					error.put("message", err_message);
+					error.put("message", errMessage);
 					error.put("status", "FATAL");
 					error.put("web_status", auth.getResponseCode());
 					System.out.println(error.toString());
@@ -94,7 +110,7 @@ public class OkapiConnector {
 				} else if (auth.getResponseCode() == 429) {
 					JSONObject error = new JSONObject();
 					error.put("message",
-							"Your send_request0 account has been blocked after 10 failed logins, check your e-mail.");
+							"Your auth0 account has been blocked after 10 failed logins, check your e-mail.");
 					error.put("status", "FATAL");
 					error.put("web_status", auth.getResponseCode());
 					System.out.println(error.toString());
@@ -126,23 +142,19 @@ public class OkapiConnector {
 				response.append('\r');
 			}
 			rd.close();
-			JSONObject response_json = new JSONObject(response.toString());
-			accessTokenTransport = response_json.getString("access_token");
+			JSONObject responseJson = new JSONObject(response.toString());
+			accessTokenTransport = responseJson.getString("access_token");
 			System.out.println("Authentication successful");
 			return accessTokenTransport;
 		} catch (ReportError e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			if (auth != null) {
@@ -152,8 +164,14 @@ public class OkapiConnector {
 		return accessTokenTransport;
 	}
 
-	// Routine to send a service execution request to the server
-	public String SendRequest(String sendURL, String body_string, String access_token_transport) {
+	/**
+	 * Send a service execution request to the server.
+	 * @param sendURL - the URL to a OKAPI end point
+	 * @param bodyString - a JSON formatted request body containing information like an initial orbit or ground location
+	 * @param accessTokenTransport - the access token enabling the access to the OKAPI services
+	 * @return a request id from the server or "blank" as {@link String}
+	 */
+	public String SendRequest(String sendURL, String bodyString, String accessTokenTransport) {
 		String requestId = "blank";
 		HttpURLConnection sendRequest = null;
 
@@ -163,20 +181,20 @@ public class OkapiConnector {
 			sendRequest = (HttpURLConnection) url.openConnection();
 			sendRequest.setRequestMethod("POST");
 			sendRequest.setRequestProperty("Content-Type", "application/json");
-			sendRequest.setRequestProperty("access_token", access_token_transport);
+			sendRequest.setRequestProperty("access_token", accessTokenTransport);
 			sendRequest.setUseCaches(false);
 			sendRequest.setDoOutput(true);
 
 			// Send request
 			DataOutputStream wr = new DataOutputStream(sendRequest.getOutputStream());
-			wr.writeBytes(body_string);
+			wr.writeBytes(bodyString);
 			wr.flush();
 			wr.close();
 
 			// Get Response
 			if (sendRequest.getResponseCode() >= 300) {
 				StringBuffer response = new StringBuffer();
-				String err_message = response.toString();
+				String errMessage = response.toString();
 				if (sendRequest.getResponseCode() == 401) {
 					JSONObject error = new JSONObject();
 					error.put("message", "You are unathorized.");
@@ -193,14 +211,14 @@ public class OkapiConnector {
 					throw new ReportError("ERROR: " + sendRequest.getResponseCode());
 				} else if (sendRequest.getResponseCode() == 422) {
 					JSONObject error = new JSONObject();
-					error.put("message", err_message);
+					error.put("message", errMessage);
 					error.put("status", "FATAL");
 					error.put("web_status", sendRequest.getResponseCode());
 					System.out.println(error.toString());
 					throw new ReportError("ERROR: " + sendRequest.getResponseCode());
 				} else if (sendRequest.getResponseCode() == 500) {
 					JSONObject error = new JSONObject();
-					error.put("message", err_message);
+					error.put("message", errMessage);
 					error.put("status", "FATAL");
 					error.put("web_status", sendRequest.getResponseCode());
 					System.out.println(error.toString());
@@ -232,24 +250,20 @@ public class OkapiConnector {
 				response.append('\r');
 			}
 			rd.close();
-			JSONObject response_json = new JSONObject(response.toString());
-			requestId = response_json.getString("request_id");
+			JSONObject responseJson = new JSONObject(response.toString());
+			requestId = responseJson.getString("request_id");
 
-			System.out.println("send_request successful, with request ID:" + requestId);
+			System.out.println("send_request successful, with request ID: " + requestId);
 			return requestId;
 		} catch (ReportError e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			if (sendRequest != null) {
@@ -258,24 +272,30 @@ public class OkapiConnector {
 		}
 		return requestId;
 	}
-
-	public String GetResults(String getURL, String accessTokenTransport) {
-		String results_transport = "blank";
+	
+	/**
+	 * Returns the result related to the given request encapsulated in the URL from the OKAPI server.
+	 * @param endpointURL - the URL to the OKAPI end point.
+	 * @param accessTokenTransport - the access token enabling the access to the OKAPI services
+	 * @return The JSON formatted response from the server as {@link String}
+	 */
+	public String GetResults(String endpointURL, String accessTokenTransport) {
+		String resultsTransport = "blank";
 		HttpURLConnection getResults = null;
 
 		try {
 			// Create connection
-			URL url = new URL(getURL);
+			URL url = new URL(endpointURL);
 			getResults = (HttpURLConnection) url.openConnection();
 			getResults.setRequestMethod("GET");
 			getResults.setRequestProperty("Content-Type", "application/json");
 			getResults.setRequestProperty("access_token", accessTokenTransport);
 
 			// Get Response
-			response_code = getResults.getResponseCode();
+			responseCode = getResults.getResponseCode();
 			if (getResults.getResponseCode() >= 300) {
 				StringBuffer response = new StringBuffer();
-				String err_message = response.toString();
+				String errMessage = response.toString();
 				if (getResults.getResponseCode() == 401) {
 					JSONObject error = new JSONObject();
 					error.put("message", "You are unathorized.");
@@ -292,14 +312,14 @@ public class OkapiConnector {
 					throw new ReportError("ERROR: " + getResults.getResponseCode());
 				} else if (getResults.getResponseCode() == 422) {
 					JSONObject error = new JSONObject();
-					error.put("message", err_message);
+					error.put("message", errMessage);
 					error.put("status", "FATAL");
 					error.put("web_status", getResults.getResponseCode());
 					System.out.println(error.toString());
 					throw new ReportError("ERROR: " + getResults.getResponseCode());
 				} else if (getResults.getResponseCode() == 500) {
 					JSONObject error = new JSONObject();
-					error.put("message", err_message);
+					error.put("message", errMessage);
 					error.put("status", "FATAL");
 					error.put("web_status", getResults.getResponseCode());
 					System.out.println(error.toString());
@@ -332,28 +352,24 @@ public class OkapiConnector {
 			}
 			rd.close();
 
-			results_transport = response.toString();
-			return results_transport;
+			resultsTransport = response.toString();
+			return resultsTransport;
 		} catch (ReportError e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			if (getResults != null) {
 				getResults.disconnect();
 			}
 		}
-		return results_transport;
+		return resultsTransport;
 	}
 
 }
