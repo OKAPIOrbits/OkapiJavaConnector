@@ -13,7 +13,7 @@ import java.io.*;
  * This class provides helper methods to send and retrieve information to and from the OKAPI server.
  * @author Christopher Kebschull
  * @author Niels Perdijk
- * @version v2019-08 beta
+ * @version v2019-07 beta
  */
 public class OkapiConnector {
 	
