@@ -10,7 +10,7 @@ import org.json.JSONObject;
  * This class tests the {@link OkapiConnector} using example input and sends them to the end points of the available OKAPI server.
  * @author Christopher Kebschull
  * @author Niels Perdijk
- * @version v2019-08 beta
+ * @version v2019-11
  */
 public class OkapiConnectorTest {
 	
