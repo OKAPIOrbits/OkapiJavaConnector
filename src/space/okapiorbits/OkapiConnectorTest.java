@@ -10,7 +10,7 @@ import org.json.JSONObject;
  * This class tests the {@link OkapiConnector} using example input and sends them to the end points of the available OKAPI server.
  * @author Christopher Kebschull
  * @author Niels Perdijk
- * @version v2019-08 beta
+ * @version v2019-11
  */
 public class OkapiConnectorTest {
 	
@@ -27,7 +27,7 @@ public class OkapiConnectorTest {
 		// user input authentication
 		String username = <username>;
 		String password = <password>;
-		String baseUrl = "http://okapi.ddns.net:34568";		
+		String baseUrl = "http://okapi.ddns.net:34569";		
 
 		System.out.println("Testing Start");
 		
@@ -193,7 +193,7 @@ public class OkapiConnectorTest {
 		double z = -678.668352;
 		double x_dot = 0.390367;
 		double y_dot = 0.741902;
-		double z_dot = -7.39698;
+		double z_dot = -7.39698;		
 		String epoch = "2016-07-23T00:31:50.000Z";
 		String propagationEndEpochOrekitNumericalSimple = "2016-07-23T03:31:50.000Z";
 		double outputStepSizeOrekitNumericalSimple = 30;
@@ -428,19 +428,45 @@ public class OkapiConnectorTest {
 		String REF_FRAME_EPOCH = "2000-01-01T00:00:00Z";
 		String TIME_SYSTEM = "UTC";
 		// data
-		String EPOCH = "2016-07-22T00:31:50.000Z";
+		String EPOCH = "2016-07-23T00:31:50.000Z";
 		double X = 615.119526;
 		double Y = -7095.644839;
 		double Z = -678.668352;
 		double X_DOT = 0.390367;
 		double Y_DOT = 0.741902;
 		double Z_DOT = -7.39698;
-		double MASS = 1;
+		double CX_X = 0.10000000E-04;        
+		double CY_X = 0.0;
+		double CY_Y = 0.10000000E-03;
+		double CZ_X = 0.0;
+		double CZ_Y = 0.0;
+		double CZ_Z = 0.30000000E-04;
+		double CX_DOT_X = 0.0;
+		double CX_DOT_Y = 0.0;
+		double CX_DOT_Z = 0.0;
+		double CX_DOT_X_DOT = 0.20000000E-09;
+		double CY_DOT_X = 0.0;
+		double CY_DOT_Y = 0.0;
+		double CY_DOT_Z = 0.0;
+		double CY_DOT_X_DOT = 0.0;
+		double CY_DOT_Y_DOT = 0.10000000E-09;
+		double CZ_DOT_X = 0.0;
+		double CZ_DOT_Y = 0.0;
+		double CZ_DOT_Z = 0.0;
+		double CZ_DOT_X_DOT = 0.0;
+		double CZ_DOT_Y_DOT = 0.0;
+		double CZ_DOT_Z_DOT = 0.10000000E-09;
+		String MAN_EPOCH_IGINITION = "2016-07-23T00:31:50.000Z";
+		double MAN_DURATION = 1800;
+		double MAN_A_1 = 0.0;
+		double MAN_A_2 = 0.1E-5;
+		double MAN_A_3 = 0.0;
+		double MASS = 1.3;
 		double SOLAR_RAD_COEFF = 1.3;
-		double DRAG_AREA = 1;
+		double DRAG_AREA = 0.01;
 		double DRAG_COEFF = 2.2;
 		double atmosphericDrag = 1;
-		String propagationEndEpochNeptuneOpm = "2016-07-23T00:31:50.000Z";
+		String propagationEndEpochNeptuneOpm = "2016-07-23T03:31:50.000Z";
 		double outputStepSizeNeptuneOpm = 30;
 		
 		// preparation for NEPTUNE simple
@@ -502,7 +528,7 @@ public class OkapiConnectorTest {
 		}
 
 		// Retrieve results for simple NEPTUNE propagation request as OPM formatted data
-		String neptuneOpmUrlGet = "/propagate-orbit/neptune/opm/results/";
+		String neptuneOpmUrlGet = "/propagate-orbit/neptune/simple/results/";
 		String neptuneOpmUrlGetCombined = baseUrl + neptuneOpmUrlGet + requestIdNeptune;
 		getURL = neptuneOpmUrlGetCombined;
 		String resultNeptuneOpm = okapi.GetResults(getURL, accessToken);
@@ -522,10 +548,11 @@ public class OkapiConnectorTest {
 
 		// NEPTUNE OPM
 
-		// Preparation for NEPTUNE OPM
+		// Preparation for NEPTUNE OPM with co-variance propagation
 		JSONObject OPM_HEADER = new JSONObject();
 		JSONObject OPM_META_DATA = new JSONObject();
 		JSONObject OPM_DATA = new JSONObject();
+		JSONObject MANEUVRE = new JSONObject();
 		JSONObject CCSDS_OPM = new JSONObject();
 		JSONObject neptuneConfigOpm = new JSONObject();
 		JSONObject settingsOpm = new JSONObject();
@@ -539,12 +566,34 @@ public class OkapiConnectorTest {
 			OPM_META_DATA.put("REF_FRAME_EPOCH", REF_FRAME_EPOCH);
 			OPM_META_DATA.put("TIME_SYSTEM", TIME_SYSTEM);
 			OPM_DATA.put("EPOCH", EPOCH);
+			OPM_DATA.put("COV_REF_FRAME", "UVW");
 			OPM_DATA.put("X", X);
 			OPM_DATA.put("Y", Y);
 			OPM_DATA.put("Z", Z);
 			OPM_DATA.put("X_DOT", X_DOT);
 			OPM_DATA.put("Y_DOT", Y_DOT);
 			OPM_DATA.put("Z_DOT", Z_DOT);
+			OPM_DATA.put("CX_X", CX_X);
+			OPM_DATA.put("CY_X", CY_X);
+			OPM_DATA.put("CY_Y", CY_Y);
+			OPM_DATA.put("CZ_X", CZ_X);
+			OPM_DATA.put("CZ_Y", CZ_Y);
+			OPM_DATA.put("CZ_Z", CZ_Z);
+			OPM_DATA.put("CX_DOT_X ", CX_DOT_X );
+			OPM_DATA.put("CX_DOT_Y ", CX_DOT_Y );
+			OPM_DATA.put("CX_DOT_Z ", CX_DOT_Z );
+			OPM_DATA.put("CX_DOT_X_DOT", CX_DOT_X_DOT);
+			OPM_DATA.put("CY_DOT_X", CY_DOT_X);
+			OPM_DATA.put("CY_DOT_Y", CY_DOT_Y);
+			OPM_DATA.put("CY_DOT_Z", CY_DOT_Z);
+			OPM_DATA.put("CY_DOT_X_DOT", CY_DOT_X_DOT);
+			OPM_DATA.put("CY_DOT_Y_DOT", CY_DOT_Y_DOT);
+			OPM_DATA.put("CZ_DOT_X", CZ_DOT_X);
+			OPM_DATA.put("CZ_DOT_Y", CZ_DOT_Y);
+			OPM_DATA.put("CZ_DOT_Z", CZ_DOT_Z);
+			OPM_DATA.put("CZ_DOT_X_DOT", CZ_DOT_X_DOT);
+			OPM_DATA.put("CZ_DOT_Y_DOT", CZ_DOT_Y_DOT);
+			OPM_DATA.put("CZ_DOT_Z_DOT", CZ_DOT_Z_DOT);
 			OPM_DATA.put("MASS", MASS);
 			OPM_DATA.put("SOLAR_RAD_COEFF", SOLAR_RAD_COEFF);
 			OPM_DATA.put("DRAG_AREA", DRAG_AREA);
@@ -570,7 +619,7 @@ public class OkapiConnectorTest {
 		String requestIdNeptuneOpm2 = okapi.SendRequest(sendURL, bodyString, accessToken);
 
 		// Retrieve results from OPM NEPTUNE propagation request in simple format
-		String neptuneSimple2UrlGet = "/propagate-orbit/neptune/simple/results/";
+		String neptuneSimple2UrlGet = "/propagate-orbit/neptune/opm/results/";
 		String neptuneSimple2UrlGetCombined = baseUrl + neptuneSimple2UrlGet + requestIdNeptuneOpm2;
 		getURL = neptuneSimple2UrlGetCombined;
 		String resultNeptuneSimple2 = okapi.GetResults(getURL, accessToken);
@@ -596,7 +645,7 @@ public class OkapiConnectorTest {
 		String requestIdNeptuneOpmGeneric = okapi.SendRequest(sendURL, bodyString, accessToken);
 
 		// Retrieve results from OPM NEPTUNE propagation request in simple format
-		String neptuneSimpleGenericUrlGet = "/propagate-orbit/neptune/simple/results/";
+		String neptuneSimpleGenericUrlGet = "/propagate-orbit/neptune/opm/results/";
 		String neptuneSimpleGenericUrlGetCombined = baseUrl + neptuneSimpleGenericUrlGet + requestIdNeptuneOpmGeneric + "/generic";
 		getURL = neptuneSimpleGenericUrlGetCombined;
 		String resultNeptuneSimpleGeneric = okapi.GetResults(getURL, accessToken);
@@ -612,6 +661,106 @@ public class OkapiConnectorTest {
 		if (okapi.responseCode == 200) {
 			resultNeptuneSimpleGeneric = okapi.GetResults(getURL, accessToken);
 			System.out.println(resultNeptuneSimpleGeneric);
+		}
+		
+		// Preparation for NEPTUNE OPM with maneuvre propagation
+		OPM_HEADER = new JSONObject();
+		OPM_META_DATA = new JSONObject();
+		OPM_DATA = new JSONObject();
+		CCSDS_OPM = new JSONObject();
+		neptuneConfigOpm = new JSONObject();
+		settingsOpm = new JSONObject();
+		propagateNeptuneOpmRequestBody = new JSONObject();
+		try {
+			OPM_HEADER.put("CCSDS_OPM_VERS", 2);
+			OPM_META_DATA.put("OBJECT_NAME", OBJECT_NAME);
+			OPM_META_DATA.put("OBJECT_ID", OBJECT_ID);
+			OPM_META_DATA.put("CENTER_NAME", CENTER_NAME);
+			OPM_META_DATA.put("REF_FRAME", REF_FRAME);
+			OPM_META_DATA.put("REF_FRAME_EPOCH", REF_FRAME_EPOCH);
+			OPM_META_DATA.put("TIME_SYSTEM", TIME_SYSTEM);
+			OPM_DATA.put("EPOCH", EPOCH);
+			OPM_DATA.put("COV_REF_FRAME", "UVW");
+			OPM_DATA.put("X", X);
+			OPM_DATA.put("Y", Y);
+			OPM_DATA.put("Z", Z);
+			OPM_DATA.put("X_DOT", X_DOT);
+			OPM_DATA.put("Y_DOT", Y_DOT);
+			OPM_DATA.put("Z_DOT", Z_DOT);
+			OPM_DATA.put("MASS", MASS);
+			OPM_DATA.put("SOLAR_RAD_COEFF", SOLAR_RAD_COEFF);
+			OPM_DATA.put("DRAG_AREA", DRAG_AREA);
+			OPM_DATA.put("DRAG_COEFF", DRAG_COEFF);
+			MANEUVRE.put("MAN_EPOCH_IGINITION", MAN_EPOCH_IGINITION);
+			MANEUVRE.put("MAN_DURATION", MAN_DURATION);
+			MANEUVRE.put("MAN_REF_FRAME", "UVW");
+			MANEUVRE.put("MAN_A_1", MAN_A_1);
+			MANEUVRE.put("MAN_A_2", MAN_A_2);
+			MANEUVRE.put("MAN_A_3", MAN_A_3);
+			OPM_DATA.put("MANEUVRE", MANEUVRE);
+			CCSDS_OPM.put("OPM_HEADER", OPM_HEADER);
+			CCSDS_OPM.put("OPM_META_DATA", OPM_META_DATA);
+			CCSDS_OPM.put("OPM_DATA", OPM_DATA);
+			neptuneConfigOpm.put("atmospheric_drag", atmosphericDrag);
+			settingsOpm.put("propagation_end_epoch", propagationEndEpochNeptuneOpm);
+			settingsOpm.put("output_step_size", outputStepSizeNeptuneOpm);
+			settingsOpm.put("neptune_config", neptuneConfigOpm);
+			propagateNeptuneOpmRequestBody.put("CCSDS_OPM", CCSDS_OPM);
+			propagateNeptuneOpmRequestBody.put("settings", settingsOpm);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		// Send NEPTUNE request using OPM formatted data
+		neptuneOpm2UrlRequest = "/propagate-orbit/neptune/requests";
+		neptuneOpm2UrlRequestCombined = baseUrl + neptuneOpm2UrlRequest;
+		sendURL = neptuneOpm2UrlRequestCombined;
+		bodyString = propagateNeptuneOpmRequestBody.toString();
+		requestIdNeptuneOpm2 = okapi.SendRequest(sendURL, bodyString, accessToken);
+
+		// Retrieve results from OPM NEPTUNE propagation request in OPM format
+		String neptuneOpm2UrlGet = "/propagate-orbit/neptune/opm/results/";
+		String neptuneOpm2UrlGetCombined = baseUrl + neptuneOpm2UrlGet + requestIdNeptuneOpm2;
+		getURL = neptuneOpm2UrlGetCombined;
+		String resultNeptuneOpm2 = okapi.GetResults(getURL, accessToken);
+		while (okapi.responseCode == 202) {
+			System.out.println("Your request is not ready yet. The request was successful.");
+			resultNeptuneOpm2 = okapi.GetResults(getURL, accessToken);
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		if (okapi.responseCode == 200) {
+			resultNeptuneOpm2 = okapi.GetResults(getURL, accessToken);
+			System.out.println(resultNeptuneOpm2);
+		}
+		
+		// Send NEPTUNE request using OPM formatted data
+		String neptuneOpm2GenericUrlRequest = "/propagate-orbit/neptune/requests";
+		String neptuneOpm2GenericUrlRequestCombined = baseUrl + neptuneOpm2GenericUrlRequest;
+		sendURL = neptuneOpm2GenericUrlRequestCombined;
+		bodyString = propagateNeptuneOpmRequestBody.toString();
+		String requestIdNeptuneOpm2Generic = okapi.SendRequest(sendURL, bodyString, accessToken);
+
+		// Retrieve results from OPM NEPTUNE propagation request in generic OPM format
+		String neptuneOpmGenericUrlGet = "/propagate-orbit/neptune/opm/results/";
+		String neptuneOpmGenericUrlGetCombined = baseUrl + neptuneOpmGenericUrlGet + requestIdNeptuneOpm2Generic + "/generic";
+		getURL = neptuneOpmGenericUrlGetCombined;
+		String resultNeptuneOpmGeneric = okapi.GetResults(getURL, accessToken);
+		while (okapi.responseCode == 202) {
+			System.out.println("Your request is not ready yet. The request was successful.");
+			resultNeptuneOpmGeneric = okapi.GetResults(getURL, accessToken);
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		if (okapi.responseCode == 200) {
+			resultNeptuneOpmGeneric = okapi.GetResults(getURL, accessToken);
+			System.out.println(resultNeptuneOpmGeneric);
 		}
 	}
 	
