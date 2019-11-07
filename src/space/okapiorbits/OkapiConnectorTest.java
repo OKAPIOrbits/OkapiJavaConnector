@@ -26,8 +26,8 @@ public class OkapiConnectorTest {
 
 
 		// user input authentication
-		String username = "raving_dog@web.de";
-		String password = "dogsaccount18#";
+		String username = <username>;
+		String password = <password>;
 		String baseUrl = "http://okapi.ddns.net:34569";		
 
 		System.out.println("Testing Start");
