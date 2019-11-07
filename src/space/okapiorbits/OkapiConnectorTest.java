@@ -3,6 +3,7 @@ package space.okapiorbits;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -459,7 +460,7 @@ public class OkapiConnectorTest {
 		String MAN_EPOCH_IGINITION = "2016-07-23T00:31:50.000Z";
 		double MAN_DURATION = 1800;
 		double MAN_A_1 = 0.0;
-		double MAN_A_2 = 0.1E-5;
+		double MAN_A_2 = 1E-8;
 		double MAN_A_3 = 0.0;
 		double MASS = 1.3;
 		double SOLAR_RAD_COEFF = 1.3;
@@ -552,7 +553,6 @@ public class OkapiConnectorTest {
 		JSONObject OPM_HEADER = new JSONObject();
 		JSONObject OPM_META_DATA = new JSONObject();
 		JSONObject OPM_DATA = new JSONObject();
-		JSONObject MANEUVRE = new JSONObject();
 		JSONObject CCSDS_OPM = new JSONObject();
 		JSONObject neptuneConfigOpm = new JSONObject();
 		JSONObject settingsOpm = new JSONObject();
@@ -579,9 +579,9 @@ public class OkapiConnectorTest {
 			OPM_DATA.put("CZ_X", CZ_X);
 			OPM_DATA.put("CZ_Y", CZ_Y);
 			OPM_DATA.put("CZ_Z", CZ_Z);
-			OPM_DATA.put("CX_DOT_X ", CX_DOT_X );
-			OPM_DATA.put("CX_DOT_Y ", CX_DOT_Y );
-			OPM_DATA.put("CX_DOT_Z ", CX_DOT_Z );
+			OPM_DATA.put("CX_DOT_X", CX_DOT_X );
+			OPM_DATA.put("CX_DOT_Y", CX_DOT_Y );
+			OPM_DATA.put("CX_DOT_Z", CX_DOT_Z );
 			OPM_DATA.put("CX_DOT_X_DOT", CX_DOT_X_DOT);
 			OPM_DATA.put("CY_DOT_X", CY_DOT_X);
 			OPM_DATA.put("CY_DOT_Y", CY_DOT_Y);
@@ -667,6 +667,8 @@ public class OkapiConnectorTest {
 		OPM_HEADER = new JSONObject();
 		OPM_META_DATA = new JSONObject();
 		OPM_DATA = new JSONObject();
+		JSONObject MANEUVRE = new JSONObject();
+		JSONArray MANEUVRES = new JSONArray();
 		CCSDS_OPM = new JSONObject();
 		neptuneConfigOpm = new JSONObject();
 		settingsOpm = new JSONObject();
@@ -691,13 +693,14 @@ public class OkapiConnectorTest {
 			OPM_DATA.put("SOLAR_RAD_COEFF", SOLAR_RAD_COEFF);
 			OPM_DATA.put("DRAG_AREA", DRAG_AREA);
 			OPM_DATA.put("DRAG_COEFF", DRAG_COEFF);
-			MANEUVRE.put("MAN_EPOCH_IGINITION", MAN_EPOCH_IGINITION);
+			MANEUVRE.put("MAN_EPOCH_IGNITION", MAN_EPOCH_IGINITION);
 			MANEUVRE.put("MAN_DURATION", MAN_DURATION);
 			MANEUVRE.put("MAN_REF_FRAME", "UVW");
 			MANEUVRE.put("MAN_A_1", MAN_A_1);
 			MANEUVRE.put("MAN_A_2", MAN_A_2);
 			MANEUVRE.put("MAN_A_3", MAN_A_3);
-			OPM_DATA.put("MANEUVRE", MANEUVRE);
+			MANEUVRES.put(MANEUVRE);
+			OPM_DATA.put("MANEUVERS", MANEUVRES);
 			CCSDS_OPM.put("OPM_HEADER", OPM_HEADER);
 			CCSDS_OPM.put("OPM_META_DATA", OPM_META_DATA);
 			CCSDS_OPM.put("OPM_DATA", OPM_DATA);
