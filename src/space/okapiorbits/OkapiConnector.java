@@ -181,7 +181,8 @@ public class OkapiConnector {
 			sendRequest = (HttpURLConnection) url.openConnection();
 			sendRequest.setRequestMethod("POST");
 			sendRequest.setRequestProperty("Content-Type", "application/json");
-			sendRequest.setRequestProperty("access_token", accessTokenTransport);
+			sendRequest.setRequestProperty("access_token", accessTokenTransport); // Legacy
+			sendRequest.setRequestProperty("Authorization", "Bearer " + accessTokenTransport);
 			sendRequest.setUseCaches(false);
 			sendRequest.setDoOutput(true);
 
@@ -289,7 +290,8 @@ public class OkapiConnector {
 			getResults = (HttpURLConnection) url.openConnection();
 			getResults.setRequestMethod("GET");
 			getResults.setRequestProperty("Content-Type", "application/json");
-			getResults.setRequestProperty("access_token", accessTokenTransport);
+			getResults.setRequestProperty("access_token", accessTokenTransport); // Legacy
+			getResults.setRequestProperty("Authorization", "Bearer " + accessTokenTransport);
 
 			// Get Response
 			responseCode = getResults.getResponseCode();
