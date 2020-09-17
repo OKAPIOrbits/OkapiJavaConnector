@@ -11,6 +11,18 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * This class provides helper methods to send and retrieve information to and from the OKAPI platform.
+ * 
+ * Use the constructor {@link #OkapiConnector(String, String)} to set your username and password. Then retrieve a token 
+ * that is valid for 24 hours via {@link #getToken()}.
+ * 
+ * Sending a processing request to the backend is done using {@link #send(String, String, String)} or conveniently with 
+ * a builtin 'wait for processing' feature using {@link #sendAndGetRequestId(String, String, String)}. The requestId is
+ * needed to retrieve the results in the form of JSON strings from the backend: {@link #getValues(String, String)}.
+ * 
+ * Adding something to the backend can also be done {@link #send(String, String, String)}. An update (for example to a 
+ * satellite configuration) can be done using {@link #update(String, String, String)}. To remove an item 
+ * (e.g. satellite) use {@link #deleteRequest(String, String).}
+ * 
  * @author Christopher Kebschull
  * @author Niels Perdijk
  * @version v2020-09
