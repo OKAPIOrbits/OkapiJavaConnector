@@ -2,7 +2,7 @@
 Basic routines to init OKAPI services, send service execution requests and get results from the server.
 
 ### What you need to build
-* Java SDK
+* Java SDK 11
 * Maven
 * [org.json](http://www.java2s.com/Code/Jar/j/Downloadjavajsonjar.htm) package (if you do not use maven)
 * Supported IDEs: Intellij Idea & Eclipse
@@ -27,6 +27,12 @@ and run the program.
 ### The build process using Intellij Idea
 Open Intellij Idea and select the pom.xml file. Click on the Build Project icon. It should automatically retrieve the org.json 
 dependency and build a jar file.
+
+### The build process using Maven on the command line
+Run Maven via command line in the directory you cloned:
+```shell
+mvn clean package
+```
 
 ### Documentation
 For further information on the available end points of the OKAPI API and the documentation visit 
