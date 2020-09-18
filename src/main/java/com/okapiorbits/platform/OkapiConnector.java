@@ -1,5 +1,7 @@
 package com.okapiorbits.platform;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.okapiorbits.platform.science.jobs.json.*;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -11,17 +13,32 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * This class provides helper methods to send and retrieve information to and from the OKAPI platform.
- * 
+ * <p>
  * Use the constructor {@link #OkapiConnector(String, String)} to set your username and password. Then retrieve a token 
  * that is valid for 24 hours via {@link #getToken()}.
- * 
- * Sending a processing request to the backend is done using {@link #send(String, String, String)} or conveniently with 
+ * </p>
+ * <p>
+ * Sending a request to the backend is done using {@link #send(String, String, String)} or conveniently with
  * a builtin 'wait for processing' feature using {@link #sendAndGetRequestId(String, String, String)}. The requestId is
  * needed to retrieve the results in the form of JSON strings from the backend: {@link #getValues(String, String)}.
  * 
- * Adding something to the backend can also be done {@link #send(String, String, String)}. An update (for example to a 
- * satellite configuration) can be done using {@link #update(String, String, String)}. To remove an item 
- * (e.g. satellite) use {@link #deleteRequest(String, String).}
+ * Adding something (like a satellite) to the backend can also be done via {@link #send(String, String, String)}.
+ * An update (for example to a satellite configuration) can be done using {@link #update(String, String, String)}.
+ * To remove an item (e.g. satellite) use {@link #delete(String, String).}
+ * </p>
+ * <p>
+ * There are specialized methods available that allow the direct handling of {@link Satellites}, {@link Conjunctions},
+ * {@link SpaceTrackCdms} and {@link ManeuverEvals}:
+ * <ul>
+ *     <li>{@link #addSatellite(Satellite, String)}</li>
+ *     <li>{@link #updateSatellite(Satellite, String)}</li>
+ *     <li>{@link #deleteSatellite(String, String)}</li>
+ *     <li>{@link #getSatellites(String)}</li>
+ *     <li>{@link #getConjunctions(String)} (String)}</li>
+ *     <li>{@link #getCdms(String, String)} </li>
+ *     <li>{@link #getManeuverEvals(String, String)} </li>
+ * </ul>
+ * </p>
  * 
  * @author Christopher Kebschull
  * @author Niels Perdijk
@@ -32,6 +49,8 @@ public class OkapiConnector {
 	private final String username;
 	private final String password;
 	private final String baseUrl;
+
+	private final ObjectMapper objectMapper = new ObjectMapper();
 	
 	int responseCode;
 
@@ -276,7 +295,7 @@ public class OkapiConnector {
 	 * @return A JSON formatted response from the platform as {@link String}
 	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
 	 */
-	public String deleteRequest(String endpoint, String accessToken) throws OkapiPlatformException {
+	public String delete(String endpoint, String accessToken) throws OkapiPlatformException {
 
 		HttpClient httpClient = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder()
@@ -301,5 +320,115 @@ public class OkapiConnector {
 			throw new OkapiPlatformException("HTTPError: " + response.statusCode() + "; Message: " + response.body());
 		}
 		return (response.body());
+	}
+
+	/**
+	 * Adds a new {@link Satellite} to the collection in the OKAPI backend.
+	 * @param newSatellite - A new {@link Satellite} definition, which must contain the name, satelliteId and Space-Track status
+	 * @param accessToken - the access token enabling the access to the OKAPI services
+	 * @return the {@link Satellite} as received in the backend. It will have a new satelliteId, which has been assigned by the backend!
+	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
+	 * @throws IOException Raised when the communication to the backend fails.
+	 */
+	public Satellite addSatellite(Satellite newSatellite, String accessToken) throws OkapiPlatformException, IOException {
+		String newSatelliteAsString = this.objectMapper.writeValueAsString(newSatellite);
+		String satellitesJsonString = send(
+				"/satellites",
+				newSatelliteAsString,
+				accessToken);
+		return this.objectMapper.readValue(satellitesJsonString, Satellite.class);
+	}
+
+	/**
+	 * Updates a {@link Satellite} already present in the OKAPI backend.
+	 * @param existingSatellite - A {@link Satellite} definition already contained in the OKAPI backend collection.
+	 *                             It must contain the name, satelliteId and Space-Track status
+	 * @param accessToken - the access token enabling the access to the OKAPI services
+	 * @return the {@link Satellite} as received in the backend.
+	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
+	 * @throws IOException Raised when the communication to the backend fails.
+	 */
+	public Satellite updateSatellite(Satellite existingSatellite, String accessToken) throws OkapiPlatformException, IOException {
+		String existingSatelliteAsString = this.objectMapper.writeValueAsString(existingSatellite);
+		String updatedSatellitesJsonString = update(
+				"/satellites/" + existingSatellite.getSatelliteId(),
+				existingSatelliteAsString,
+				accessToken);
+		return this.objectMapper.readValue(updatedSatellitesJsonString, Satellite.class);
+	}
+
+	/**
+	 * Removes a {@link Satellite} present in the OKAPI backend.
+	 * @param satelliteId - the unique Id which identifies the satellite in the OKAPI backend.
+	 * @param accessToken - the access token enabling the access to the OKAPI services
+	 * @return the {@link Satellite} as received in the backend.
+	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
+	 * @throws IOException Raised when the communication to the backend fails.
+	 */
+	public Satellite deleteSatellite(String satelliteId, String accessToken) throws OkapiPlatformException, IOException {
+		String updatedSatellitesJsonString = delete(
+				"/satellites/" + satelliteId,
+				accessToken);
+		return this.objectMapper.readValue(updatedSatellitesJsonString, Satellite.class);
+	}
+
+	/**
+	 * Retrieves {@link Satellites} connected to this account.
+	 * @param accessToken - the access token enabling the access to the OKAPI services
+	 * @return {@link Satellites}, which contains all satellites assigned to the account
+	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
+	 * @throws IOException Raised when the communication to the backend fails.
+	 */
+	public Satellites getSatellites(String accessToken) throws OkapiPlatformException, IOException {
+		Satellites satellites;
+		String satellitesJsonString = waitForProcessingAndGetValues("/satellites",accessToken);
+		satellites = this.objectMapper.readValue(satellitesJsonString, Satellites.class);
+
+		return satellites;
+	}
+
+	/**
+	 * Retrieves {@link Conjunctions} for all satellites connected to this account.
+	 * @param accessToken - the access token enabling the access to the OKAPI services
+	 * @return {@link Conjunctions}, which contains all conjunctions in relation to all satellites assigned to the account
+	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
+	 * @throws IOException Raised when the communication to the backend fails.
+	 */
+	public Conjunctions getConjunctions(String accessToken) throws OkapiPlatformException, IOException {
+		Conjunctions conjunctions;
+		String conjunctionsJsonString = waitForProcessingAndGetValues("/conjunctions",accessToken);
+		conjunctions = this.objectMapper.readValue(conjunctionsJsonString, Conjunctions.class);
+
+		return conjunctions;
+	}
+
+	/**
+	 * Retrieves {@link SpaceTrackCdms} connected to the conjunction identified by the passed conjunction Id.
+	 * @param accessToken - the access token enabling the access to the OKAPI services
+	 * @return {@link SpaceTrackCdms}, which contains all CDMs in relation to the conjunction
+	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
+	 * @throws IOException Raised when the communication to the backend fails.
+	 */
+	public SpaceTrackCdms getCdms(String conjunctionId, String accessToken) throws OkapiPlatformException, IOException {
+		SpaceTrackCdms cdms;
+		String cdmsJsonString = waitForProcessingAndGetValues("/conjunctions/"+conjunctionId+"/cdms",accessToken);
+		cdms = this.objectMapper.readValue(cdmsJsonString, SpaceTrackCdms.class);
+
+		return cdms;
+	}
+
+	/**
+	 * Retrieves {@link ManeuverEvals} connected to the conjunction identified by the passed conjunction Id.
+	 * @param accessToken - the access token enabling the access to the OKAPI services
+	 * @return {@link ManeuverEvals}, which contains all maneuver evaluations in relation to the conjunction
+	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
+	 * @throws IOException Raised when the communication to the backend fails.
+	 */
+	public ManeuverEvals getManeuverEvals(String conjunctionId, String accessToken) throws OkapiPlatformException, IOException {
+		ManeuverEvals evals;
+		String evalsJsonString = waitForProcessingAndGetValues("/conjunctions/"+conjunctionId+"/maneuver-evals",accessToken);
+		evals = this.objectMapper.readValue(evalsJsonString, ManeuverEvals.class);
+
+		return evals;
 	}
 }

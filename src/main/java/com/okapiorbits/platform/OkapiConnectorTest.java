@@ -1,8 +1,9 @@
 package com.okapiorbits.platform;
 
-import org.json.JSONArray;
+import com.okapiorbits.platform.science.jobs.json.*;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class OkapiConnectorTest {
 
 	static String satelliteId;
+	static String conjunctionId;
 	
 	/**
 	 * Main method which initializes the OKAPI connector using a given username and password, followed by several exemplary requests.
@@ -22,8 +24,8 @@ public class OkapiConnectorTest {
 	public static void main(String[] args) {
 		// initializing communication
 		OkapiConnector okapiConnector = new OkapiConnector(
-				"username",
-				"password"
+				"raving_dog@web.de",
+				"dogsaccount18#"
 		);
 		
 		System.out.println("Testing Start");
@@ -59,6 +61,20 @@ public class OkapiConnectorTest {
 		getConjunctionsTest(okapiConnector,accessToken);
 		System.out.println("[Get conjunctions] - completed");
 
+		if (conjunctionId != null) {
+			System.out.println("[Get cdms] - started");
+			getCdmsTest(okapiConnector,accessToken);
+			System.out.println("[Get cdms] - completed");
+
+			System.out.println("[Get maneuver evals] - started");
+			getManeuverEvaluationsTest(okapiConnector,accessToken);
+			System.out.println("[Get maneuver evals] - completed");
+		}
+
+		System.out.println("[Estimate risk all methods] - started");
+		riskEstimationTest(okapiConnector,accessToken);
+		System.out.println("[Estimate risk all methods] - completed");
+
 		System.out.println("[Predict passes] - started");
 		predictPassesTests(okapiConnector,accessToken);
 		System.out.println("[Predict passes] - completed");
@@ -66,10 +82,6 @@ public class OkapiConnectorTest {
 		System.out.println("[Propagate orbit NEPTUNE] - started");
 		neptuneTest(okapiConnector,accessToken);
 		System.out.println("[Propagate orbit NEPTUNE] - completed");
-
-		System.out.println("[Estimate risk all methods] - started");
-		riskEstimationTest(okapiConnector,accessToken);
-		System.out.println("[Estimate risk all methods] - completed");
 
 		System.out.println("Testing End");
 	}
@@ -180,12 +192,12 @@ public class OkapiConnectorTest {
 		}
 
 		int responseCode;
-		String resultNeptuneSimple;
+		String resultNeptuneOem;
 		int requestCounter = 0;
 		// Retrieve results for simple NEPTUNE propagation as OEM formatted data with the requestId
 		try {
 			do{
-				resultNeptuneSimple = okapi.getValues("/propagate-orbit/neptune/results/" + requestId + "/oem", accessToken);
+				resultNeptuneOem = okapi.getValues("/propagate-orbit/neptune/results/" + requestId + "/oem", accessToken);
 				responseCode = okapi.responseCode;
 				requestCounter++;
 				if (responseCode != 202 || requestCounter == 15) break;
@@ -201,7 +213,16 @@ public class OkapiConnectorTest {
 			return;
 		}
 		if (okapi.responseCode == 200) {
-			System.out.println(new JSONObject(resultNeptuneSimple).toString(4));
+			JSONObject resultNeptuneOemAsJson = new JSONObject(resultNeptuneOem);
+			System.out.println(resultNeptuneOemAsJson.toString(4));
+			// We can also transfer the result directly into an CcsdsOem object
+			/*final ObjectMapper objectMapper = new ObjectMapper();
+			try {
+				CcsdsOem oem = objectMapper.readValue(resultNeptuneOemAsJson.getJSONObject("orbit").toString(), CcsdsOem.class);
+				System.out.println(oem.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}*/
 		}
 	}
 
@@ -284,30 +305,18 @@ public class OkapiConnectorTest {
 	 */
 	private static void getSatellitesTest(OkapiConnector okapi, String accessToken) {
 
-		int responseCode;
-		String satellitesResult;
-		int requestCounter = 0;
-		// Retrieve results for simple NEPTUNE propagation as simple formatted data
+		Satellites satellites;
+
+		// Retrieve all satellite definitions connected to the account
 		try {
-			do {
-				satellitesResult = okapi.getValues("/satellites", accessToken);
-				responseCode = okapi.responseCode;
-				requestCounter++;
-				if (responseCode != 202 || requestCounter == 15) break;
-				System.out.println("The request was successful. The backend is processing it.");
-				try {
-					TimeUnit.SECONDS.sleep(1);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			} while(true);
-		} catch (OkapiConnector.OkapiPlatformException okapiPlatformException) {
+			satellites = okapi.getSatellites(accessToken);
+		} catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
 			okapiPlatformException.printStackTrace();
 			return;
 		}
 
 		if (okapi.responseCode == 200) {
-			System.out.println(new JSONObject(satellitesResult).toString(4));
+			System.out.println(satellites.toString());
 		}
 	}
 
@@ -318,62 +327,50 @@ public class OkapiConnectorTest {
 	 */
 	private static void addSatelliteTest(OkapiConnector okapi, String accessToken) {
 
-		JSONObject satellite = new JSONObject()
-					.put("norad_ids", new JSONArray()
-							.put(1)
-					)
-					.put("name", "SPUTNIK")
-					.put("satellite_id", "550e8400-e29b-11d4-a716-446655440000")
-					.put("space_track_status", "sharing_agreement_signed");
+		Satellite newSatellite = new Satellite();
+		newSatellite.setName("Sputnik");
+		// This is a random ID, which will be changed by the backend but currently it is still required
+		newSatellite.setSatelliteId("550e8400-e29b-11d4-a716-446655440000");
+		newSatellite.setSpaceTrackStatus(Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED);
 
-		String satelliteResult;
-		// Send simple NEPTUNE request
+		// Send new satellite definition to the backend to add to the collection and retrieve the new instance from the
+		// backend.
 		try {
-			satelliteResult = okapi.send(
-					"/satellites",
-					satellite.toString(),
-					accessToken);
-		} catch (OkapiConnector.OkapiPlatformException okapiPlatformException) {
+			newSatellite = okapi.addSatellite(newSatellite,accessToken);
+
+		} catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
 			okapiPlatformException.printStackTrace();
 			return;
 		}
 
-		JSONObject satelliteJson = new JSONObject(satelliteResult);
+		// Retrieve the newly assigned satellite id
 		if (okapi.responseCode == 200) {
-			System.out.println(satelliteJson.toString(4));
-			satelliteId = satelliteJson.getString("satellite_id");
+			System.out.println(newSatellite.toString());
+			satelliteId = newSatellite.getSatelliteId();
 		}
 	}
 
 	/**
-	 * Tests the addition of one satellite to the OKAPI backend
+	 * Tests the update of an already existing satellite in the OKAPI backend
 	 * @param okapi - the initialized {@link OkapiConnector}
 	 * @param accessToken - a valid accessToken obtained using {@link OkapiConnector#getToken()}
 	 */
 	private static void updateSatelliteTest(OkapiConnector okapi, String accessToken) {
 
-		JSONObject satellite = new JSONObject()
-				.put("norad_ids", new JSONArray()
-						.put(1)
-				)
-				.put("name", "SPUTNIK-2")
-				.put("satellite_id", satelliteId)
-				.put("space_track_status", "sharing_agreement_signed");
+		Satellite currentSatellite = new Satellite();
+		currentSatellite.setName("SPUTNIK-2");
+		currentSatellite.setSatelliteId(satelliteId);
+		currentSatellite.setSpaceTrackStatus(Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED);
 
-		// Create the JSON used for the request
-		String satelliteResult;
-		// Send simple NEPTUNE request
+		// Send updated satellite definition to the backend and retrieve the updated instance
 		try {
-			satelliteResult = okapi.update(
-					"/satellites/" + satelliteId,
-					satellite.toString(),
-					accessToken);
-		} catch (OkapiConnector.OkapiPlatformException okapiPlatformException) {
+			currentSatellite = okapi.updateSatellite(currentSatellite,accessToken);
+		} catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
 			okapiPlatformException.printStackTrace();
 			return;
 		}
 		if (okapi.responseCode == 200) {
-			System.out.println(new JSONObject(satelliteResult).toString(4));
+			System.out.println(currentSatellite.toString());
 		}
 	}
 
@@ -383,21 +380,19 @@ public class OkapiConnectorTest {
 	 * @param accessToken - a valid accessToken obtained using {@link OkapiConnector#getToken()}
 	 */
 	private static void removeSatelliteTest(OkapiConnector okapi, String accessToken) {
+		Satellite deletedSatellite;
 
-		// Create the JSON used for the request
-		String satelliteResult;
-
-		// Send simple NEPTUNE request
+		// Delete satellite definition from the backend collection and retrieve the deleted instance
 		try {
-			satelliteResult = okapi.deleteRequest(
-					"/satellites/" + satelliteId,
+			deletedSatellite = okapi.deleteSatellite(
+					satelliteId,
 					accessToken);
-		} catch (OkapiConnector.OkapiPlatformException okapiPlatformException) {
+		} catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
 			okapiPlatformException.printStackTrace();
 			return;
 		}
 		if (okapi.responseCode == 200) {
-			System.out.println(new JSONObject(satelliteResult).toString(4));
+			System.out.println(deletedSatellite.toString());
 		}
 	}
 
@@ -408,29 +403,66 @@ public class OkapiConnectorTest {
 	 */
 	private static void getConjunctionsTest(OkapiConnector okapi, String accessToken) {
 
-		int responseCode;
-		String satellitesResult;
-		int requestCounter = 0;
-		// Retrieve results for simple NEPTUNE propagation as simple formatted data
+		Conjunctions conjunctions;
+
+		// Retrieve all conjunctions available for all satellites connected to the account
 		try {
-			do {
-				satellitesResult = okapi.getValues("/conjunctions", accessToken);
-				responseCode = okapi.responseCode;
-				requestCounter++;
-				if (responseCode != 202 || requestCounter == 15) break;
-				System.out.println("The request was successful. The backend is processing it.");
-				try {
-					TimeUnit.SECONDS.sleep(1);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			} while(true);
-		} catch (OkapiConnector.OkapiPlatformException okapiPlatformException) {
+			conjunctions = okapi.getConjunctions(accessToken);
+		} catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
 			okapiPlatformException.printStackTrace();
 			return;
 		}
+
+		// Get the first conjunctionId for the following test cases
+		if (conjunctions.getElements().size() > 0)
+			conjunctionId = conjunctions.getElements().get(0).getConjunctionId();
+
 		if (okapi.responseCode == 200) {
-			System.out.println(new JSONObject(satellitesResult).toString(4));
+			System.out.println(conjunctions.toString());
+		}
+	}
+
+	/**
+	 * Tests the retrieval of CDMs connected to our conjunction warning
+	 * @param okapi - the initialized {@link OkapiConnector}
+	 * @param accessToken - a valid accessToken obtained using {@link OkapiConnector#getToken()}
+	 */
+	private static void getCdmsTest(OkapiConnector okapi, String accessToken) {
+
+		SpaceTrackCdms cdms;
+
+		// Retrieve all CDMs available for the given conjunctions
+		try {
+			cdms = okapi.getCdms(conjunctionId,accessToken);
+		} catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
+			okapiPlatformException.printStackTrace();
+			return;
+		}
+
+		if (okapi.responseCode == 200) {
+			System.out.println(cdms.toString());
+		}
+	}
+
+	/**
+	 * Tests the retrieval of maneuver evaluations connected to our conjunction warning
+	 * @param okapi - the initialized {@link OkapiConnector}
+	 * @param accessToken - a valid accessToken obtained using {@link OkapiConnector#getToken()}
+	 */
+	private static void getManeuverEvaluationsTest(OkapiConnector okapi, String accessToken) {
+
+		ManeuverEvals evals;
+
+		// Retrieve all maneuver evaluations available for the given conjunctions
+		try {
+			evals = okapi.getManeuverEvals(conjunctionId,accessToken);
+		} catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
+			okapiPlatformException.printStackTrace();
+			return;
+		}
+
+		if (okapi.responseCode == 200) {
+			System.out.println(evals.toString());
 		}
 	}
 }
