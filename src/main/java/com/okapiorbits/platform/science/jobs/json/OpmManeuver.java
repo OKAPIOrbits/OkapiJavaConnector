@@ -1,15 +1,11 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 
 /**
@@ -265,7 +261,7 @@ public class OpmManeuver {
      */
     public enum ManRefFrame {
 
-        RTN("RTN");
+        UVW("UVW");
         private final String value;
         private final static Map<String, OpmManeuver.ManRefFrame> CONSTANTS = new HashMap<String, OpmManeuver.ManRefFrame>();
 

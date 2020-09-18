@@ -1,5 +1,6 @@
 package com.okapiorbits.platform;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.okapiorbits.platform.science.jobs.json.*;
 import org.json.JSONObject;
 
@@ -24,8 +25,8 @@ public class OkapiConnectorTest {
 	public static void main(String[] args) {
 		// initializing communication
 		OkapiConnector okapiConnector = new OkapiConnector(
-				"raving_dog@web.de",
-				"dogsaccount18#"
+				"username",
+				"password"
 		);
 		
 		System.out.println("Testing Start");
@@ -216,13 +217,13 @@ public class OkapiConnectorTest {
 			JSONObject resultNeptuneOemAsJson = new JSONObject(resultNeptuneOem);
 			System.out.println(resultNeptuneOemAsJson.toString(4));
 			// We can also transfer the result directly into an CcsdsOem object
-			/*final ObjectMapper objectMapper = new ObjectMapper();
+			final ObjectMapper objectMapper = new ObjectMapper();
 			try {
 				CcsdsOem oem = objectMapper.readValue(resultNeptuneOemAsJson.getJSONObject("orbit").toString(), CcsdsOem.class);
 				System.out.println(oem.toString());
 			} catch (IOException e) {
 				e.printStackTrace();
-			}*/
+			}
 		}
 	}
 

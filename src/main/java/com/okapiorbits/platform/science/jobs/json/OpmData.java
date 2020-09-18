@@ -1,17 +1,9 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.*;
+
+import java.util.*;
 
 
 /**
@@ -1195,7 +1187,8 @@ public class OpmData {
 
         RTN("RTN"),
         RSW("RSW"),
-        GCRF("GCRF");
+        GCRF("GCRF"),
+        UVW("UVW");
         private final String value;
         private final static Map<String, OpmData.CovRefFrame> CONSTANTS = new HashMap<String, OpmData.CovRefFrame>();
 
