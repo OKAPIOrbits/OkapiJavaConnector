@@ -67,13 +67,13 @@ public class OkapiConnector {
 	}
 
 	/**
-	 * Collects the credentials used to retrieve the authentication token and uses https://platform.okapiorbits.com/api/
+	 * Collects the credentials used to retrieve the authentication token and uses https://api.okapiorbits.com/
 	 * to communicate to the OKAPI platform.
 	 * @param username - your OKAPI username
 	 * @param password - your OKAPI platform password
 	 */
 	public OkapiConnector(String username, String password) {
-		this(username,password,"https://platform.okapiorbits.com/api/");
+		this(username,password,"https://api.okapiorbits.com/");
 	}
 
 	/**
