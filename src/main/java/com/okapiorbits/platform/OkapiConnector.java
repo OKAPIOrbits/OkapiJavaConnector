@@ -1,9 +1,6 @@
 package com.okapiorbits.platform;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.okapiorbits.platform.science.jobs.json.*;
 import org.json.JSONObject;
 
@@ -368,8 +365,6 @@ public class OkapiConnector {
 	 * @throws IOException Raised when the communication to the backend fails.
 	 */
 	public Satellite addSatellite(Satellite newSatellite, String accessToken) throws OkapiPlatformException, IOException {
-		this.objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		this.objectMapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
 		String newSatelliteAsString = this.objectMapper.writeValueAsString(newSatellite);
 		String satellitesJsonString = send(
 				"/satellites",
