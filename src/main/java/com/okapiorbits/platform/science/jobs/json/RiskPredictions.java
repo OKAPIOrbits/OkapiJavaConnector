@@ -14,29 +14,29 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * RiskEstimations
+ * RiskPredictions
  * <p>
- * An array of risk estimations.
+ * An array of risk predictions.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "elements"
 })
-public class RiskEstimations {
+public class RiskPredictions {
 
     @JsonProperty("elements")
-    private List<RiskEstimation> elements = new ArrayList<RiskEstimation>();
+    private List<RiskPrediction> elements = new ArrayList<RiskPrediction>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("elements")
-    public List<RiskEstimation> getElements() {
+    public List<RiskPrediction> getElements() {
         return elements;
     }
 
     @JsonProperty("elements")
-    public void setElements(List<RiskEstimation> elements) {
+    public void setElements(List<RiskPrediction> elements) {
         this.elements = elements;
     }
 
@@ -53,7 +53,7 @@ public class RiskEstimations {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(RiskEstimations.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(RiskPredictions.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("elements");
         sb.append('=');
         sb.append(((this.elements == null)?"<null>":this.elements));
@@ -83,10 +83,10 @@ public class RiskEstimations {
         if (other == this) {
             return true;
         }
-        if ((other instanceof RiskEstimations) == false) {
+        if ((other instanceof RiskPredictions) == false) {
             return false;
         }
-        RiskEstimations rhs = ((RiskEstimations) other);
+        RiskPredictions rhs = ((RiskPredictions) other);
         return (((this.elements == rhs.elements)||((this.elements!= null)&&this.elements.equals(rhs.elements)))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))));
     }
 

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * Conjunctions
  * <p>
- * Conjunctions
+ * A number of conjunctions in an array.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)

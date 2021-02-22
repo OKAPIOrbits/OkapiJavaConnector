@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * Satellites
  * <p>
- * Satellites
+ * An array of satellites
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -1,12 +1,16 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
-import com.fasterxml.jackson.annotation.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 
 /**
@@ -25,6 +29,7 @@ import java.util.Map;
     "thrust_uncertainty",
     "thrust_pointing_uncertainty",
     "thrust_output",
+    "max_thrust_duration",
     "propulsion_type",
     "accepted_collision_probability",
     "accepted_minimum_distance",
@@ -36,19 +41,24 @@ import java.util.Map;
     "space_track_poc_address",
     "space_track_login",
     "active",
-    "maneuver_strategy"
+    "maneuver_strategy",
+    "send_mail_notifications",
+    "send_slack_notifications",
+    "send_teams_notifications",
+    "slack_webhook",
+    "teams_webhook"
 })
 public class Satellite {
 
     /**
      * Uuid
      * <p>
-     * A Universally-Unique IDentifier, as used by OKAPI
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
      * (Required)
      * 
      */
     @JsonProperty("satellite_id")
-    @JsonPropertyDescription("A Universally-Unique IDentifier, as used by OKAPI")
+    @JsonPropertyDescription("A Universally-Unique Identifier, as used by OKAPI:Orbits")
     private String satelliteId;
     /**
      * Name of this satellite or the class of satellites this satellite functions as representative
@@ -72,35 +82,42 @@ public class Satellite {
      */
     @JsonProperty("area")
     @JsonPropertyDescription("The satellite's area or cross section, in m^2")
-    private Double area = 1.0D;
+    private Double area = 0.01D;
     /**
      * in kg
      * 
      */
     @JsonProperty("mass")
     @JsonPropertyDescription("in kg")
-    private Double mass = 1.0D;
+    private Double mass = 1.3D;
     /**
-     * Thrust uncertainty, in N (one sigma)
+     * Relative thrust uncertainty / -
      * 
      */
     @JsonProperty("thrust_uncertainty")
-    @JsonPropertyDescription("Thrust uncertainty, in N (one sigma)")
+    @JsonPropertyDescription("Relative thrust uncertainty / -")
     private Double thrustUncertainty = 0.0D;
     /**
-     * Uncertainty in pointing the thrust, in degrees (one sigma)
+     * Uncertainty in pointing the thrust / arc seconds
      * 
      */
     @JsonProperty("thrust_pointing_uncertainty")
-    @JsonPropertyDescription("Uncertainty in pointing the thrust, in degrees (one sigma)")
+    @JsonPropertyDescription("Uncertainty in pointing the thrust / arc seconds")
     private Double thrustPointingUncertainty = 0.0D;
     /**
-     * Thrust output, in N
+     * Thrust output, in Newton. Note that you can enter values like 1.1e-8 or 0.0001
      * 
      */
     @JsonProperty("thrust_output")
-    @JsonPropertyDescription("Thrust output, in N")
+    @JsonPropertyDescription("Thrust output, in Newton. Note that you can enter values like 1.1e-8 or 0.0001")
     private Double thrustOutput = 0.0D;
+    /**
+     * The maximum duration the thruster can operate at a time in Seconds
+     * 
+     */
+    @JsonProperty("max_thrust_duration")
+    @JsonPropertyDescription("The maximum duration the thruster can operate at a time in Seconds")
+    private Double maxThrustDuration;
     @JsonProperty("propulsion_type")
     private Satellite.PropulsionType propulsionType = Satellite.PropulsionType.fromValue("continuous");
     /**
@@ -116,7 +133,7 @@ public class Satellite {
      */
     @JsonProperty("accepted_minimum_distance")
     @JsonPropertyDescription("Accepted minimum distance, in km")
-    private Double acceptedMinimumDistance = 50.0D;
+    private Double acceptedMinimumDistance = 1.0D;
     /**
      * Use OKAPI AI for risk prediction
      * 
@@ -181,11 +198,46 @@ public class Satellite {
     @JsonProperty("maneuver_strategy")
     @JsonPropertyDescription("Preferred collision avoidance maneuver strategy for this satellite")
     private Satellite.ManeuverStrategy maneuverStrategy = Satellite.ManeuverStrategy.fromValue("short_term_and_long_term");
+    /**
+     * Send notifications to email address associated with the satellite
+     * 
+     */
+    @JsonProperty("send_mail_notifications")
+    @JsonPropertyDescription("Send notifications to email address associated with the satellite")
+    private Boolean sendMailNotifications = false;
+    /**
+     * Send notifications to Slack. Webhook needs to be provided separately
+     * 
+     */
+    @JsonProperty("send_slack_notifications")
+    @JsonPropertyDescription("Send notifications to Slack. Webhook needs to be provided separately")
+    private Boolean sendSlackNotifications = false;
+    /**
+     * Send notifications to Teams. Webhook needs to be provided separately
+     * 
+     */
+    @JsonProperty("send_teams_notifications")
+    @JsonPropertyDescription("Send notifications to Teams. Webhook needs to be provided separately")
+    private Boolean sendTeamsNotifications = false;
+    /**
+     * URL of the Slack webhook
+     * 
+     */
+    @JsonProperty("slack_webhook")
+    @JsonPropertyDescription("URL of the Slack webhook")
+    private String slackWebhook;
+    /**
+     * URL of the Teams webhook
+     * 
+     */
+    @JsonProperty("teams_webhook")
+    @JsonPropertyDescription("URL of the Teams webhook")
+    private String teamsWebhook;
 
     /**
      * Uuid
      * <p>
-     * A Universally-Unique IDentifier, as used by OKAPI
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
      * (Required)
      * 
      */
@@ -197,7 +249,7 @@ public class Satellite {
     /**
      * Uuid
      * <p>
-     * A Universally-Unique IDentifier, as used by OKAPI
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
      * (Required)
      * 
      */
@@ -283,7 +335,7 @@ public class Satellite {
     }
 
     /**
-     * Thrust uncertainty, in N (one sigma)
+     * Relative thrust uncertainty / -
      * 
      */
     @JsonProperty("thrust_uncertainty")
@@ -292,7 +344,7 @@ public class Satellite {
     }
 
     /**
-     * Thrust uncertainty, in N (one sigma)
+     * Relative thrust uncertainty / -
      * 
      */
     @JsonProperty("thrust_uncertainty")
@@ -301,7 +353,7 @@ public class Satellite {
     }
 
     /**
-     * Uncertainty in pointing the thrust, in degrees (one sigma)
+     * Uncertainty in pointing the thrust / arc seconds
      * 
      */
     @JsonProperty("thrust_pointing_uncertainty")
@@ -310,7 +362,7 @@ public class Satellite {
     }
 
     /**
-     * Uncertainty in pointing the thrust, in degrees (one sigma)
+     * Uncertainty in pointing the thrust / arc seconds
      * 
      */
     @JsonProperty("thrust_pointing_uncertainty")
@@ -319,7 +371,7 @@ public class Satellite {
     }
 
     /**
-     * Thrust output, in N
+     * Thrust output, in Newton. Note that you can enter values like 1.1e-8 or 0.0001
      * 
      */
     @JsonProperty("thrust_output")
@@ -328,12 +380,30 @@ public class Satellite {
     }
 
     /**
-     * Thrust output, in N
+     * Thrust output, in Newton. Note that you can enter values like 1.1e-8 or 0.0001
      * 
      */
     @JsonProperty("thrust_output")
     public void setThrustOutput(Double thrustOutput) {
         this.thrustOutput = thrustOutput;
+    }
+
+    /**
+     * The maximum duration the thruster can operate at a time in Seconds
+     * 
+     */
+    @JsonProperty("max_thrust_duration")
+    public Double getMaxThrustDuration() {
+        return maxThrustDuration;
+    }
+
+    /**
+     * The maximum duration the thruster can operate at a time in Seconds
+     * 
+     */
+    @JsonProperty("max_thrust_duration")
+    public void setMaxThrustDuration(Double maxThrustDuration) {
+        this.maxThrustDuration = maxThrustDuration;
     }
 
     @JsonProperty("propulsion_type")
@@ -546,6 +616,96 @@ public class Satellite {
         this.maneuverStrategy = maneuverStrategy;
     }
 
+    /**
+     * Send notifications to email address associated with the satellite
+     * 
+     */
+    @JsonProperty("send_mail_notifications")
+    public Boolean getSendMailNotifications() {
+        return sendMailNotifications;
+    }
+
+    /**
+     * Send notifications to email address associated with the satellite
+     * 
+     */
+    @JsonProperty("send_mail_notifications")
+    public void setSendMailNotifications(Boolean sendMailNotifications) {
+        this.sendMailNotifications = sendMailNotifications;
+    }
+
+    /**
+     * Send notifications to Slack. Webhook needs to be provided separately
+     * 
+     */
+    @JsonProperty("send_slack_notifications")
+    public Boolean getSendSlackNotifications() {
+        return sendSlackNotifications;
+    }
+
+    /**
+     * Send notifications to Slack. Webhook needs to be provided separately
+     * 
+     */
+    @JsonProperty("send_slack_notifications")
+    public void setSendSlackNotifications(Boolean sendSlackNotifications) {
+        this.sendSlackNotifications = sendSlackNotifications;
+    }
+
+    /**
+     * Send notifications to Teams. Webhook needs to be provided separately
+     * 
+     */
+    @JsonProperty("send_teams_notifications")
+    public Boolean getSendTeamsNotifications() {
+        return sendTeamsNotifications;
+    }
+
+    /**
+     * Send notifications to Teams. Webhook needs to be provided separately
+     * 
+     */
+    @JsonProperty("send_teams_notifications")
+    public void setSendTeamsNotifications(Boolean sendTeamsNotifications) {
+        this.sendTeamsNotifications = sendTeamsNotifications;
+    }
+
+    /**
+     * URL of the Slack webhook
+     * 
+     */
+    @JsonProperty("slack_webhook")
+    public String getSlackWebhook() {
+        return slackWebhook;
+    }
+
+    /**
+     * URL of the Slack webhook
+     * 
+     */
+    @JsonProperty("slack_webhook")
+    public void setSlackWebhook(String slackWebhook) {
+        this.slackWebhook = slackWebhook;
+    }
+
+    /**
+     * URL of the Teams webhook
+     * 
+     */
+    @JsonProperty("teams_webhook")
+    public String getTeamsWebhook() {
+        return teamsWebhook;
+    }
+
+    /**
+     * URL of the Teams webhook
+     * 
+     */
+    @JsonProperty("teams_webhook")
+    public void setTeamsWebhook(String teamsWebhook) {
+        this.teamsWebhook = teamsWebhook;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -581,6 +741,10 @@ public class Satellite {
         sb.append("thrustOutput");
         sb.append('=');
         sb.append(((this.thrustOutput == null)?"<null>":this.thrustOutput));
+        sb.append(',');
+        sb.append("maxThrustDuration");
+        sb.append('=');
+        sb.append(((this.maxThrustDuration == null)?"<null>":this.maxThrustDuration));
         sb.append(',');
         sb.append("propulsionType");
         sb.append('=');
@@ -630,6 +794,26 @@ public class Satellite {
         sb.append('=');
         sb.append(((this.maneuverStrategy == null)?"<null>":this.maneuverStrategy));
         sb.append(',');
+        sb.append("sendMailNotifications");
+        sb.append('=');
+        sb.append(((this.sendMailNotifications == null)?"<null>":this.sendMailNotifications));
+        sb.append(',');
+        sb.append("sendSlackNotifications");
+        sb.append('=');
+        sb.append(((this.sendSlackNotifications == null)?"<null>":this.sendSlackNotifications));
+        sb.append(',');
+        sb.append("sendTeamsNotifications");
+        sb.append('=');
+        sb.append(((this.sendTeamsNotifications == null)?"<null>":this.sendTeamsNotifications));
+        sb.append(',');
+        sb.append("slackWebhook");
+        sb.append('=');
+        sb.append(((this.slackWebhook == null)?"<null>":this.slackWebhook));
+        sb.append(',');
+        sb.append("teamsWebhook");
+        sb.append('=');
+        sb.append(((this.teamsWebhook == null)?"<null>":this.teamsWebhook));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -641,26 +825,32 @@ public class Satellite {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.area == null)? 0 :this.area.hashCode()));
-        result = ((result* 31)+((this.spaceTrackCompanyName == null)? 0 :this.spaceTrackCompanyName.hashCode()));
         result = ((result* 31)+((this.thrustUncertainty == null)? 0 :this.thrustUncertainty.hashCode()));
-        result = ((result* 31)+((this.spaceTrackPocAddress == null)? 0 :this.spaceTrackPocAddress.hashCode()));
-        result = ((result* 31)+((this.satelliteId == null)? 0 :this.satelliteId.hashCode()));
         result = ((result* 31)+((this.useAiRiskPrediction == null)? 0 :this.useAiRiskPrediction.hashCode()));
         result = ((result* 31)+((this.noradIds == null)? 0 :this.noradIds.hashCode()));
         result = ((result* 31)+((this.mass == null)? 0 :this.mass.hashCode()));
         result = ((result* 31)+((this.spaceTrackStatus == null)? 0 :this.spaceTrackStatus.hashCode()));
+        result = ((result* 31)+((this.thrustPointingUncertainty == null)? 0 :this.thrustPointingUncertainty.hashCode()));
+        result = ((result* 31)+((this.propulsionType == null)? 0 :this.propulsionType.hashCode()));
+        result = ((result* 31)+((this.sendTeamsNotifications == null)? 0 :this.sendTeamsNotifications.hashCode()));
+        result = ((result* 31)+((this.spaceTrackLogin == null)? 0 :this.spaceTrackLogin.hashCode()));
+        result = ((result* 31)+((this.maneuverStrategy == null)? 0 :this.maneuverStrategy.hashCode()));
+        result = ((result* 31)+((this.slackWebhook == null)? 0 :this.slackWebhook.hashCode()));
+        result = ((result* 31)+((this.acceptedMinimumDistance == null)? 0 :this.acceptedMinimumDistance.hashCode()));
+        result = ((result* 31)+((this.area == null)? 0 :this.area.hashCode()));
+        result = ((result* 31)+((this.spaceTrackCompanyName == null)? 0 :this.spaceTrackCompanyName.hashCode()));
+        result = ((result* 31)+((this.spaceTrackPocAddress == null)? 0 :this.spaceTrackPocAddress.hashCode()));
+        result = ((result* 31)+((this.sendSlackNotifications == null)? 0 :this.sendSlackNotifications.hashCode()));
+        result = ((result* 31)+((this.maxThrustDuration == null)? 0 :this.maxThrustDuration.hashCode()));
+        result = ((result* 31)+((this.teamsWebhook == null)? 0 :this.teamsWebhook.hashCode()));
+        result = ((result* 31)+((this.satelliteId == null)? 0 :this.satelliteId.hashCode()));
         result = ((result* 31)+((this.active == null)? 0 :this.active.hashCode()));
         result = ((result* 31)+((this.acceptedCollisionProbability == null)? 0 :this.acceptedCollisionProbability.hashCode()));
         result = ((result* 31)+((this.thrustOutput == null)? 0 :this.thrustOutput.hashCode()));
         result = ((result* 31)+((this.spaceTrackStatusOther == null)? 0 :this.spaceTrackStatusOther.hashCode()));
-        result = ((result* 31)+((this.thrustPointingUncertainty == null)? 0 :this.thrustPointingUncertainty.hashCode()));
-        result = ((result* 31)+((this.propulsionType == null)? 0 :this.propulsionType.hashCode()));
+        result = ((result* 31)+((this.sendMailNotifications == null)? 0 :this.sendMailNotifications.hashCode()));
         result = ((result* 31)+((this.spaceTrackPocName == null)? 0 :this.spaceTrackPocName.hashCode()));
-        result = ((result* 31)+((this.spaceTrackLogin == null)? 0 :this.spaceTrackLogin.hashCode()));
         result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
-        result = ((result* 31)+((this.maneuverStrategy == null)? 0 :this.maneuverStrategy.hashCode()));
-        result = ((result* 31)+((this.acceptedMinimumDistance == null)? 0 :this.acceptedMinimumDistance.hashCode()));
         return result;
     }
 
@@ -673,7 +863,7 @@ public class Satellite {
             return false;
         }
         Satellite rhs = ((Satellite) other);
-        return (((((((((((((((((((((this.area == rhs.area)||((this.area!= null)&&this.area.equals(rhs.area)))&&((this.spaceTrackCompanyName == rhs.spaceTrackCompanyName)||((this.spaceTrackCompanyName!= null)&&this.spaceTrackCompanyName.equals(rhs.spaceTrackCompanyName))))&&((this.thrustUncertainty == rhs.thrustUncertainty)||((this.thrustUncertainty!= null)&&this.thrustUncertainty.equals(rhs.thrustUncertainty))))&&((this.spaceTrackPocAddress == rhs.spaceTrackPocAddress)||((this.spaceTrackPocAddress!= null)&&this.spaceTrackPocAddress.equals(rhs.spaceTrackPocAddress))))&&((this.satelliteId == rhs.satelliteId)||((this.satelliteId!= null)&&this.satelliteId.equals(rhs.satelliteId))))&&((this.useAiRiskPrediction == rhs.useAiRiskPrediction)||((this.useAiRiskPrediction!= null)&&this.useAiRiskPrediction.equals(rhs.useAiRiskPrediction))))&&((this.noradIds == rhs.noradIds)||((this.noradIds!= null)&&this.noradIds.equals(rhs.noradIds))))&&((this.mass == rhs.mass)||((this.mass!= null)&&this.mass.equals(rhs.mass))))&&((this.spaceTrackStatus == rhs.spaceTrackStatus)||((this.spaceTrackStatus!= null)&&this.spaceTrackStatus.equals(rhs.spaceTrackStatus))))&&((this.active == rhs.active)||((this.active!= null)&&this.active.equals(rhs.active))))&&((this.acceptedCollisionProbability == rhs.acceptedCollisionProbability)||((this.acceptedCollisionProbability!= null)&&this.acceptedCollisionProbability.equals(rhs.acceptedCollisionProbability))))&&((this.thrustOutput == rhs.thrustOutput)||((this.thrustOutput!= null)&&this.thrustOutput.equals(rhs.thrustOutput))))&&((this.spaceTrackStatusOther == rhs.spaceTrackStatusOther)||((this.spaceTrackStatusOther!= null)&&this.spaceTrackStatusOther.equals(rhs.spaceTrackStatusOther))))&&((this.thrustPointingUncertainty == rhs.thrustPointingUncertainty)||((this.thrustPointingUncertainty!= null)&&this.thrustPointingUncertainty.equals(rhs.thrustPointingUncertainty))))&&((this.propulsionType == rhs.propulsionType)||((this.propulsionType!= null)&&this.propulsionType.equals(rhs.propulsionType))))&&((this.spaceTrackPocName == rhs.spaceTrackPocName)||((this.spaceTrackPocName!= null)&&this.spaceTrackPocName.equals(rhs.spaceTrackPocName))))&&((this.spaceTrackLogin == rhs.spaceTrackLogin)||((this.spaceTrackLogin!= null)&&this.spaceTrackLogin.equals(rhs.spaceTrackLogin))))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))))&&((this.maneuverStrategy == rhs.maneuverStrategy)||((this.maneuverStrategy!= null)&&this.maneuverStrategy.equals(rhs.maneuverStrategy))))&&((this.acceptedMinimumDistance == rhs.acceptedMinimumDistance)||((this.acceptedMinimumDistance!= null)&&this.acceptedMinimumDistance.equals(rhs.acceptedMinimumDistance))));
+        return (((((((((((((((((((((((((((this.thrustUncertainty == rhs.thrustUncertainty)||((this.thrustUncertainty!= null)&&this.thrustUncertainty.equals(rhs.thrustUncertainty)))&&((this.useAiRiskPrediction == rhs.useAiRiskPrediction)||((this.useAiRiskPrediction!= null)&&this.useAiRiskPrediction.equals(rhs.useAiRiskPrediction))))&&((this.noradIds == rhs.noradIds)||((this.noradIds!= null)&&this.noradIds.equals(rhs.noradIds))))&&((this.mass == rhs.mass)||((this.mass!= null)&&this.mass.equals(rhs.mass))))&&((this.spaceTrackStatus == rhs.spaceTrackStatus)||((this.spaceTrackStatus!= null)&&this.spaceTrackStatus.equals(rhs.spaceTrackStatus))))&&((this.thrustPointingUncertainty == rhs.thrustPointingUncertainty)||((this.thrustPointingUncertainty!= null)&&this.thrustPointingUncertainty.equals(rhs.thrustPointingUncertainty))))&&((this.propulsionType == rhs.propulsionType)||((this.propulsionType!= null)&&this.propulsionType.equals(rhs.propulsionType))))&&((this.sendTeamsNotifications == rhs.sendTeamsNotifications)||((this.sendTeamsNotifications!= null)&&this.sendTeamsNotifications.equals(rhs.sendTeamsNotifications))))&&((this.spaceTrackLogin == rhs.spaceTrackLogin)||((this.spaceTrackLogin!= null)&&this.spaceTrackLogin.equals(rhs.spaceTrackLogin))))&&((this.maneuverStrategy == rhs.maneuverStrategy)||((this.maneuverStrategy!= null)&&this.maneuverStrategy.equals(rhs.maneuverStrategy))))&&((this.slackWebhook == rhs.slackWebhook)||((this.slackWebhook!= null)&&this.slackWebhook.equals(rhs.slackWebhook))))&&((this.acceptedMinimumDistance == rhs.acceptedMinimumDistance)||((this.acceptedMinimumDistance!= null)&&this.acceptedMinimumDistance.equals(rhs.acceptedMinimumDistance))))&&((this.area == rhs.area)||((this.area!= null)&&this.area.equals(rhs.area))))&&((this.spaceTrackCompanyName == rhs.spaceTrackCompanyName)||((this.spaceTrackCompanyName!= null)&&this.spaceTrackCompanyName.equals(rhs.spaceTrackCompanyName))))&&((this.spaceTrackPocAddress == rhs.spaceTrackPocAddress)||((this.spaceTrackPocAddress!= null)&&this.spaceTrackPocAddress.equals(rhs.spaceTrackPocAddress))))&&((this.sendSlackNotifications == rhs.sendSlackNotifications)||((this.sendSlackNotifications!= null)&&this.sendSlackNotifications.equals(rhs.sendSlackNotifications))))&&((this.maxThrustDuration == rhs.maxThrustDuration)||((this.maxThrustDuration!= null)&&this.maxThrustDuration.equals(rhs.maxThrustDuration))))&&((this.teamsWebhook == rhs.teamsWebhook)||((this.teamsWebhook!= null)&&this.teamsWebhook.equals(rhs.teamsWebhook))))&&((this.satelliteId == rhs.satelliteId)||((this.satelliteId!= null)&&this.satelliteId.equals(rhs.satelliteId))))&&((this.active == rhs.active)||((this.active!= null)&&this.active.equals(rhs.active))))&&((this.acceptedCollisionProbability == rhs.acceptedCollisionProbability)||((this.acceptedCollisionProbability!= null)&&this.acceptedCollisionProbability.equals(rhs.acceptedCollisionProbability))))&&((this.thrustOutput == rhs.thrustOutput)||((this.thrustOutput!= null)&&this.thrustOutput.equals(rhs.thrustOutput))))&&((this.spaceTrackStatusOther == rhs.spaceTrackStatusOther)||((this.spaceTrackStatusOther!= null)&&this.spaceTrackStatusOther.equals(rhs.spaceTrackStatusOther))))&&((this.sendMailNotifications == rhs.sendMailNotifications)||((this.sendMailNotifications!= null)&&this.sendMailNotifications.equals(rhs.sendMailNotifications))))&&((this.spaceTrackPocName == rhs.spaceTrackPocName)||((this.spaceTrackPocName!= null)&&this.spaceTrackPocName.equals(rhs.spaceTrackPocName))))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))));
     }
 
 

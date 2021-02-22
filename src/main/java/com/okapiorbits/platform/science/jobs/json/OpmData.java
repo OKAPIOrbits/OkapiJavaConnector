@@ -1,15 +1,23 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
-import com.fasterxml.jackson.annotation.*;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 
 /**
  * OpmData
  * <p>
- * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+ * A description of an orbit based on the CCSDS OPM data field, using a Cartesian state vector and an associated epoch. It may additionally contain a covariance matrix, drag area and coefficient and solar radiation coefficient. Up to 5 maneuvers can be defined in the maneuver array. For these a pointing uncertainty and thrust uncertainty can be defined.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -130,11 +138,11 @@ public class OpmData {
     /**
      * CovRefFrame
      * <p>
-     * Frame of covariance. Must be RTN or RSW. Must be given, if covariance is given.
+     * Reference frame of the covariance. Must be RTN or RSW. Must only be defined, when the reference frame differs from the state vector reference frame.
      * 
      */
     @JsonProperty("COV_REF_FRAME")
-    @JsonPropertyDescription("Frame of covariance. Must be RTN or RSW. Must be given, if covariance is given.")
+    @JsonPropertyDescription("Reference frame of the covariance. Must be RTN or RSW. Must only be defined, when the reference frame differs from the state vector reference frame.")
     private OpmData.CovRefFrame covRefFrame = OpmData.CovRefFrame.fromValue("RTN");
     /**
      * Covariance matrix [1,1] in km^2. All Covariance values not given are assumed 0.
@@ -286,11 +294,11 @@ public class OpmData {
     @JsonProperty("MANEUVERS")
     private List<OpmManeuver> maneuvers = new ArrayList<OpmManeuver>();
     /**
-     * Thrust uncertainty relative to the acceleration / -
+     * Relative thrust uncertainty / -
      * 
      */
     @JsonProperty("USER_DEFINED_THRUST_UNCERTAINTY")
-    @JsonPropertyDescription("Thrust uncertainty relative to the acceleration / -")
+    @JsonPropertyDescription("Relative thrust uncertainty / -")
     private Double userDefinedThrustUncertainty = 0.0D;
     /**
      * Maximum uncertainty in pointing the thrust vector / arc seconds
@@ -500,7 +508,7 @@ public class OpmData {
     /**
      * CovRefFrame
      * <p>
-     * Frame of covariance. Must be RTN or RSW. Must be given, if covariance is given.
+     * Reference frame of the covariance. Must be RTN or RSW. Must only be defined, when the reference frame differs from the state vector reference frame.
      * 
      */
     @JsonProperty("COV_REF_FRAME")
@@ -511,7 +519,7 @@ public class OpmData {
     /**
      * CovRefFrame
      * <p>
-     * Frame of covariance. Must be RTN or RSW. Must be given, if covariance is given.
+     * Reference frame of the covariance. Must be RTN or RSW. Must only be defined, when the reference frame differs from the state vector reference frame.
      * 
      */
     @JsonProperty("COV_REF_FRAME")
@@ -908,7 +916,7 @@ public class OpmData {
     }
 
     /**
-     * Thrust uncertainty relative to the acceleration / -
+     * Relative thrust uncertainty / -
      * 
      */
     @JsonProperty("USER_DEFINED_THRUST_UNCERTAINTY")
@@ -917,7 +925,7 @@ public class OpmData {
     }
 
     /**
-     * Thrust uncertainty relative to the acceleration / -
+     * Relative thrust uncertainty / -
      * 
      */
     @JsonProperty("USER_DEFINED_THRUST_UNCERTAINTY")
@@ -1180,7 +1188,7 @@ public class OpmData {
     /**
      * CovRefFrame
      * <p>
-     * Frame of covariance. Must be RTN or RSW. Must be given, if covariance is given.
+     * Reference frame of the covariance. Must be RTN or RSW. Must only be defined, when the reference frame differs from the state vector reference frame.
      * 
      */
     public enum CovRefFrame {

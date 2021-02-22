@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * ManeuverEvals
  * <p>
- * ManeuverEvals
+ * Multiple maneuver evaluations.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)

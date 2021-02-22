@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * OpmHeader
  * <p>
- * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+ * Header information as needed for the CCSDS OPM data type.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)

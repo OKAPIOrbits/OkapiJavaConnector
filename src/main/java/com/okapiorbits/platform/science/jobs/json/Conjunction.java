@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * Conjunction
  * <p>
- * A conjunction
+ * A conjunction between two objects defined using their norad ids and names. Optionally, this conjunction can contain a rsik estimation.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -20,19 +20,20 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "sat2_norad_id",
     "sat1_name",
     "sat2_name",
-    "risk_estimations"
+    "risk_estimations",
+    "risk_predictions"
 })
 public class Conjunction {
 
     /**
      * Uuid
      * <p>
-     * A Universally-Unique IDentifier, as used by OKAPI
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
      * (Required)
      * 
      */
     @JsonProperty("conjunction_id")
-    @JsonPropertyDescription("A Universally-Unique IDentifier, as used by OKAPI")
+    @JsonPropertyDescription("A Universally-Unique Identifier, as used by OKAPI:Orbits")
     private String conjunctionId;
     /**
      * NORAD ID of satellite 1
@@ -69,17 +70,26 @@ public class Conjunction {
     /**
      * RiskEstimations
      * <p>
-     * Risk estimations
+     * An array of risk estimations.
      * 
      */
     @JsonProperty("risk_estimations")
-    @JsonPropertyDescription("Risk estimations")
+    @JsonPropertyDescription("An array of risk estimations.")
     private RiskEstimations riskEstimations;
+    /**
+     * RiskPredictions
+     * <p>
+     * An array of risk predictions.
+     * 
+     */
+    @JsonProperty("risk_predictions")
+    @JsonPropertyDescription("An array of risk predictions.")
+    private RiskPredictions riskPredictions;
 
     /**
      * Uuid
      * <p>
-     * A Universally-Unique IDentifier, as used by OKAPI
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
      * (Required)
      * 
      */
@@ -91,7 +101,7 @@ public class Conjunction {
     /**
      * Uuid
      * <p>
-     * A Universally-Unique IDentifier, as used by OKAPI
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
      * (Required)
      * 
      */
@@ -183,7 +193,7 @@ public class Conjunction {
     /**
      * RiskEstimations
      * <p>
-     * Risk estimations
+     * An array of risk estimations.
      * 
      */
     @JsonProperty("risk_estimations")
@@ -194,12 +204,34 @@ public class Conjunction {
     /**
      * RiskEstimations
      * <p>
-     * Risk estimations
+     * An array of risk estimations.
      * 
      */
     @JsonProperty("risk_estimations")
     public void setRiskEstimations(RiskEstimations riskEstimations) {
         this.riskEstimations = riskEstimations;
+    }
+
+    /**
+     * RiskPredictions
+     * <p>
+     * An array of risk predictions.
+     * 
+     */
+    @JsonProperty("risk_predictions")
+    public RiskPredictions getRiskPredictions() {
+        return riskPredictions;
+    }
+
+    /**
+     * RiskPredictions
+     * <p>
+     * An array of risk predictions.
+     * 
+     */
+    @JsonProperty("risk_predictions")
+    public void setRiskPredictions(RiskPredictions riskPredictions) {
+        this.riskPredictions = riskPredictions;
     }
 
     @Override
@@ -230,6 +262,10 @@ public class Conjunction {
         sb.append('=');
         sb.append(((this.riskEstimations == null)?"<null>":this.riskEstimations));
         sb.append(',');
+        sb.append("riskPredictions");
+        sb.append('=');
+        sb.append(((this.riskPredictions == null)?"<null>":this.riskPredictions));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -244,6 +280,7 @@ public class Conjunction {
         result = ((result* 31)+((this.sat2NoradId == null)? 0 :this.sat2NoradId.hashCode()));
         result = ((result* 31)+((this.riskEstimations == null)? 0 :this.riskEstimations.hashCode()));
         result = ((result* 31)+((this.sat1NoradId == null)? 0 :this.sat1NoradId.hashCode()));
+        result = ((result* 31)+((this.riskPredictions == null)? 0 :this.riskPredictions.hashCode()));
         result = ((result* 31)+((this.sat1Name == null)? 0 :this.sat1Name.hashCode()));
         result = ((result* 31)+((this.sat2Name == null)? 0 :this.sat2Name.hashCode()));
         result = ((result* 31)+((this.conjunctionId == null)? 0 :this.conjunctionId.hashCode()));
@@ -259,7 +296,7 @@ public class Conjunction {
             return false;
         }
         Conjunction rhs = ((Conjunction) other);
-        return (((((((this.sat2NoradId == rhs.sat2NoradId)||((this.sat2NoradId!= null)&&this.sat2NoradId.equals(rhs.sat2NoradId)))&&((this.riskEstimations == rhs.riskEstimations)||((this.riskEstimations!= null)&&this.riskEstimations.equals(rhs.riskEstimations))))&&((this.sat1NoradId == rhs.sat1NoradId)||((this.sat1NoradId!= null)&&this.sat1NoradId.equals(rhs.sat1NoradId))))&&((this.sat1Name == rhs.sat1Name)||((this.sat1Name!= null)&&this.sat1Name.equals(rhs.sat1Name))))&&((this.sat2Name == rhs.sat2Name)||((this.sat2Name!= null)&&this.sat2Name.equals(rhs.sat2Name))))&&((this.conjunctionId == rhs.conjunctionId)||((this.conjunctionId!= null)&&this.conjunctionId.equals(rhs.conjunctionId))));
+        return ((((((((this.sat2NoradId == rhs.sat2NoradId)||((this.sat2NoradId!= null)&&this.sat2NoradId.equals(rhs.sat2NoradId)))&&((this.riskEstimations == rhs.riskEstimations)||((this.riskEstimations!= null)&&this.riskEstimations.equals(rhs.riskEstimations))))&&((this.sat1NoradId == rhs.sat1NoradId)||((this.sat1NoradId!= null)&&this.sat1NoradId.equals(rhs.sat1NoradId))))&&((this.riskPredictions == rhs.riskPredictions)||((this.riskPredictions!= null)&&this.riskPredictions.equals(rhs.riskPredictions))))&&((this.sat1Name == rhs.sat1Name)||((this.sat1Name!= null)&&this.sat1Name.equals(rhs.sat1Name))))&&((this.sat2Name == rhs.sat2Name)||((this.sat2Name!= null)&&this.sat2Name.equals(rhs.sat2Name))))&&((this.conjunctionId == rhs.conjunctionId)||((this.conjunctionId!= null)&&this.conjunctionId.equals(rhs.conjunctionId))));
     }
 
 }

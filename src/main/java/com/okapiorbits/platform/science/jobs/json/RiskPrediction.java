@@ -1,8 +1,10 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -13,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 
 /**
- * RiskEstimation
+ * RiskPrediction
  * <p>
- * A risk estimation with the Time of Closest Approach (TCA), collision probability, the associated method, miss vector and covariance scaling factors. In addition, a risk classification is available.
+ * A risk prediction with a risk trend (series of collision probabilities), the peak risk, miss vector and risk classification.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,10 +27,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "tca",
     "collision_probability",
     "collision_probability_method",
+    "approx_peak_risk",
+    "time_of_peak_risk",
+    "risk_trend",
     "miss_distance",
     "relative_speed",
-    "sat1_hard_body_radius",
-    "sat2_hard_body_radius",
     "r",
     "t",
     "n",
@@ -41,28 +44,35 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "sat2_covariance_r_scaling_factor",
     "sat2_covariance_t_scaling_factor",
     "sat2_covariance_n_scaling_factor",
-    "sat1_state_at_tca",
-    "sat2_state_at_tca",
     "criticality"
 })
-public class RiskEstimation {
+public class RiskPrediction {
 
     /**
-     * Message creation date/time in Coordinated Universal Time (UTC).
+     * Date and time of the creation of this message
+     * (Required)
      * 
      */
     @JsonProperty("creation_date")
-    @JsonPropertyDescription("Message creation date/time in Coordinated Universal Time (UTC).")
-    private Date creationDate;
+    @JsonPropertyDescription("Date and time of the creation of this message")
+    private String creationDate;
+    /**
+     * Identifies where the message originated from
+     * (Required)
+     * 
+     */
     @JsonProperty("originator")
+    @JsonPropertyDescription("Identifies where the message originated from")
     private String originator;
     /**
-     * Date and time of the time of close approach
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
     @JsonProperty("tca")
-    @JsonPropertyDescription("Date and time of the time of close approach")
+    @JsonPropertyDescription("ISO8601 date/time definition.")
     private Date tca;
     /**
      * Probability of collision at TCA
@@ -81,6 +91,29 @@ public class RiskEstimation {
     @JsonPropertyDescription("Defines the method that was used to derive the collision probability")
     private String collisionProbabilityMethod;
     /**
+     * Peak collision probability in the trend
+     * (Required)
+     * 
+     */
+    @JsonProperty("approx_peak_risk")
+    @JsonPropertyDescription("Peak collision probability in the trend")
+    private Double approxPeakRisk;
+    /**
+     * Date and time of peak collision probability
+     * (Required)
+     * 
+     */
+    @JsonProperty("time_of_peak_risk")
+    @JsonPropertyDescription("Date and time of peak collision probability")
+    private String timeOfPeakRisk;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("risk_trend")
+    private List<RiskAtTca> riskTrend = new ArrayList<RiskAtTca>();
+    /**
      * in km
      * (Required)
      * 
@@ -96,20 +129,6 @@ public class RiskEstimation {
     @JsonProperty("relative_speed")
     @JsonPropertyDescription("in km/s")
     private Double relativeSpeed;
-    /**
-     * in m
-     * 
-     */
-    @JsonProperty("sat1_hard_body_radius")
-    @JsonPropertyDescription("in m")
-    private Double sat1HardBodyRadius;
-    /**
-     * in m
-     * 
-     */
-    @JsonProperty("sat2_hard_body_radius")
-    @JsonPropertyDescription("in m")
-    private Double sat2HardBodyRadius;
     /**
      * in km
      * (Required)
@@ -159,111 +178,99 @@ public class RiskEstimation {
     @JsonPropertyDescription("in km/s")
     private Double nDot;
     /**
-     * applied factor
-     * (Required)
+     * Covariance R component scaling factor used for object 1 / -
      * 
      */
     @JsonProperty("sat1_covariance_r_scaling_factor")
-    @JsonPropertyDescription("applied factor")
+    @JsonPropertyDescription("Covariance R component scaling factor used for object 1 / -")
     private Double sat1CovarianceRScalingFactor;
     /**
-     * applied factor
-     * (Required)
+     * Covariance T component scaling factor used for object 1 / -
      * 
      */
     @JsonProperty("sat1_covariance_t_scaling_factor")
-    @JsonPropertyDescription("applied factor")
+    @JsonPropertyDescription("Covariance T component scaling factor used for object 1 / -")
     private Double sat1CovarianceTScalingFactor;
     /**
-     * applied factor
-     * (Required)
+     * Covariance N component scaling factor used for object 1 / -
      * 
      */
     @JsonProperty("sat1_covariance_n_scaling_factor")
-    @JsonPropertyDescription("applied factor")
+    @JsonPropertyDescription("Covariance N component scaling factor used for object 1 / -")
     private Double sat1CovarianceNScalingFactor;
     /**
-     * applied factor
-     * (Required)
+     * Covariance R component scaling factor used for object 2 / -
      * 
      */
     @JsonProperty("sat2_covariance_r_scaling_factor")
-    @JsonPropertyDescription("applied factor")
+    @JsonPropertyDescription("Covariance R component scaling factor used for object 2 / -")
     private Double sat2CovarianceRScalingFactor;
     /**
-     * applied factor
-     * (Required)
+     * Covariance T component scaling factor used for object 2 / -
      * 
      */
     @JsonProperty("sat2_covariance_t_scaling_factor")
-    @JsonPropertyDescription("applied factor")
+    @JsonPropertyDescription("Covariance T component scaling factor used for object 2 / -")
     private Double sat2CovarianceTScalingFactor;
     /**
-     * applied factor
-     * (Required)
+     * Covariance N component scaling factor used for object 2 / -
      * 
      */
     @JsonProperty("sat2_covariance_n_scaling_factor")
-    @JsonPropertyDescription("applied factor")
+    @JsonPropertyDescription("Covariance N component scaling factor used for object 2 / -")
     private Double sat2CovarianceNScalingFactor;
-    /**
-     * CcsdsOpm
-     * <p>
-     * Defintition of the CCSDS OPM, with one header, meta data and data section.
-     * (Required)
-     * 
-     */
-    @JsonProperty("sat1_state_at_tca")
-    @JsonPropertyDescription("Defintition of the CCSDS OPM, with one header, meta data and data section.")
-    private CcsdsOpm sat1StateAtTca;
-    /**
-     * CcsdsOpm
-     * <p>
-     * Defintition of the CCSDS OPM, with one header, meta data and data section.
-     * (Required)
-     * 
-     */
-    @JsonProperty("sat2_state_at_tca")
-    @JsonPropertyDescription("Defintition of the CCSDS OPM, with one header, meta data and data section.")
-    private CcsdsOpm sat2StateAtTca;
     /**
      * Criticality of the analyzed conjunction
      * 
      */
     @JsonProperty("criticality")
     @JsonPropertyDescription("Criticality of the analyzed conjunction")
-    private RiskEstimation.Criticality criticality;
+    private RiskPrediction.Criticality criticality;
 
     /**
-     * Message creation date/time in Coordinated Universal Time (UTC).
+     * Date and time of the creation of this message
+     * (Required)
      * 
      */
     @JsonProperty("creation_date")
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
     /**
-     * Message creation date/time in Coordinated Universal Time (UTC).
+     * Date and time of the creation of this message
+     * (Required)
      * 
      */
     @JsonProperty("creation_date")
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
+    /**
+     * Identifies where the message originated from
+     * (Required)
+     * 
+     */
     @JsonProperty("originator")
     public String getOriginator() {
         return originator;
     }
 
+    /**
+     * Identifies where the message originated from
+     * (Required)
+     * 
+     */
     @JsonProperty("originator")
     public void setOriginator(String originator) {
         this.originator = originator;
     }
 
     /**
-     * Date and time of the time of close approach
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
@@ -273,7 +280,9 @@ public class RiskEstimation {
     }
 
     /**
-     * Date and time of the time of close approach
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
@@ -323,6 +332,66 @@ public class RiskEstimation {
     }
 
     /**
+     * Peak collision probability in the trend
+     * (Required)
+     * 
+     */
+    @JsonProperty("approx_peak_risk")
+    public Double getApproxPeakRisk() {
+        return approxPeakRisk;
+    }
+
+    /**
+     * Peak collision probability in the trend
+     * (Required)
+     * 
+     */
+    @JsonProperty("approx_peak_risk")
+    public void setApproxPeakRisk(Double approxPeakRisk) {
+        this.approxPeakRisk = approxPeakRisk;
+    }
+
+    /**
+     * Date and time of peak collision probability
+     * (Required)
+     * 
+     */
+    @JsonProperty("time_of_peak_risk")
+    public String getTimeOfPeakRisk() {
+        return timeOfPeakRisk;
+    }
+
+    /**
+     * Date and time of peak collision probability
+     * (Required)
+     * 
+     */
+    @JsonProperty("time_of_peak_risk")
+    public void setTimeOfPeakRisk(String timeOfPeakRisk) {
+        this.timeOfPeakRisk = timeOfPeakRisk;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("risk_trend")
+    public List<RiskAtTca> getRiskTrend() {
+        return riskTrend;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("risk_trend")
+    public void setRiskTrend(List<RiskAtTca> riskTrend) {
+        this.riskTrend = riskTrend;
+    }
+
+    /**
      * in km
      * (Required)
      * 
@@ -360,42 +429,6 @@ public class RiskEstimation {
     @JsonProperty("relative_speed")
     public void setRelativeSpeed(Double relativeSpeed) {
         this.relativeSpeed = relativeSpeed;
-    }
-
-    /**
-     * in m
-     * 
-     */
-    @JsonProperty("sat1_hard_body_radius")
-    public Double getSat1HardBodyRadius() {
-        return sat1HardBodyRadius;
-    }
-
-    /**
-     * in m
-     * 
-     */
-    @JsonProperty("sat1_hard_body_radius")
-    public void setSat1HardBodyRadius(Double sat1HardBodyRadius) {
-        this.sat1HardBodyRadius = sat1HardBodyRadius;
-    }
-
-    /**
-     * in m
-     * 
-     */
-    @JsonProperty("sat2_hard_body_radius")
-    public Double getSat2HardBodyRadius() {
-        return sat2HardBodyRadius;
-    }
-
-    /**
-     * in m
-     * 
-     */
-    @JsonProperty("sat2_hard_body_radius")
-    public void setSat2HardBodyRadius(Double sat2HardBodyRadius) {
-        this.sat2HardBodyRadius = sat2HardBodyRadius;
     }
 
     /**
@@ -519,8 +552,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
-     * (Required)
+     * Covariance R component scaling factor used for object 1 / -
      * 
      */
     @JsonProperty("sat1_covariance_r_scaling_factor")
@@ -529,8 +561,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
-     * (Required)
+     * Covariance R component scaling factor used for object 1 / -
      * 
      */
     @JsonProperty("sat1_covariance_r_scaling_factor")
@@ -539,8 +570,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
-     * (Required)
+     * Covariance T component scaling factor used for object 1 / -
      * 
      */
     @JsonProperty("sat1_covariance_t_scaling_factor")
@@ -549,8 +579,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
-     * (Required)
+     * Covariance T component scaling factor used for object 1 / -
      * 
      */
     @JsonProperty("sat1_covariance_t_scaling_factor")
@@ -559,8 +588,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
-     * (Required)
+     * Covariance N component scaling factor used for object 1 / -
      * 
      */
     @JsonProperty("sat1_covariance_n_scaling_factor")
@@ -569,8 +597,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
-     * (Required)
+     * Covariance N component scaling factor used for object 1 / -
      * 
      */
     @JsonProperty("sat1_covariance_n_scaling_factor")
@@ -579,8 +606,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
-     * (Required)
+     * Covariance R component scaling factor used for object 2 / -
      * 
      */
     @JsonProperty("sat2_covariance_r_scaling_factor")
@@ -589,8 +615,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
-     * (Required)
+     * Covariance R component scaling factor used for object 2 / -
      * 
      */
     @JsonProperty("sat2_covariance_r_scaling_factor")
@@ -599,8 +624,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
-     * (Required)
+     * Covariance T component scaling factor used for object 2 / -
      * 
      */
     @JsonProperty("sat2_covariance_t_scaling_factor")
@@ -609,8 +633,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
-     * (Required)
+     * Covariance T component scaling factor used for object 2 / -
      * 
      */
     @JsonProperty("sat2_covariance_t_scaling_factor")
@@ -619,8 +642,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
-     * (Required)
+     * Covariance N component scaling factor used for object 2 / -
      * 
      */
     @JsonProperty("sat2_covariance_n_scaling_factor")
@@ -629,8 +651,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
-     * (Required)
+     * Covariance N component scaling factor used for object 2 / -
      * 
      */
     @JsonProperty("sat2_covariance_n_scaling_factor")
@@ -639,59 +660,11 @@ public class RiskEstimation {
     }
 
     /**
-     * CcsdsOpm
-     * <p>
-     * Defintition of the CCSDS OPM, with one header, meta data and data section.
-     * (Required)
-     * 
-     */
-    @JsonProperty("sat1_state_at_tca")
-    public CcsdsOpm getSat1StateAtTca() {
-        return sat1StateAtTca;
-    }
-
-    /**
-     * CcsdsOpm
-     * <p>
-     * Defintition of the CCSDS OPM, with one header, meta data and data section.
-     * (Required)
-     * 
-     */
-    @JsonProperty("sat1_state_at_tca")
-    public void setSat1StateAtTca(CcsdsOpm sat1StateAtTca) {
-        this.sat1StateAtTca = sat1StateAtTca;
-    }
-
-    /**
-     * CcsdsOpm
-     * <p>
-     * Defintition of the CCSDS OPM, with one header, meta data and data section.
-     * (Required)
-     * 
-     */
-    @JsonProperty("sat2_state_at_tca")
-    public CcsdsOpm getSat2StateAtTca() {
-        return sat2StateAtTca;
-    }
-
-    /**
-     * CcsdsOpm
-     * <p>
-     * Defintition of the CCSDS OPM, with one header, meta data and data section.
-     * (Required)
-     * 
-     */
-    @JsonProperty("sat2_state_at_tca")
-    public void setSat2StateAtTca(CcsdsOpm sat2StateAtTca) {
-        this.sat2StateAtTca = sat2StateAtTca;
-    }
-
-    /**
      * Criticality of the analyzed conjunction
      * 
      */
     @JsonProperty("criticality")
-    public RiskEstimation.Criticality getCriticality() {
+    public RiskPrediction.Criticality getCriticality() {
         return criticality;
     }
 
@@ -700,14 +673,14 @@ public class RiskEstimation {
      * 
      */
     @JsonProperty("criticality")
-    public void setCriticality(RiskEstimation.Criticality criticality) {
+    public void setCriticality(RiskPrediction.Criticality criticality) {
         this.criticality = criticality;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(RiskEstimation.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(RiskPrediction.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("creationDate");
         sb.append('=');
         sb.append(((this.creationDate == null)?"<null>":this.creationDate));
@@ -728,6 +701,18 @@ public class RiskEstimation {
         sb.append('=');
         sb.append(((this.collisionProbabilityMethod == null)?"<null>":this.collisionProbabilityMethod));
         sb.append(',');
+        sb.append("approxPeakRisk");
+        sb.append('=');
+        sb.append(((this.approxPeakRisk == null)?"<null>":this.approxPeakRisk));
+        sb.append(',');
+        sb.append("timeOfPeakRisk");
+        sb.append('=');
+        sb.append(((this.timeOfPeakRisk == null)?"<null>":this.timeOfPeakRisk));
+        sb.append(',');
+        sb.append("riskTrend");
+        sb.append('=');
+        sb.append(((this.riskTrend == null)?"<null>":this.riskTrend));
+        sb.append(',');
         sb.append("missDistance");
         sb.append('=');
         sb.append(((this.missDistance == null)?"<null>":this.missDistance));
@@ -735,14 +720,6 @@ public class RiskEstimation {
         sb.append("relativeSpeed");
         sb.append('=');
         sb.append(((this.relativeSpeed == null)?"<null>":this.relativeSpeed));
-        sb.append(',');
-        sb.append("sat1HardBodyRadius");
-        sb.append('=');
-        sb.append(((this.sat1HardBodyRadius == null)?"<null>":this.sat1HardBodyRadius));
-        sb.append(',');
-        sb.append("sat2HardBodyRadius");
-        sb.append('=');
-        sb.append(((this.sat2HardBodyRadius == null)?"<null>":this.sat2HardBodyRadius));
         sb.append(',');
         sb.append("r");
         sb.append('=');
@@ -792,14 +769,6 @@ public class RiskEstimation {
         sb.append('=');
         sb.append(((this.sat2CovarianceNScalingFactor == null)?"<null>":this.sat2CovarianceNScalingFactor));
         sb.append(',');
-        sb.append("sat1StateAtTca");
-        sb.append('=');
-        sb.append(((this.sat1StateAtTca == null)?"<null>":this.sat1StateAtTca));
-        sb.append(',');
-        sb.append("sat2StateAtTca");
-        sb.append('=');
-        sb.append(((this.sat2StateAtTca == null)?"<null>":this.sat2StateAtTca));
-        sb.append(',');
         sb.append("criticality");
         sb.append('=');
         sb.append(((this.criticality == null)?"<null>":this.criticality));
@@ -817,28 +786,27 @@ public class RiskEstimation {
         int result = 1;
         result = ((result* 31)+((this.tDot == null)? 0 :this.tDot.hashCode()));
         result = ((result* 31)+((this.relativeSpeed == null)? 0 :this.relativeSpeed.hashCode()));
-        result = ((result* 31)+((this.sat1HardBodyRadius == null)? 0 :this.sat1HardBodyRadius.hashCode()));
+        result = ((result* 31)+((this.riskTrend == null)? 0 :this.riskTrend.hashCode()));
         result = ((result* 31)+((this.rDot == null)? 0 :this.rDot.hashCode()));
         result = ((result* 31)+((this.sat1CovarianceTScalingFactor == null)? 0 :this.sat1CovarianceTScalingFactor.hashCode()));
         result = ((result* 31)+((this.collisionProbabilityMethod == null)? 0 :this.collisionProbabilityMethod.hashCode()));
         result = ((result* 31)+((this.nDot == null)? 0 :this.nDot.hashCode()));
         result = ((result* 31)+((this.criticality == null)? 0 :this.criticality.hashCode()));
+        result = ((result* 31)+((this.missDistance == null)? 0 :this.missDistance.hashCode()));
         result = ((result* 31)+((this.sat2CovarianceRScalingFactor == null)? 0 :this.sat2CovarianceRScalingFactor.hashCode()));
         result = ((result* 31)+((this.collisionProbability == null)? 0 :this.collisionProbability.hashCode()));
         result = ((result* 31)+((this.originator == null)? 0 :this.originator.hashCode()));
-        result = ((result* 31)+((this.sat1CovarianceNScalingFactor == null)? 0 :this.sat1CovarianceNScalingFactor.hashCode()));
-        result = ((result* 31)+((this.tca == null)? 0 :this.tca.hashCode()));
-        result = ((result* 31)+((this.sat2CovarianceNScalingFactor == null)? 0 :this.sat2CovarianceNScalingFactor.hashCode()));
-        result = ((result* 31)+((this.sat1CovarianceRScalingFactor == null)? 0 :this.sat1CovarianceRScalingFactor.hashCode()));
-        result = ((result* 31)+((this.sat1StateAtTca == null)? 0 :this.sat1StateAtTca.hashCode()));
-        result = ((result* 31)+((this.missDistance == null)? 0 :this.missDistance.hashCode()));
         result = ((result* 31)+((this.creationDate == null)? 0 :this.creationDate.hashCode()));
-        result = ((result* 31)+((this.sat2HardBodyRadius == null)? 0 :this.sat2HardBodyRadius.hashCode()));
+        result = ((result* 31)+((this.sat1CovarianceNScalingFactor == null)? 0 :this.sat1CovarianceNScalingFactor.hashCode()));
         result = ((result* 31)+((this.n == null)? 0 :this.n.hashCode()));
-        result = ((result* 31)+((this.sat2StateAtTca == null)? 0 :this.sat2StateAtTca.hashCode()));
         result = ((result* 31)+((this.r == null)? 0 :this.r.hashCode()));
+        result = ((result* 31)+((this.tca == null)? 0 :this.tca.hashCode()));
+        result = ((result* 31)+((this.approxPeakRisk == null)? 0 :this.approxPeakRisk.hashCode()));
         result = ((result* 31)+((this.t == null)? 0 :this.t.hashCode()));
         result = ((result* 31)+((this.sat2CovarianceTScalingFactor == null)? 0 :this.sat2CovarianceTScalingFactor.hashCode()));
+        result = ((result* 31)+((this.sat2CovarianceNScalingFactor == null)? 0 :this.sat2CovarianceNScalingFactor.hashCode()));
+        result = ((result* 31)+((this.timeOfPeakRisk == null)? 0 :this.timeOfPeakRisk.hashCode()));
+        result = ((result* 31)+((this.sat1CovarianceRScalingFactor == null)? 0 :this.sat1CovarianceRScalingFactor.hashCode()));
         return result;
     }
 
@@ -847,11 +815,11 @@ public class RiskEstimation {
         if (other == this) {
             return true;
         }
-        if ((other instanceof RiskEstimation) == false) {
+        if ((other instanceof RiskPrediction) == false) {
             return false;
         }
-        RiskEstimation rhs = ((RiskEstimation) other);
-        return (((((((((((((((((((((((((this.tDot == rhs.tDot)||((this.tDot!= null)&&this.tDot.equals(rhs.tDot)))&&((this.relativeSpeed == rhs.relativeSpeed)||((this.relativeSpeed!= null)&&this.relativeSpeed.equals(rhs.relativeSpeed))))&&((this.sat1HardBodyRadius == rhs.sat1HardBodyRadius)||((this.sat1HardBodyRadius!= null)&&this.sat1HardBodyRadius.equals(rhs.sat1HardBodyRadius))))&&((this.rDot == rhs.rDot)||((this.rDot!= null)&&this.rDot.equals(rhs.rDot))))&&((this.sat1CovarianceTScalingFactor == rhs.sat1CovarianceTScalingFactor)||((this.sat1CovarianceTScalingFactor!= null)&&this.sat1CovarianceTScalingFactor.equals(rhs.sat1CovarianceTScalingFactor))))&&((this.collisionProbabilityMethod == rhs.collisionProbabilityMethod)||((this.collisionProbabilityMethod!= null)&&this.collisionProbabilityMethod.equals(rhs.collisionProbabilityMethod))))&&((this.nDot == rhs.nDot)||((this.nDot!= null)&&this.nDot.equals(rhs.nDot))))&&((this.criticality == rhs.criticality)||((this.criticality!= null)&&this.criticality.equals(rhs.criticality))))&&((this.sat2CovarianceRScalingFactor == rhs.sat2CovarianceRScalingFactor)||((this.sat2CovarianceRScalingFactor!= null)&&this.sat2CovarianceRScalingFactor.equals(rhs.sat2CovarianceRScalingFactor))))&&((this.collisionProbability == rhs.collisionProbability)||((this.collisionProbability!= null)&&this.collisionProbability.equals(rhs.collisionProbability))))&&((this.originator == rhs.originator)||((this.originator!= null)&&this.originator.equals(rhs.originator))))&&((this.sat1CovarianceNScalingFactor == rhs.sat1CovarianceNScalingFactor)||((this.sat1CovarianceNScalingFactor!= null)&&this.sat1CovarianceNScalingFactor.equals(rhs.sat1CovarianceNScalingFactor))))&&((this.tca == rhs.tca)||((this.tca!= null)&&this.tca.equals(rhs.tca))))&&((this.sat2CovarianceNScalingFactor == rhs.sat2CovarianceNScalingFactor)||((this.sat2CovarianceNScalingFactor!= null)&&this.sat2CovarianceNScalingFactor.equals(rhs.sat2CovarianceNScalingFactor))))&&((this.sat1CovarianceRScalingFactor == rhs.sat1CovarianceRScalingFactor)||((this.sat1CovarianceRScalingFactor!= null)&&this.sat1CovarianceRScalingFactor.equals(rhs.sat1CovarianceRScalingFactor))))&&((this.sat1StateAtTca == rhs.sat1StateAtTca)||((this.sat1StateAtTca!= null)&&this.sat1StateAtTca.equals(rhs.sat1StateAtTca))))&&((this.missDistance == rhs.missDistance)||((this.missDistance!= null)&&this.missDistance.equals(rhs.missDistance))))&&((this.creationDate == rhs.creationDate)||((this.creationDate!= null)&&this.creationDate.equals(rhs.creationDate))))&&((this.sat2HardBodyRadius == rhs.sat2HardBodyRadius)||((this.sat2HardBodyRadius!= null)&&this.sat2HardBodyRadius.equals(rhs.sat2HardBodyRadius))))&&((this.n == rhs.n)||((this.n!= null)&&this.n.equals(rhs.n))))&&((this.sat2StateAtTca == rhs.sat2StateAtTca)||((this.sat2StateAtTca!= null)&&this.sat2StateAtTca.equals(rhs.sat2StateAtTca))))&&((this.r == rhs.r)||((this.r!= null)&&this.r.equals(rhs.r))))&&((this.t == rhs.t)||((this.t!= null)&&this.t.equals(rhs.t))))&&((this.sat2CovarianceTScalingFactor == rhs.sat2CovarianceTScalingFactor)||((this.sat2CovarianceTScalingFactor!= null)&&this.sat2CovarianceTScalingFactor.equals(rhs.sat2CovarianceTScalingFactor))));
+        RiskPrediction rhs = ((RiskPrediction) other);
+        return ((((((((((((((((((((((((this.tDot == rhs.tDot)||((this.tDot!= null)&&this.tDot.equals(rhs.tDot)))&&((this.relativeSpeed == rhs.relativeSpeed)||((this.relativeSpeed!= null)&&this.relativeSpeed.equals(rhs.relativeSpeed))))&&((this.riskTrend == rhs.riskTrend)||((this.riskTrend!= null)&&this.riskTrend.equals(rhs.riskTrend))))&&((this.rDot == rhs.rDot)||((this.rDot!= null)&&this.rDot.equals(rhs.rDot))))&&((this.sat1CovarianceTScalingFactor == rhs.sat1CovarianceTScalingFactor)||((this.sat1CovarianceTScalingFactor!= null)&&this.sat1CovarianceTScalingFactor.equals(rhs.sat1CovarianceTScalingFactor))))&&((this.collisionProbabilityMethod == rhs.collisionProbabilityMethod)||((this.collisionProbabilityMethod!= null)&&this.collisionProbabilityMethod.equals(rhs.collisionProbabilityMethod))))&&((this.nDot == rhs.nDot)||((this.nDot!= null)&&this.nDot.equals(rhs.nDot))))&&((this.criticality == rhs.criticality)||((this.criticality!= null)&&this.criticality.equals(rhs.criticality))))&&((this.missDistance == rhs.missDistance)||((this.missDistance!= null)&&this.missDistance.equals(rhs.missDistance))))&&((this.sat2CovarianceRScalingFactor == rhs.sat2CovarianceRScalingFactor)||((this.sat2CovarianceRScalingFactor!= null)&&this.sat2CovarianceRScalingFactor.equals(rhs.sat2CovarianceRScalingFactor))))&&((this.collisionProbability == rhs.collisionProbability)||((this.collisionProbability!= null)&&this.collisionProbability.equals(rhs.collisionProbability))))&&((this.originator == rhs.originator)||((this.originator!= null)&&this.originator.equals(rhs.originator))))&&((this.creationDate == rhs.creationDate)||((this.creationDate!= null)&&this.creationDate.equals(rhs.creationDate))))&&((this.sat1CovarianceNScalingFactor == rhs.sat1CovarianceNScalingFactor)||((this.sat1CovarianceNScalingFactor!= null)&&this.sat1CovarianceNScalingFactor.equals(rhs.sat1CovarianceNScalingFactor))))&&((this.n == rhs.n)||((this.n!= null)&&this.n.equals(rhs.n))))&&((this.r == rhs.r)||((this.r!= null)&&this.r.equals(rhs.r))))&&((this.tca == rhs.tca)||((this.tca!= null)&&this.tca.equals(rhs.tca))))&&((this.approxPeakRisk == rhs.approxPeakRisk)||((this.approxPeakRisk!= null)&&this.approxPeakRisk.equals(rhs.approxPeakRisk))))&&((this.t == rhs.t)||((this.t!= null)&&this.t.equals(rhs.t))))&&((this.sat2CovarianceTScalingFactor == rhs.sat2CovarianceTScalingFactor)||((this.sat2CovarianceTScalingFactor!= null)&&this.sat2CovarianceTScalingFactor.equals(rhs.sat2CovarianceTScalingFactor))))&&((this.sat2CovarianceNScalingFactor == rhs.sat2CovarianceNScalingFactor)||((this.sat2CovarianceNScalingFactor!= null)&&this.sat2CovarianceNScalingFactor.equals(rhs.sat2CovarianceNScalingFactor))))&&((this.timeOfPeakRisk == rhs.timeOfPeakRisk)||((this.timeOfPeakRisk!= null)&&this.timeOfPeakRisk.equals(rhs.timeOfPeakRisk))))&&((this.sat1CovarianceRScalingFactor == rhs.sat1CovarianceRScalingFactor)||((this.sat1CovarianceRScalingFactor!= null)&&this.sat1CovarianceRScalingFactor.equals(rhs.sat1CovarianceRScalingFactor))));
     }
 
 
@@ -865,10 +833,10 @@ public class RiskEstimation {
         OBSERVE("observe"),
         CRITICAL("critical");
         private final String value;
-        private final static Map<String, RiskEstimation.Criticality> CONSTANTS = new HashMap<String, RiskEstimation.Criticality>();
+        private final static Map<String, RiskPrediction.Criticality> CONSTANTS = new HashMap<String, RiskPrediction.Criticality>();
 
         static {
-            for (RiskEstimation.Criticality c: values()) {
+            for (RiskPrediction.Criticality c: values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
@@ -888,8 +856,8 @@ public class RiskEstimation {
         }
 
         @JsonCreator
-        public static RiskEstimation.Criticality fromValue(String value) {
-            RiskEstimation.Criticality constant = CONSTANTS.get(value);
+        public static RiskPrediction.Criticality fromValue(String value) {
+            RiskPrediction.Criticality constant = CONSTANTS.get(value);
             if (constant == null) {
                 throw new IllegalArgumentException(value);
             } else {

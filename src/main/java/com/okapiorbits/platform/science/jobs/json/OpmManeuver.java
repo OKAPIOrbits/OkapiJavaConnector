@@ -1,17 +1,21 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
-import com.fasterxml.jackson.annotation.*;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 
 /**
  * OpmManeuver
  * <p>
- * Optional (non-impulsive) maneuvers. Max. 5 maneuvers are accepted, all of them have to be in the propagation time frame. NOTE: Currently only non-impulsive manoeuvres are supported! In contrast to CCSDS, the acceleration of the object is used! Furthermore, the change in mass is not considered at the moment. Additionally, thrust errors can be provided, which is also non-standard
+ * Optional maneuvers. Max. 5 maneuvers are accepted, all of them have to be in the propagation time frame. In contrast to CCSDS, the acceleration of the object is used! Furthermore, the change in mass is not considered at the moment.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -261,7 +265,7 @@ public class OpmManeuver {
      */
     public enum ManRefFrame {
 
-        UVW("UVW");
+        RTN("RTN");
         private final String value;
         private final static Map<String, OpmManeuver.ManRefFrame> CONSTANTS = new HashMap<String, OpmManeuver.ManRefFrame>();
 

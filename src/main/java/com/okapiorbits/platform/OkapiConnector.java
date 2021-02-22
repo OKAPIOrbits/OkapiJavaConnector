@@ -114,7 +114,7 @@ public class OkapiConnector {
 		HttpResponse<String> response = null;
 		for(int timeout = 0; timeout < 3; timeout++) {
 			try {
-				TimeUnit.SECONDS.sleep(5);
+				//TimeUnit.SECONDS.sleep(5);
 				response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 			} catch (IOException | InterruptedException e) {
 				if(response == null && timeout < 2) {
@@ -174,7 +174,7 @@ public class OkapiConnector {
 		HttpResponse<String> response = null;
 		for(int timeout = 0; timeout < 3; timeout++) {
 			try {
-				TimeUnit.SECONDS.sleep(5);
+				//TimeUnit.SECONDS.sleep(5);
 				response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 			} catch (IOException | InterruptedException e) {
 				if (response == null && timeout < 2) {
@@ -216,7 +216,7 @@ public class OkapiConnector {
 		HttpResponse<String> response = null;
 		for(int timeout = 0; timeout < 3; timeout++) {
 			try {
-				TimeUnit.SECONDS.sleep(5);
+				//TimeUnit.SECONDS.sleep(5);
 				response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 			} catch (IOException | InterruptedException e) {
 				if (response == null && timeout < 2) {
@@ -294,7 +294,7 @@ public class OkapiConnector {
 		HttpResponse<String> response = null;
 		for(int timeout = 0; timeout < 3; timeout++) {
 			try {
-				TimeUnit.SECONDS.sleep(5);
+				//TimeUnit.SECONDS.sleep(5);
 				response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 			} catch (IOException | InterruptedException e) {
 				if (response == null && timeout < 2) {
@@ -335,7 +335,7 @@ public class OkapiConnector {
 		HttpResponse<String> response = null;
 		for(int timeout = 0; timeout < 3; timeout++) {
 			try {
-				TimeUnit.SECONDS.sleep(5);
+				//TimeUnit.SECONDS.sleep(5);
 				response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 			} catch (IOException | InterruptedException e) {
 				if (response == null && timeout < 2) {

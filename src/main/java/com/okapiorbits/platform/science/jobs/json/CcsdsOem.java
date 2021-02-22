@@ -1,19 +1,18 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * CcsdsOem
  * <p>
- * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+ * Definition of the CCSDS OEM with a header and one meta and data combination.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,12 +25,12 @@ public class CcsdsOem {
     /**
      * OemHeader
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * Header information as needed for the CCSDS OEM data type.
      * (Required)
      * 
      */
     @JsonProperty("OEM_HEADER")
-    @JsonPropertyDescription("A request for the execution of an OKAPI service. It contains the actual request data in its \"data\" attribute. This is also the schema of MongoDB collection \"service_requests\"")
+    @JsonPropertyDescription("Header information as needed for the CCSDS OEM data type.")
     private OemHeader oemHeader;
     /**
      * 
@@ -44,7 +43,7 @@ public class CcsdsOem {
     /**
      * OemHeader
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * Header information as needed for the CCSDS OEM data type.
      * (Required)
      * 
      */
@@ -56,7 +55,7 @@ public class CcsdsOem {
     /**
      * OemHeader
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * Header information as needed for the CCSDS OEM data type.
      * (Required)
      * 
      */

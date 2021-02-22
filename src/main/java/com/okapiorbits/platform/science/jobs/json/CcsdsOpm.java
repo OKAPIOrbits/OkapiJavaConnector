@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * CcsdsOpm
  * <p>
- * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+ * Defintition of the CCSDS OPM, with one header, meta data and data section.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,38 +24,38 @@ public class CcsdsOpm {
     /**
      * OpmHeader
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * Header information as needed for the CCSDS OPM data type.
      * (Required)
      * 
      */
     @JsonProperty("OPM_HEADER")
-    @JsonPropertyDescription("A request for the execution of an OKAPI service. It contains the actual request data in its \"data\" attribute. This is also the schema of MongoDB collection \"service_requests\"")
+    @JsonPropertyDescription("Header information as needed for the CCSDS OPM data type.")
     private OpmHeader opmHeader;
     /**
      * OpmMetaData
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * Meta data as needed for the CCSDS OPM data type.
      * (Required)
      * 
      */
     @JsonProperty("OPM_META_DATA")
-    @JsonPropertyDescription("A request for the execution of an OKAPI service. It contains the actual request data in its \"data\" attribute. This is also the schema of MongoDB collection \"service_requests\"")
+    @JsonPropertyDescription("Meta data as needed for the CCSDS OPM data type.")
     private OpmMetaData opmMetaData;
     /**
      * OpmData
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * A description of an orbit based on the CCSDS OPM data field, using a Cartesian state vector and an associated epoch. It may additionally contain a covariance matrix, drag area and coefficient and solar radiation coefficient. Up to 5 maneuvers can be defined in the maneuver array. For these a pointing uncertainty and thrust uncertainty can be defined.
      * (Required)
      * 
      */
     @JsonProperty("OPM_DATA")
-    @JsonPropertyDescription("A request for the execution of an OKAPI service. It contains the actual request data in its \"data\" attribute. This is also the schema of MongoDB collection \"service_requests\"")
+    @JsonPropertyDescription("A description of an orbit based on the CCSDS OPM data field, using a Cartesian state vector and an associated epoch. It may additionally contain a covariance matrix, drag area and coefficient and solar radiation coefficient. Up to 5 maneuvers can be defined in the maneuver array. For these a pointing uncertainty and thrust uncertainty can be defined.")
     private OpmData opmData;
 
     /**
      * OpmHeader
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * Header information as needed for the CCSDS OPM data type.
      * (Required)
      * 
      */
@@ -67,7 +67,7 @@ public class CcsdsOpm {
     /**
      * OpmHeader
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * Header information as needed for the CCSDS OPM data type.
      * (Required)
      * 
      */
@@ -79,7 +79,7 @@ public class CcsdsOpm {
     /**
      * OpmMetaData
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * Meta data as needed for the CCSDS OPM data type.
      * (Required)
      * 
      */
@@ -91,7 +91,7 @@ public class CcsdsOpm {
     /**
      * OpmMetaData
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * Meta data as needed for the CCSDS OPM data type.
      * (Required)
      * 
      */
@@ -103,7 +103,7 @@ public class CcsdsOpm {
     /**
      * OpmData
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * A description of an orbit based on the CCSDS OPM data field, using a Cartesian state vector and an associated epoch. It may additionally contain a covariance matrix, drag area and coefficient and solar radiation coefficient. Up to 5 maneuvers can be defined in the maneuver array. For these a pointing uncertainty and thrust uncertainty can be defined.
      * (Required)
      * 
      */
@@ -115,7 +115,7 @@ public class CcsdsOpm {
     /**
      * OpmData
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * A description of an orbit based on the CCSDS OPM data field, using a Cartesian state vector and an associated epoch. It may additionally contain a covariance matrix, drag area and coefficient and solar radiation coefficient. Up to 5 maneuvers can be defined in the maneuver array. For these a pointing uncertainty and thrust uncertainty can be defined.
      * (Required)
      * 
      */

@@ -41,28 +41,28 @@ public class ManeuverEval {
     /**
      * CcsdsOpm
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * Defintition of the CCSDS OPM, with one header, meta data and data section.
      * (Required)
      * 
      */
     @JsonProperty("maneuver_file")
-    @JsonPropertyDescription("A request for the execution of an OKAPI service. It contains the actual request data in its \"data\" attribute. This is also the schema of MongoDB collection \"service_requests\"")
+    @JsonPropertyDescription("Defintition of the CCSDS OPM, with one header, meta data and data section.")
     private CcsdsOpm maneuverFile;
     /**
      * RiskEstimation
      * <p>
-     * A request to execute an orbit propagation with an arbitrary orbit propagator
+     * A risk estimation with the Time of Closest Approach (TCA), collision probability, the associated method, miss vector and covariance scaling factors. In addition, a risk classification is available.
      * 
      */
     @JsonProperty("new_risk_estimation")
-    @JsonPropertyDescription("A request to execute an orbit propagation with an arbitrary orbit propagator")
+    @JsonPropertyDescription("A risk estimation with the Time of Closest Approach (TCA), collision probability, the associated method, miss vector and covariance scaling factors. In addition, a risk classification is available.")
     private RiskEstimation newRiskEstimation;
     /**
-     * Total thrust required (dV), in m/s
+     * Required delta-V (dV), in m/s
      * 
      */
     @JsonProperty("thrust_total")
-    @JsonPropertyDescription("Total thrust required (dV), in m/s")
+    @JsonPropertyDescription("Required delta-V (dV), in m/s")
     private Double thrustTotal;
     /**
      * 
@@ -115,7 +115,7 @@ public class ManeuverEval {
     /**
      * CcsdsOpm
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * Defintition of the CCSDS OPM, with one header, meta data and data section.
      * (Required)
      * 
      */
@@ -127,7 +127,7 @@ public class ManeuverEval {
     /**
      * CcsdsOpm
      * <p>
-     * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+     * Defintition of the CCSDS OPM, with one header, meta data and data section.
      * (Required)
      * 
      */
@@ -139,7 +139,7 @@ public class ManeuverEval {
     /**
      * RiskEstimation
      * <p>
-     * A request to execute an orbit propagation with an arbitrary orbit propagator
+     * A risk estimation with the Time of Closest Approach (TCA), collision probability, the associated method, miss vector and covariance scaling factors. In addition, a risk classification is available.
      * 
      */
     @JsonProperty("new_risk_estimation")
@@ -150,7 +150,7 @@ public class ManeuverEval {
     /**
      * RiskEstimation
      * <p>
-     * A request to execute an orbit propagation with an arbitrary orbit propagator
+     * A risk estimation with the Time of Closest Approach (TCA), collision probability, the associated method, miss vector and covariance scaling factors. In addition, a risk classification is available.
      * 
      */
     @JsonProperty("new_risk_estimation")
@@ -159,7 +159,7 @@ public class ManeuverEval {
     }
 
     /**
-     * Total thrust required (dV), in m/s
+     * Required delta-V (dV), in m/s
      * 
      */
     @JsonProperty("thrust_total")
@@ -168,7 +168,7 @@ public class ManeuverEval {
     }
 
     /**
-     * Total thrust required (dV), in m/s
+     * Required delta-V (dV), in m/s
      * 
      */
     @JsonProperty("thrust_total")

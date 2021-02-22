@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * CcsdsOem
  * <p>
- * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+ * Meta data as needed for the CCSDS OEM data type.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -62,12 +62,12 @@ public class OemMetaData {
     /**
      * RefFrame
      * <p>
-     * Reference frame. Note that only GCRF is supported.
+     * Reference frame. Note currently only GCRF, ITRF2000 and TEME are supported.
      * (Required)
      * 
      */
     @JsonProperty("REF_FRAME")
-    @JsonPropertyDescription("Reference frame. Note that only GCRF is supported.")
+    @JsonPropertyDescription("Reference frame. Note currently only GCRF, ITRF2000 and TEME are supported.")
     private OemMetaData.RefFrame refFrame = OemMetaData.RefFrame.fromValue("GCRF");
     /**
      * uninitialized if not provided with request
@@ -163,7 +163,7 @@ public class OemMetaData {
     /**
      * RefFrame
      * <p>
-     * Reference frame. Note that only GCRF is supported.
+     * Reference frame. Note currently only GCRF, ITRF2000 and TEME are supported.
      * (Required)
      * 
      */
@@ -175,7 +175,7 @@ public class OemMetaData {
     /**
      * RefFrame
      * <p>
-     * Reference frame. Note that only GCRF is supported.
+     * Reference frame. Note currently only GCRF, ITRF2000 and TEME are supported.
      * (Required)
      * 
      */
@@ -375,12 +375,14 @@ public class OemMetaData {
     /**
      * RefFrame
      * <p>
-     * Reference frame. Note that only GCRF is supported.
+     * Reference frame. Note currently only GCRF, ITRF2000 and TEME are supported.
      * 
      */
     public enum RefFrame {
 
-        GCRF("GCRF");
+        GCRF("GCRF"),
+        TEME("TEME"),
+        ITRF_2000("ITRF2000");
         private final String value;
         private final static Map<String, OemMetaData.RefFrame> CONSTANTS = new HashMap<String, OemMetaData.RefFrame>();
 

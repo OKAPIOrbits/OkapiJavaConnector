@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * OpmMetaData
  * <p>
- * A request for the execution of an OKAPI service. It contains the actual request data in its "data" attribute. This is also the schema of MongoDB collection "service_requests"
+ * Meta data as needed for the CCSDS OPM data type.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -51,12 +51,12 @@ public class OpmMetaData {
     /**
      * RefFrame
      * <p>
-     * Reference frame. Note that only GCRF is supported.
+     * Reference frame. Note currently only GCRF, ITRF2000 and TEME are supported.
      * (Required)
      * 
      */
     @JsonProperty("REF_FRAME")
-    @JsonPropertyDescription("Reference frame. Note that only GCRF is supported.")
+    @JsonPropertyDescription("Reference frame. Note currently only GCRF, ITRF2000 and TEME are supported.")
     private com.okapiorbits.platform.science.jobs.json.OemMetaData.RefFrame refFrame = com.okapiorbits.platform.science.jobs.json.OemMetaData.RefFrame.fromValue("GCRF");
     /**
      * Input given here is currently not evaluated.
@@ -139,7 +139,7 @@ public class OpmMetaData {
     /**
      * RefFrame
      * <p>
-     * Reference frame. Note that only GCRF is supported.
+     * Reference frame. Note currently only GCRF, ITRF2000 and TEME are supported.
      * (Required)
      * 
      */
@@ -151,7 +151,7 @@ public class OpmMetaData {
     /**
      * RefFrame
      * <p>
-     * Reference frame. Note that only GCRF is supported.
+     * Reference frame. Note currently only GCRF, ITRF2000 and TEME are supported.
      * (Required)
      * 
      */
