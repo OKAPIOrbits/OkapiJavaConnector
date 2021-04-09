@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
  * 
  * @author Christopher Kebschull
  * @author Niels Perdijk
- * @version v2020-09
+ * @version v2021-03
  */
 public class OkapiConnector {
 
@@ -106,7 +106,7 @@ public class OkapiConnector {
 
 		HttpClient httpClient = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("https://okapi-development.eu.auth0.com/oauth/token/"))
+				.uri(URI.create("https://okapi-development.eu.auth0.com/oauth/token"))
 				.header("Content-Type", "application/json")
 				.POST(HttpRequest.BodyPublishers.ofString(requestTokenPayloadString))
 				.build();
@@ -123,7 +123,7 @@ public class OkapiConnector {
 				JSONObject error = new JSONObject();
 				error.put("message", e.getMessage());
 				error.put("status", "FATAL");
-				System.out.println(error.toString());
+				System.out.println(error);
 				return error.toString();
 			}
 			this.responseCode = response.statusCode();
@@ -169,12 +169,10 @@ public class OkapiConnector {
 				.header("Authorization", "Bearer " + accessToken)
 				.POST(HttpRequest.BodyPublishers.ofString(bodyString))
 				.build();
-		System.out.println(request.uri());
 
 		HttpResponse<String> response = null;
 		for(int timeout = 0; timeout < 3; timeout++) {
 			try {
-				//TimeUnit.SECONDS.sleep(5);
 				response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 			} catch (IOException | InterruptedException e) {
 				if (response == null && timeout < 2) {
@@ -183,12 +181,14 @@ public class OkapiConnector {
 				JSONObject error = new JSONObject();
 				error.put("message", e.getMessage());
 				error.put("status", "FATAL");
-				System.out.println(error.toString());
+				System.out.println(error);
 				return error.toString();
 			}
 
 			this.responseCode = response.statusCode();
-			if (responseCode >= 300) {
+			if (responseCode >= 300 && timeout < 2) {
+				continue;
+			} else if (responseCode >= 300) {
 				throw new OkapiPlatformException("HTTPError: " + response.statusCode() + "; Message: " + response.body());
 			}
 			break;
@@ -225,11 +225,14 @@ public class OkapiConnector {
 				JSONObject error = new JSONObject();
 				error.put("message", e.getMessage());
 				error.put("status", "FATAL");
-				System.out.println(error.toString());
+				System.out.println(error);
 				return error.toString();
 			}
+
 			this.responseCode = response.statusCode();
-			if (responseCode >= 300) {
+			if (responseCode >= 300 && timeout < 2) {
+				continue;
+			} else if (responseCode >= 300) {
 				throw new OkapiPlatformException("HTTPError: " + response.statusCode() + "; Message: " + response.body());
 			}
 			break;
@@ -303,11 +306,13 @@ public class OkapiConnector {
 				JSONObject error = new JSONObject();
 				error.put("message", e.getMessage());
 				error.put("status", "FATAL");
-				System.out.println(error.toString());
+				System.out.println(error);
 				return error.toString();
 			}
 			this.responseCode = response.statusCode();
-			if (responseCode >= 300) {
+			if (responseCode >= 300 && timeout < 2) {
+				continue;
+			} else if (responseCode >= 300) {
 				throw new OkapiPlatformException("HTTPError: " + response.statusCode() + "; Message: " + response.body());
 			}
 			break;
@@ -344,11 +349,14 @@ public class OkapiConnector {
 				JSONObject error = new JSONObject();
 				error.put("message", e.getMessage());
 				error.put("status", "FATAL");
-				System.out.println(error.toString());
+				System.out.println(error);
 				return error.toString();
 			}
+
 			this.responseCode = response.statusCode();
-			if (responseCode >= 300) {
+			if (responseCode >= 300 && timeout < 2) {
+				continue;
+			} else if (responseCode >= 300) {
 				throw new OkapiPlatformException("HTTPError: " + response.statusCode() + "; Message: " + response.body());
 			}
 			break;
