@@ -6,7 +6,7 @@
 
     <groupId>groupId</groupId>
     <artifactId>OkapiJavaConnector</artifactId>
-    <version>2020-09</version>
+    <version>2021-03</version>
     <build>
         <plugins>
             <plugin>
