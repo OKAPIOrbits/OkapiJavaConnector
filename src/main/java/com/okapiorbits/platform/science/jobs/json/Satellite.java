@@ -1,16 +1,12 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 
 /**
@@ -23,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 @JsonPropertyOrder({
     "satellite_id",
     "name",
+    "info",
     "norad_ids",
     "area",
     "mass",
@@ -68,6 +65,13 @@ public class Satellite {
     @JsonProperty("name")
     @JsonPropertyDescription("Name of this satellite or the class of satellites this satellite functions as representative")
     private String name;
+    /**
+     * Space for detailed information or notes about this satellite.
+     * 
+     */
+    @JsonProperty("info")
+    @JsonPropertyDescription("Space for detailed information or notes about this satellite.")
+    private String info;
     /**
      * NORAD IDs of satellites this satellite definition stands for. If only one satellite is defined, this array contains the NORAD ID of that satellite.
      * (Required)
@@ -276,6 +280,24 @@ public class Satellite {
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Space for detailed information or notes about this satellite.
+     * 
+     */
+    @JsonProperty("info")
+    public String getInfo() {
+        return info;
+    }
+
+    /**
+     * Space for detailed information or notes about this satellite.
+     * 
+     */
+    @JsonProperty("info")
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     /**
@@ -718,6 +740,10 @@ public class Satellite {
         sb.append('=');
         sb.append(((this.name == null)?"<null>":this.name));
         sb.append(',');
+        sb.append("info");
+        sb.append('=');
+        sb.append(((this.info == null)?"<null>":this.info));
+        sb.append(',');
         sb.append("noradIds");
         sb.append('=');
         sb.append(((this.noradIds == null)?"<null>":this.noradIds));
@@ -837,6 +863,7 @@ public class Satellite {
         result = ((result* 31)+((this.maneuverStrategy == null)? 0 :this.maneuverStrategy.hashCode()));
         result = ((result* 31)+((this.slackWebhook == null)? 0 :this.slackWebhook.hashCode()));
         result = ((result* 31)+((this.acceptedMinimumDistance == null)? 0 :this.acceptedMinimumDistance.hashCode()));
+        result = ((result* 31)+((this.info == null)? 0 :this.info.hashCode()));
         result = ((result* 31)+((this.area == null)? 0 :this.area.hashCode()));
         result = ((result* 31)+((this.spaceTrackCompanyName == null)? 0 :this.spaceTrackCompanyName.hashCode()));
         result = ((result* 31)+((this.spaceTrackPocAddress == null)? 0 :this.spaceTrackPocAddress.hashCode()));
@@ -863,7 +890,7 @@ public class Satellite {
             return false;
         }
         Satellite rhs = ((Satellite) other);
-        return (((((((((((((((((((((((((((this.thrustUncertainty == rhs.thrustUncertainty)||((this.thrustUncertainty!= null)&&this.thrustUncertainty.equals(rhs.thrustUncertainty)))&&((this.useAiRiskPrediction == rhs.useAiRiskPrediction)||((this.useAiRiskPrediction!= null)&&this.useAiRiskPrediction.equals(rhs.useAiRiskPrediction))))&&((this.noradIds == rhs.noradIds)||((this.noradIds!= null)&&this.noradIds.equals(rhs.noradIds))))&&((this.mass == rhs.mass)||((this.mass!= null)&&this.mass.equals(rhs.mass))))&&((this.spaceTrackStatus == rhs.spaceTrackStatus)||((this.spaceTrackStatus!= null)&&this.spaceTrackStatus.equals(rhs.spaceTrackStatus))))&&((this.thrustPointingUncertainty == rhs.thrustPointingUncertainty)||((this.thrustPointingUncertainty!= null)&&this.thrustPointingUncertainty.equals(rhs.thrustPointingUncertainty))))&&((this.propulsionType == rhs.propulsionType)||((this.propulsionType!= null)&&this.propulsionType.equals(rhs.propulsionType))))&&((this.sendTeamsNotifications == rhs.sendTeamsNotifications)||((this.sendTeamsNotifications!= null)&&this.sendTeamsNotifications.equals(rhs.sendTeamsNotifications))))&&((this.spaceTrackLogin == rhs.spaceTrackLogin)||((this.spaceTrackLogin!= null)&&this.spaceTrackLogin.equals(rhs.spaceTrackLogin))))&&((this.maneuverStrategy == rhs.maneuverStrategy)||((this.maneuverStrategy!= null)&&this.maneuverStrategy.equals(rhs.maneuverStrategy))))&&((this.slackWebhook == rhs.slackWebhook)||((this.slackWebhook!= null)&&this.slackWebhook.equals(rhs.slackWebhook))))&&((this.acceptedMinimumDistance == rhs.acceptedMinimumDistance)||((this.acceptedMinimumDistance!= null)&&this.acceptedMinimumDistance.equals(rhs.acceptedMinimumDistance))))&&((this.area == rhs.area)||((this.area!= null)&&this.area.equals(rhs.area))))&&((this.spaceTrackCompanyName == rhs.spaceTrackCompanyName)||((this.spaceTrackCompanyName!= null)&&this.spaceTrackCompanyName.equals(rhs.spaceTrackCompanyName))))&&((this.spaceTrackPocAddress == rhs.spaceTrackPocAddress)||((this.spaceTrackPocAddress!= null)&&this.spaceTrackPocAddress.equals(rhs.spaceTrackPocAddress))))&&((this.sendSlackNotifications == rhs.sendSlackNotifications)||((this.sendSlackNotifications!= null)&&this.sendSlackNotifications.equals(rhs.sendSlackNotifications))))&&((this.maxThrustDuration == rhs.maxThrustDuration)||((this.maxThrustDuration!= null)&&this.maxThrustDuration.equals(rhs.maxThrustDuration))))&&((this.teamsWebhook == rhs.teamsWebhook)||((this.teamsWebhook!= null)&&this.teamsWebhook.equals(rhs.teamsWebhook))))&&((this.satelliteId == rhs.satelliteId)||((this.satelliteId!= null)&&this.satelliteId.equals(rhs.satelliteId))))&&((this.active == rhs.active)||((this.active!= null)&&this.active.equals(rhs.active))))&&((this.acceptedCollisionProbability == rhs.acceptedCollisionProbability)||((this.acceptedCollisionProbability!= null)&&this.acceptedCollisionProbability.equals(rhs.acceptedCollisionProbability))))&&((this.thrustOutput == rhs.thrustOutput)||((this.thrustOutput!= null)&&this.thrustOutput.equals(rhs.thrustOutput))))&&((this.spaceTrackStatusOther == rhs.spaceTrackStatusOther)||((this.spaceTrackStatusOther!= null)&&this.spaceTrackStatusOther.equals(rhs.spaceTrackStatusOther))))&&((this.sendMailNotifications == rhs.sendMailNotifications)||((this.sendMailNotifications!= null)&&this.sendMailNotifications.equals(rhs.sendMailNotifications))))&&((this.spaceTrackPocName == rhs.spaceTrackPocName)||((this.spaceTrackPocName!= null)&&this.spaceTrackPocName.equals(rhs.spaceTrackPocName))))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))));
+        return ((((((((((((((((((((((((((((this.thrustUncertainty == rhs.thrustUncertainty)||((this.thrustUncertainty!= null)&&this.thrustUncertainty.equals(rhs.thrustUncertainty)))&&((this.useAiRiskPrediction == rhs.useAiRiskPrediction)||((this.useAiRiskPrediction!= null)&&this.useAiRiskPrediction.equals(rhs.useAiRiskPrediction))))&&((this.noradIds == rhs.noradIds)||((this.noradIds!= null)&&this.noradIds.equals(rhs.noradIds))))&&((this.mass == rhs.mass)||((this.mass!= null)&&this.mass.equals(rhs.mass))))&&((this.spaceTrackStatus == rhs.spaceTrackStatus)||((this.spaceTrackStatus!= null)&&this.spaceTrackStatus.equals(rhs.spaceTrackStatus))))&&((this.thrustPointingUncertainty == rhs.thrustPointingUncertainty)||((this.thrustPointingUncertainty!= null)&&this.thrustPointingUncertainty.equals(rhs.thrustPointingUncertainty))))&&((this.propulsionType == rhs.propulsionType)||((this.propulsionType!= null)&&this.propulsionType.equals(rhs.propulsionType))))&&((this.sendTeamsNotifications == rhs.sendTeamsNotifications)||((this.sendTeamsNotifications!= null)&&this.sendTeamsNotifications.equals(rhs.sendTeamsNotifications))))&&((this.spaceTrackLogin == rhs.spaceTrackLogin)||((this.spaceTrackLogin!= null)&&this.spaceTrackLogin.equals(rhs.spaceTrackLogin))))&&((this.maneuverStrategy == rhs.maneuverStrategy)||((this.maneuverStrategy!= null)&&this.maneuverStrategy.equals(rhs.maneuverStrategy))))&&((this.slackWebhook == rhs.slackWebhook)||((this.slackWebhook!= null)&&this.slackWebhook.equals(rhs.slackWebhook))))&&((this.acceptedMinimumDistance == rhs.acceptedMinimumDistance)||((this.acceptedMinimumDistance!= null)&&this.acceptedMinimumDistance.equals(rhs.acceptedMinimumDistance))))&&((this.info == rhs.info)||((this.info!= null)&&this.info.equals(rhs.info))))&&((this.area == rhs.area)||((this.area!= null)&&this.area.equals(rhs.area))))&&((this.spaceTrackCompanyName == rhs.spaceTrackCompanyName)||((this.spaceTrackCompanyName!= null)&&this.spaceTrackCompanyName.equals(rhs.spaceTrackCompanyName))))&&((this.spaceTrackPocAddress == rhs.spaceTrackPocAddress)||((this.spaceTrackPocAddress!= null)&&this.spaceTrackPocAddress.equals(rhs.spaceTrackPocAddress))))&&((this.sendSlackNotifications == rhs.sendSlackNotifications)||((this.sendSlackNotifications!= null)&&this.sendSlackNotifications.equals(rhs.sendSlackNotifications))))&&((this.maxThrustDuration == rhs.maxThrustDuration)||((this.maxThrustDuration!= null)&&this.maxThrustDuration.equals(rhs.maxThrustDuration))))&&((this.teamsWebhook == rhs.teamsWebhook)||((this.teamsWebhook!= null)&&this.teamsWebhook.equals(rhs.teamsWebhook))))&&((this.satelliteId == rhs.satelliteId)||((this.satelliteId!= null)&&this.satelliteId.equals(rhs.satelliteId))))&&((this.active == rhs.active)||((this.active!= null)&&this.active.equals(rhs.active))))&&((this.acceptedCollisionProbability == rhs.acceptedCollisionProbability)||((this.acceptedCollisionProbability!= null)&&this.acceptedCollisionProbability.equals(rhs.acceptedCollisionProbability))))&&((this.thrustOutput == rhs.thrustOutput)||((this.thrustOutput!= null)&&this.thrustOutput.equals(rhs.thrustOutput))))&&((this.spaceTrackStatusOther == rhs.spaceTrackStatusOther)||((this.spaceTrackStatusOther!= null)&&this.spaceTrackStatusOther.equals(rhs.spaceTrackStatusOther))))&&((this.sendMailNotifications == rhs.sendMailNotifications)||((this.sendMailNotifications!= null)&&this.sendMailNotifications.equals(rhs.sendMailNotifications))))&&((this.spaceTrackPocName == rhs.spaceTrackPocName)||((this.spaceTrackPocName!= null)&&this.spaceTrackPocName.equals(rhs.spaceTrackPocName))))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))));
     }
 
 

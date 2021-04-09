@@ -1,10 +1,10 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -85,6 +85,8 @@ public class Conjunction {
     @JsonProperty("risk_predictions")
     @JsonPropertyDescription("An array of risk predictions.")
     private RiskPredictions riskPredictions;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * Uuid
@@ -234,6 +236,16 @@ public class Conjunction {
         this.riskPredictions = riskPredictions;
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -266,6 +278,10 @@ public class Conjunction {
         sb.append('=');
         sb.append(((this.riskPredictions == null)?"<null>":this.riskPredictions));
         sb.append(',');
+        sb.append("additionalProperties");
+        sb.append('=');
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -282,6 +298,7 @@ public class Conjunction {
         result = ((result* 31)+((this.sat1NoradId == null)? 0 :this.sat1NoradId.hashCode()));
         result = ((result* 31)+((this.riskPredictions == null)? 0 :this.riskPredictions.hashCode()));
         result = ((result* 31)+((this.sat1Name == null)? 0 :this.sat1Name.hashCode()));
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.sat2Name == null)? 0 :this.sat2Name.hashCode()));
         result = ((result* 31)+((this.conjunctionId == null)? 0 :this.conjunctionId.hashCode()));
         return result;
@@ -296,7 +313,7 @@ public class Conjunction {
             return false;
         }
         Conjunction rhs = ((Conjunction) other);
-        return ((((((((this.sat2NoradId == rhs.sat2NoradId)||((this.sat2NoradId!= null)&&this.sat2NoradId.equals(rhs.sat2NoradId)))&&((this.riskEstimations == rhs.riskEstimations)||((this.riskEstimations!= null)&&this.riskEstimations.equals(rhs.riskEstimations))))&&((this.sat1NoradId == rhs.sat1NoradId)||((this.sat1NoradId!= null)&&this.sat1NoradId.equals(rhs.sat1NoradId))))&&((this.riskPredictions == rhs.riskPredictions)||((this.riskPredictions!= null)&&this.riskPredictions.equals(rhs.riskPredictions))))&&((this.sat1Name == rhs.sat1Name)||((this.sat1Name!= null)&&this.sat1Name.equals(rhs.sat1Name))))&&((this.sat2Name == rhs.sat2Name)||((this.sat2Name!= null)&&this.sat2Name.equals(rhs.sat2Name))))&&((this.conjunctionId == rhs.conjunctionId)||((this.conjunctionId!= null)&&this.conjunctionId.equals(rhs.conjunctionId))));
+        return (((((((((this.sat2NoradId == rhs.sat2NoradId)||((this.sat2NoradId!= null)&&this.sat2NoradId.equals(rhs.sat2NoradId)))&&((this.riskEstimations == rhs.riskEstimations)||((this.riskEstimations!= null)&&this.riskEstimations.equals(rhs.riskEstimations))))&&((this.sat1NoradId == rhs.sat1NoradId)||((this.sat1NoradId!= null)&&this.sat1NoradId.equals(rhs.sat1NoradId))))&&((this.riskPredictions == rhs.riskPredictions)||((this.riskPredictions!= null)&&this.riskPredictions.equals(rhs.riskPredictions))))&&((this.sat1Name == rhs.sat1Name)||((this.sat1Name!= null)&&this.sat1Name.equals(rhs.sat1Name))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.sat2Name == rhs.sat2Name)||((this.sat2Name!= null)&&this.sat2Name.equals(rhs.sat2Name))))&&((this.conjunctionId == rhs.conjunctionId)||((this.conjunctionId!= null)&&this.conjunctionId.equals(rhs.conjunctionId))));
     }
 
 }

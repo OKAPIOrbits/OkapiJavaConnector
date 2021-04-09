@@ -1,10 +1,10 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -20,7 +20,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "maneuver_file",
     "new_risk_estimation",
     "thrust_total",
-    "suggested"
+    "suggested",
+    "dismissed",
+    "comment"
 })
 public class ManeuverEval {
 
@@ -71,6 +73,12 @@ public class ManeuverEval {
      */
     @JsonProperty("suggested")
     private Boolean suggested;
+    @JsonProperty("dismissed")
+    private Boolean dismissed;
+    @JsonProperty("comment")
+    private String comment;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * 
@@ -196,6 +204,36 @@ public class ManeuverEval {
         this.suggested = suggested;
     }
 
+    @JsonProperty("dismissed")
+    public Boolean getDismissed() {
+        return dismissed;
+    }
+
+    @JsonProperty("dismissed")
+    public void setDismissed(Boolean dismissed) {
+        this.dismissed = dismissed;
+    }
+
+    @JsonProperty("comment")
+    public String getComment() {
+        return comment;
+    }
+
+    @JsonProperty("comment")
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -224,6 +262,18 @@ public class ManeuverEval {
         sb.append('=');
         sb.append(((this.suggested == null)?"<null>":this.suggested));
         sb.append(',');
+        sb.append("dismissed");
+        sb.append('=');
+        sb.append(((this.dismissed == null)?"<null>":this.dismissed));
+        sb.append(',');
+        sb.append("comment");
+        sb.append('=');
+        sb.append(((this.comment == null)?"<null>":this.comment));
+        sb.append(',');
+        sb.append("additionalProperties");
+        sb.append('=');
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -240,6 +290,9 @@ public class ManeuverEval {
         result = ((result* 31)+((this.suggested == null)? 0 :this.suggested.hashCode()));
         result = ((result* 31)+((this.maneuverFile == null)? 0 :this.maneuverFile.hashCode()));
         result = ((result* 31)+((this.newRiskEstimation == null)? 0 :this.newRiskEstimation.hashCode()));
+        result = ((result* 31)+((this.dismissed == null)? 0 :this.dismissed.hashCode()));
+        result = ((result* 31)+((this.comment == null)? 0 :this.comment.hashCode()));
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.strategyNumber == null)? 0 :this.strategyNumber.hashCode()));
         return result;
     }
@@ -253,7 +306,7 @@ public class ManeuverEval {
             return false;
         }
         ManeuverEval rhs = ((ManeuverEval) other);
-        return (((((((this.thrustTotal == rhs.thrustTotal)||((this.thrustTotal!= null)&&this.thrustTotal.equals(rhs.thrustTotal)))&&((this.strategyName == rhs.strategyName)||((this.strategyName!= null)&&this.strategyName.equals(rhs.strategyName))))&&((this.suggested == rhs.suggested)||((this.suggested!= null)&&this.suggested.equals(rhs.suggested))))&&((this.maneuverFile == rhs.maneuverFile)||((this.maneuverFile!= null)&&this.maneuverFile.equals(rhs.maneuverFile))))&&((this.newRiskEstimation == rhs.newRiskEstimation)||((this.newRiskEstimation!= null)&&this.newRiskEstimation.equals(rhs.newRiskEstimation))))&&((this.strategyNumber == rhs.strategyNumber)||((this.strategyNumber!= null)&&this.strategyNumber.equals(rhs.strategyNumber))));
+        return ((((((((((this.thrustTotal == rhs.thrustTotal)||((this.thrustTotal!= null)&&this.thrustTotal.equals(rhs.thrustTotal)))&&((this.strategyName == rhs.strategyName)||((this.strategyName!= null)&&this.strategyName.equals(rhs.strategyName))))&&((this.suggested == rhs.suggested)||((this.suggested!= null)&&this.suggested.equals(rhs.suggested))))&&((this.maneuverFile == rhs.maneuverFile)||((this.maneuverFile!= null)&&this.maneuverFile.equals(rhs.maneuverFile))))&&((this.newRiskEstimation == rhs.newRiskEstimation)||((this.newRiskEstimation!= null)&&this.newRiskEstimation.equals(rhs.newRiskEstimation))))&&((this.dismissed == rhs.dismissed)||((this.dismissed!= null)&&this.dismissed.equals(rhs.dismissed))))&&((this.comment == rhs.comment)||((this.comment!= null)&&this.comment.equals(rhs.comment))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.strategyNumber == rhs.strategyNumber)||((this.strategyNumber!= null)&&this.strategyNumber.equals(rhs.strategyNumber))));
     }
 
 }
