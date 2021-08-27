@@ -3,16 +3,18 @@ package com.okapiorbits.platform;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.okapiorbits.platform.science.jobs.json.*;
 import org.json.JSONObject;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This class tests the {@link OkapiConnector} using example input and sends them to the end points of the available OKAPI platform.
+ * This class tests the {@link OkapiConnector} using example input and sends them to the end points of the available
+ * OKAPI platform.
  * @author Christopher Kebschull
  * @author Niels Perdijk
- * @version v2021-03
+ * @version v2021-08
  */
 public class OkapiConnectorTest {
 
@@ -24,10 +26,13 @@ public class OkapiConnectorTest {
 	 * @param args - not used
 	 */
 	public static void main(String[] args) {
+		Dotenv dotenv = Dotenv.load();
+		String username = dotenv.get("OKAPI_USERNAME");
+		String password = dotenv.get("OKAPI_PASSWORD");
 		// initializing communication
 		OkapiConnector okapiConnector = new OkapiConnector(
-				<username>,
-				<password>
+				username,
+				password
 		);
 		
 		System.out.println("Testing Start");
