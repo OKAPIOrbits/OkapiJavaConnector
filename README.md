@@ -28,7 +28,7 @@ and run the program.
 Open Intellij Idea and select the pom.xml file. Click on the Build Project icon. It should automatically retrieve the org.json 
 dependency and build a jar file. You can also run the example when you have added your username and password in `OkapiConnectorTest.java`.
 Click on `Edit Configurations...` then `+` (Add New Configuration) and select `Application`. As Main class: select 
-`com.okapiorbits.platform.OkapiConnectorTest`. JRE should be A valid Java 11 runtime environment. Click `OK`and you can execute the 
+`com.okapiorbits.platform.OkapiConnectorTryout`. JRE should be A valid Java 11 runtime environment. Click `OK`and you can execute the 
 `OkapiConnectorTest` by clicking on the `Run` button.
 
 ### The build process using Maven on the command line

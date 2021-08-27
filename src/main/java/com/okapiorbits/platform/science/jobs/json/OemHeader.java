@@ -1,7 +1,9 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -18,7 +20,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "CCSDS_OEM_VERS",
     "CREATION_DATE",
-    "ORIGINATOR"
+    "ORIGINATOR",
+    "COMMENTS"
 })
 public class OemHeader {
 
@@ -44,6 +47,13 @@ public class OemHeader {
      */
     @JsonProperty("ORIGINATOR")
     private String originator = "OKAPI:Orbits GmbH";
+    /**
+     * Array of comments. Each entry relates to a COMMENT statement.
+     * 
+     */
+    @JsonProperty("COMMENTS")
+    @JsonPropertyDescription("Array of comments. Each entry relates to a COMMENT statement.")
+    private List<String> comments = new ArrayList<String>();
 
     /**
      * Will always be 2.0
@@ -105,6 +115,24 @@ public class OemHeader {
         this.originator = originator;
     }
 
+    /**
+     * Array of comments. Each entry relates to a COMMENT statement.
+     * 
+     */
+    @JsonProperty("COMMENTS")
+    public List<String> getComments() {
+        return comments;
+    }
+
+    /**
+     * Array of comments. Each entry relates to a COMMENT statement.
+     * 
+     */
+    @JsonProperty("COMMENTS")
+    public void setComments(List<String> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -121,6 +149,10 @@ public class OemHeader {
         sb.append('=');
         sb.append(((this.originator == null)?"<null>":this.originator));
         sb.append(',');
+        sb.append("comments");
+        sb.append('=');
+        sb.append(((this.comments == null)?"<null>":this.comments));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -133,6 +165,7 @@ public class OemHeader {
     public int hashCode() {
         int result = 1;
         result = ((result* 31)+((this.originator == null)? 0 :this.originator.hashCode()));
+        result = ((result* 31)+((this.comments == null)? 0 :this.comments.hashCode()));
         result = ((result* 31)+((this.creationDate == null)? 0 :this.creationDate.hashCode()));
         result = ((result* 31)+((this.ccsdsOemVers == null)? 0 :this.ccsdsOemVers.hashCode()));
         return result;
@@ -147,7 +180,7 @@ public class OemHeader {
             return false;
         }
         OemHeader rhs = ((OemHeader) other);
-        return ((((this.originator == rhs.originator)||((this.originator!= null)&&this.originator.equals(rhs.originator)))&&((this.creationDate == rhs.creationDate)||((this.creationDate!= null)&&this.creationDate.equals(rhs.creationDate))))&&((this.ccsdsOemVers == rhs.ccsdsOemVers)||((this.ccsdsOemVers!= null)&&this.ccsdsOemVers.equals(rhs.ccsdsOemVers))));
+        return (((((this.originator == rhs.originator)||((this.originator!= null)&&this.originator.equals(rhs.originator)))&&((this.comments == rhs.comments)||((this.comments!= null)&&this.comments.equals(rhs.comments))))&&((this.creationDate == rhs.creationDate)||((this.creationDate!= null)&&this.creationDate.equals(rhs.creationDate))))&&((this.ccsdsOemVers == rhs.ccsdsOemVers)||((this.ccsdsOemVers!= null)&&this.ccsdsOemVers.equals(rhs.ccsdsOemVers))));
     }
 
 }

@@ -10,7 +10,10 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# Environment file "dotenv"
+.env
+
+# Package Files
 *.jar
 *.war
 *.nar

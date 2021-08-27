@@ -58,7 +58,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "MANEUVERS",
     "USER_DEFINED_THRUST_UNCERTAINTY",
     "USER_DEFINED_THRUST_POINTING_UNCERTAINTY",
-    "USER_DEFINED_BC"
+    "USER_DEFINED_BC",
+    "USER_DEFINED_RESIDUAL_1",
+    "USER_DEFINED_RESIDUAL_2",
+    "USER_DEFINED_RESIDUAL_3",
+    "USER_DEFINED_RESIDUAL_4",
+    "USER_DEFINED_RESIDUAL_5",
+    "USER_DEFINED_RESIDUAL_6",
+    "COMMENTS"
 })
 public class OpmData {
 
@@ -314,6 +321,55 @@ public class OpmData {
     @JsonProperty("USER_DEFINED_BC")
     @JsonPropertyDescription("Ballistic Coefficient")
     private Double userDefinedBc;
+    /**
+     * Residual when from OD process. Either Range or X component in km
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_1")
+    @JsonPropertyDescription("Residual when from OD process. Either Range or X component in km")
+    private Double userDefinedResidual1;
+    /**
+     * Residual when from OD process. Either Range or Y component in km or angle 1 in deg
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_2")
+    @JsonPropertyDescription("Residual when from OD process. Either Range or Y component in km or angle 1 in deg")
+    private Double userDefinedResidual2;
+    /**
+     * Residual when from OD process. Either Range or Z component in km or angle 2 in deg
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_3")
+    @JsonPropertyDescription("Residual when from OD process. Either Range or Z component in km or angle 2 in deg")
+    private Double userDefinedResidual3;
+    /**
+     * Residual when from OD process. Either Doppler or X_DOT component in km/s
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_4")
+    @JsonPropertyDescription("Residual when from OD process. Either Doppler or X_DOT component in km/s")
+    private Double userDefinedResidual4;
+    /**
+     * Residual when from OD process. Y_DOT component in km/s
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_5")
+    @JsonPropertyDescription("Residual when from OD process. Y_DOT component in km/s")
+    private Double userDefinedResidual5;
+    /**
+     * Residual when from OD process. Z_DOT component in km/s
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_6")
+    @JsonPropertyDescription("Residual when from OD process. Z_DOT component in km/s")
+    private Double userDefinedResidual6;
+    /**
+     * Array of comments. Each entry relates to a COMMENT statement.
+     * 
+     */
+    @JsonProperty("COMMENTS")
+    @JsonPropertyDescription("Array of comments. Each entry relates to a COMMENT statement.")
+    private List<String> comments = new ArrayList<String>();
 
     /**
      * 
@@ -969,6 +1025,132 @@ public class OpmData {
         this.userDefinedBc = userDefinedBc;
     }
 
+    /**
+     * Residual when from OD process. Either Range or X component in km
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_1")
+    public Double getUserDefinedResidual1() {
+        return userDefinedResidual1;
+    }
+
+    /**
+     * Residual when from OD process. Either Range or X component in km
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_1")
+    public void setUserDefinedResidual1(Double userDefinedResidual1) {
+        this.userDefinedResidual1 = userDefinedResidual1;
+    }
+
+    /**
+     * Residual when from OD process. Either Range or Y component in km or angle 1 in deg
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_2")
+    public Double getUserDefinedResidual2() {
+        return userDefinedResidual2;
+    }
+
+    /**
+     * Residual when from OD process. Either Range or Y component in km or angle 1 in deg
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_2")
+    public void setUserDefinedResidual2(Double userDefinedResidual2) {
+        this.userDefinedResidual2 = userDefinedResidual2;
+    }
+
+    /**
+     * Residual when from OD process. Either Range or Z component in km or angle 2 in deg
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_3")
+    public Double getUserDefinedResidual3() {
+        return userDefinedResidual3;
+    }
+
+    /**
+     * Residual when from OD process. Either Range or Z component in km or angle 2 in deg
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_3")
+    public void setUserDefinedResidual3(Double userDefinedResidual3) {
+        this.userDefinedResidual3 = userDefinedResidual3;
+    }
+
+    /**
+     * Residual when from OD process. Either Doppler or X_DOT component in km/s
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_4")
+    public Double getUserDefinedResidual4() {
+        return userDefinedResidual4;
+    }
+
+    /**
+     * Residual when from OD process. Either Doppler or X_DOT component in km/s
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_4")
+    public void setUserDefinedResidual4(Double userDefinedResidual4) {
+        this.userDefinedResidual4 = userDefinedResidual4;
+    }
+
+    /**
+     * Residual when from OD process. Y_DOT component in km/s
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_5")
+    public Double getUserDefinedResidual5() {
+        return userDefinedResidual5;
+    }
+
+    /**
+     * Residual when from OD process. Y_DOT component in km/s
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_5")
+    public void setUserDefinedResidual5(Double userDefinedResidual5) {
+        this.userDefinedResidual5 = userDefinedResidual5;
+    }
+
+    /**
+     * Residual when from OD process. Z_DOT component in km/s
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_6")
+    public Double getUserDefinedResidual6() {
+        return userDefinedResidual6;
+    }
+
+    /**
+     * Residual when from OD process. Z_DOT component in km/s
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_6")
+    public void setUserDefinedResidual6(Double userDefinedResidual6) {
+        this.userDefinedResidual6 = userDefinedResidual6;
+    }
+
+    /**
+     * Array of comments. Each entry relates to a COMMENT statement.
+     * 
+     */
+    @JsonProperty("COMMENTS")
+    public List<String> getComments() {
+        return comments;
+    }
+
+    /**
+     * Array of comments. Each entry relates to a COMMENT statement.
+     * 
+     */
+    @JsonProperty("COMMENTS")
+    public void setComments(List<String> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -1121,6 +1303,34 @@ public class OpmData {
         sb.append('=');
         sb.append(((this.userDefinedBc == null)?"<null>":this.userDefinedBc));
         sb.append(',');
+        sb.append("userDefinedResidual1");
+        sb.append('=');
+        sb.append(((this.userDefinedResidual1 == null)?"<null>":this.userDefinedResidual1));
+        sb.append(',');
+        sb.append("userDefinedResidual2");
+        sb.append('=');
+        sb.append(((this.userDefinedResidual2 == null)?"<null>":this.userDefinedResidual2));
+        sb.append(',');
+        sb.append("userDefinedResidual3");
+        sb.append('=');
+        sb.append(((this.userDefinedResidual3 == null)?"<null>":this.userDefinedResidual3));
+        sb.append(',');
+        sb.append("userDefinedResidual4");
+        sb.append('=');
+        sb.append(((this.userDefinedResidual4 == null)?"<null>":this.userDefinedResidual4));
+        sb.append(',');
+        sb.append("userDefinedResidual5");
+        sb.append('=');
+        sb.append(((this.userDefinedResidual5 == null)?"<null>":this.userDefinedResidual5));
+        sb.append(',');
+        sb.append("userDefinedResidual6");
+        sb.append('=');
+        sb.append(((this.userDefinedResidual6 == null)?"<null>":this.userDefinedResidual6));
+        sb.append(',');
+        sb.append("comments");
+        sb.append('=');
+        sb.append(((this.comments == null)?"<null>":this.comments));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -1136,10 +1346,14 @@ public class OpmData {
         result = ((result* 31)+((this.czX == null)? 0 :this.czX.hashCode()));
         result = ((result* 31)+((this.czDotY == null)? 0 :this.czDotY.hashCode()));
         result = ((result* 31)+((this.czDotXDot == null)? 0 :this.czDotXDot.hashCode()));
+        result = ((result* 31)+((this.userDefinedResidual6 == null)? 0 :this.userDefinedResidual6 .hashCode()));
         result = ((result* 31)+((this.czDotX == null)? 0 :this.czDotX.hashCode()));
+        result = ((result* 31)+((this.userDefinedResidual5 == null)? 0 :this.userDefinedResidual5 .hashCode()));
         result = ((result* 31)+((this.cxX == null)? 0 :this.cxX.hashCode()));
         result = ((result* 31)+((this.czZ == null)? 0 :this.czZ.hashCode()));
+        result = ((result* 31)+((this.userDefinedResidual4 == null)? 0 :this.userDefinedResidual4 .hashCode()));
         result = ((result* 31)+((this.czY == null)? 0 :this.czY.hashCode()));
+        result = ((result* 31)+((this.userDefinedResidual3 == null)? 0 :this.userDefinedResidual3 .hashCode()));
         result = ((result* 31)+((this.cxDotXDot == null)? 0 :this.cxDotXDot.hashCode()));
         result = ((result* 31)+((this.czDotZDot == null)? 0 :this.czDotZDot.hashCode()));
         result = ((result* 31)+((this.xDot == null)? 0 :this.xDot.hashCode()));
@@ -1150,10 +1364,13 @@ public class OpmData {
         result = ((result* 31)+((this.solarRadCoeff == null)? 0 :this.solarRadCoeff.hashCode()));
         result = ((result* 31)+((this.zDot == null)? 0 :this.zDot.hashCode()));
         result = ((result* 31)+((this.userDefinedBc == null)? 0 :this.userDefinedBc.hashCode()));
+        result = ((result* 31)+((this.userDefinedResidual2 == null)? 0 :this.userDefinedResidual2 .hashCode()));
+        result = ((result* 31)+((this.userDefinedResidual1 == null)? 0 :this.userDefinedResidual1 .hashCode()));
         result = ((result* 31)+((this.maneuvers == null)? 0 :this.maneuvers.hashCode()));
         result = ((result* 31)+((this.cyDotYDot == null)? 0 :this.cyDotYDot.hashCode()));
         result = ((result* 31)+((this.cyY == null)? 0 :this.cyY.hashCode()));
         result = ((result* 31)+((this.cyX == null)? 0 :this.cyX.hashCode()));
+        result = ((result* 31)+((this.comments == null)? 0 :this.comments.hashCode()));
         result = ((result* 31)+((this.czDotYDot == null)? 0 :this.czDotYDot.hashCode()));
         result = ((result* 31)+((this.yDot == null)? 0 :this.yDot.hashCode()));
         result = ((result* 31)+((this.covRefFrame == null)? 0 :this.covRefFrame.hashCode()));
@@ -1181,7 +1398,7 @@ public class OpmData {
             return false;
         }
         OpmData rhs = ((OpmData) other);
-        return ((((((((((((((((((((((((((((((((((((((this.dragCoeff == rhs.dragCoeff)||((this.dragCoeff!= null)&&this.dragCoeff.equals(rhs.dragCoeff)))&&((this.czX == rhs.czX)||((this.czX!= null)&&this.czX.equals(rhs.czX))))&&((this.czDotY == rhs.czDotY)||((this.czDotY!= null)&&this.czDotY.equals(rhs.czDotY))))&&((this.czDotXDot == rhs.czDotXDot)||((this.czDotXDot!= null)&&this.czDotXDot.equals(rhs.czDotXDot))))&&((this.czDotX == rhs.czDotX)||((this.czDotX!= null)&&this.czDotX.equals(rhs.czDotX))))&&((this.cxX == rhs.cxX)||((this.cxX!= null)&&this.cxX.equals(rhs.cxX))))&&((this.czZ == rhs.czZ)||((this.czZ!= null)&&this.czZ.equals(rhs.czZ))))&&((this.czY == rhs.czY)||((this.czY!= null)&&this.czY.equals(rhs.czY))))&&((this.cxDotXDot == rhs.cxDotXDot)||((this.cxDotXDot!= null)&&this.cxDotXDot.equals(rhs.cxDotXDot))))&&((this.czDotZDot == rhs.czDotZDot)||((this.czDotZDot!= null)&&this.czDotZDot.equals(rhs.czDotZDot))))&&((this.xDot == rhs.xDot)||((this.xDot!= null)&&this.xDot.equals(rhs.xDot))))&&((this.cyDotXDot == rhs.cyDotXDot)||((this.cyDotXDot!= null)&&this.cyDotXDot.equals(rhs.cyDotXDot))))&&((this.mass == rhs.mass)||((this.mass!= null)&&this.mass.equals(rhs.mass))))&&((this.epoch == rhs.epoch)||((this.epoch!= null)&&this.epoch.equals(rhs.epoch))))&&((this.czDotZ == rhs.czDotZ)||((this.czDotZ!= null)&&this.czDotZ.equals(rhs.czDotZ))))&&((this.solarRadCoeff == rhs.solarRadCoeff)||((this.solarRadCoeff!= null)&&this.solarRadCoeff.equals(rhs.solarRadCoeff))))&&((this.zDot == rhs.zDot)||((this.zDot!= null)&&this.zDot.equals(rhs.zDot))))&&((this.userDefinedBc == rhs.userDefinedBc)||((this.userDefinedBc!= null)&&this.userDefinedBc.equals(rhs.userDefinedBc))))&&((this.maneuvers == rhs.maneuvers)||((this.maneuvers!= null)&&this.maneuvers.equals(rhs.maneuvers))))&&((this.cyDotYDot == rhs.cyDotYDot)||((this.cyDotYDot!= null)&&this.cyDotYDot.equals(rhs.cyDotYDot))))&&((this.cyY == rhs.cyY)||((this.cyY!= null)&&this.cyY.equals(rhs.cyY))))&&((this.cyX == rhs.cyX)||((this.cyX!= null)&&this.cyX.equals(rhs.cyX))))&&((this.czDotYDot == rhs.czDotYDot)||((this.czDotYDot!= null)&&this.czDotYDot.equals(rhs.czDotYDot))))&&((this.yDot == rhs.yDot)||((this.yDot!= null)&&this.yDot.equals(rhs.yDot))))&&((this.covRefFrame == rhs.covRefFrame)||((this.covRefFrame!= null)&&this.covRefFrame.equals(rhs.covRefFrame))))&&((this.dragArea == rhs.dragArea)||((this.dragArea!= null)&&this.dragArea.equals(rhs.dragArea))))&&((this.cxDotZ == rhs.cxDotZ)||((this.cxDotZ!= null)&&this.cxDotZ.equals(rhs.cxDotZ))))&&((this.cxDotY == rhs.cxDotY)||((this.cxDotY!= null)&&this.cxDotY.equals(rhs.cxDotY))))&&((this.cxDotX == rhs.cxDotX)||((this.cxDotX!= null)&&this.cxDotX.equals(rhs.cxDotX))))&&((this.userDefinedThrustUncertainty == rhs.userDefinedThrustUncertainty)||((this.userDefinedThrustUncertainty!= null)&&this.userDefinedThrustUncertainty.equals(rhs.userDefinedThrustUncertainty))))&&((this.userDefinedThrustPointingUncertainty == rhs.userDefinedThrustPointingUncertainty)||((this.userDefinedThrustPointingUncertainty!= null)&&this.userDefinedThrustPointingUncertainty.equals(rhs.userDefinedThrustPointingUncertainty))))&&((this.x == rhs.x)||((this.x!= null)&&this.x.equals(rhs.x))))&&((this.y == rhs.y)||((this.y!= null)&&this.y.equals(rhs.y))))&&((this.z == rhs.z)||((this.z!= null)&&this.z.equals(rhs.z))))&&((this.cyDotX == rhs.cyDotX)||((this.cyDotX!= null)&&this.cyDotX.equals(rhs.cyDotX))))&&((this.cyDotZ == rhs.cyDotZ)||((this.cyDotZ!= null)&&this.cyDotZ.equals(rhs.cyDotZ))))&&((this.cyDotY == rhs.cyDotY)||((this.cyDotY!= null)&&this.cyDotY.equals(rhs.cyDotY))));
+        return (((((((((((((((((((((((((((((((((((((((((((((this.dragCoeff == rhs.dragCoeff)||((this.dragCoeff!= null)&&this.dragCoeff.equals(rhs.dragCoeff)))&&((this.czX == rhs.czX)||((this.czX!= null)&&this.czX.equals(rhs.czX))))&&((this.czDotY == rhs.czDotY)||((this.czDotY!= null)&&this.czDotY.equals(rhs.czDotY))))&&((this.czDotXDot == rhs.czDotXDot)||((this.czDotXDot!= null)&&this.czDotXDot.equals(rhs.czDotXDot))))&&((this.userDefinedResidual6 == rhs.userDefinedResidual6)||((this.userDefinedResidual6 != null)&&this.userDefinedResidual6 .equals(rhs.userDefinedResidual6))))&&((this.czDotX == rhs.czDotX)||((this.czDotX!= null)&&this.czDotX.equals(rhs.czDotX))))&&((this.userDefinedResidual5 == rhs.userDefinedResidual5)||((this.userDefinedResidual5 != null)&&this.userDefinedResidual5 .equals(rhs.userDefinedResidual5))))&&((this.cxX == rhs.cxX)||((this.cxX!= null)&&this.cxX.equals(rhs.cxX))))&&((this.czZ == rhs.czZ)||((this.czZ!= null)&&this.czZ.equals(rhs.czZ))))&&((this.userDefinedResidual4 == rhs.userDefinedResidual4)||((this.userDefinedResidual4 != null)&&this.userDefinedResidual4 .equals(rhs.userDefinedResidual4))))&&((this.czY == rhs.czY)||((this.czY!= null)&&this.czY.equals(rhs.czY))))&&((this.userDefinedResidual3 == rhs.userDefinedResidual3)||((this.userDefinedResidual3 != null)&&this.userDefinedResidual3 .equals(rhs.userDefinedResidual3))))&&((this.cxDotXDot == rhs.cxDotXDot)||((this.cxDotXDot!= null)&&this.cxDotXDot.equals(rhs.cxDotXDot))))&&((this.czDotZDot == rhs.czDotZDot)||((this.czDotZDot!= null)&&this.czDotZDot.equals(rhs.czDotZDot))))&&((this.xDot == rhs.xDot)||((this.xDot!= null)&&this.xDot.equals(rhs.xDot))))&&((this.cyDotXDot == rhs.cyDotXDot)||((this.cyDotXDot!= null)&&this.cyDotXDot.equals(rhs.cyDotXDot))))&&((this.mass == rhs.mass)||((this.mass!= null)&&this.mass.equals(rhs.mass))))&&((this.epoch == rhs.epoch)||((this.epoch!= null)&&this.epoch.equals(rhs.epoch))))&&((this.czDotZ == rhs.czDotZ)||((this.czDotZ!= null)&&this.czDotZ.equals(rhs.czDotZ))))&&((this.solarRadCoeff == rhs.solarRadCoeff)||((this.solarRadCoeff!= null)&&this.solarRadCoeff.equals(rhs.solarRadCoeff))))&&((this.zDot == rhs.zDot)||((this.zDot!= null)&&this.zDot.equals(rhs.zDot))))&&((this.userDefinedBc == rhs.userDefinedBc)||((this.userDefinedBc!= null)&&this.userDefinedBc.equals(rhs.userDefinedBc))))&&((this.userDefinedResidual2 == rhs.userDefinedResidual2)||((this.userDefinedResidual2 != null)&&this.userDefinedResidual2 .equals(rhs.userDefinedResidual2))))&&((this.userDefinedResidual1 == rhs.userDefinedResidual1)||((this.userDefinedResidual1 != null)&&this.userDefinedResidual1 .equals(rhs.userDefinedResidual1))))&&((this.maneuvers == rhs.maneuvers)||((this.maneuvers!= null)&&this.maneuvers.equals(rhs.maneuvers))))&&((this.cyDotYDot == rhs.cyDotYDot)||((this.cyDotYDot!= null)&&this.cyDotYDot.equals(rhs.cyDotYDot))))&&((this.cyY == rhs.cyY)||((this.cyY!= null)&&this.cyY.equals(rhs.cyY))))&&((this.cyX == rhs.cyX)||((this.cyX!= null)&&this.cyX.equals(rhs.cyX))))&&((this.comments == rhs.comments)||((this.comments!= null)&&this.comments.equals(rhs.comments))))&&((this.czDotYDot == rhs.czDotYDot)||((this.czDotYDot!= null)&&this.czDotYDot.equals(rhs.czDotYDot))))&&((this.yDot == rhs.yDot)||((this.yDot!= null)&&this.yDot.equals(rhs.yDot))))&&((this.covRefFrame == rhs.covRefFrame)||((this.covRefFrame!= null)&&this.covRefFrame.equals(rhs.covRefFrame))))&&((this.dragArea == rhs.dragArea)||((this.dragArea!= null)&&this.dragArea.equals(rhs.dragArea))))&&((this.cxDotZ == rhs.cxDotZ)||((this.cxDotZ!= null)&&this.cxDotZ.equals(rhs.cxDotZ))))&&((this.cxDotY == rhs.cxDotY)||((this.cxDotY!= null)&&this.cxDotY.equals(rhs.cxDotY))))&&((this.cxDotX == rhs.cxDotX)||((this.cxDotX!= null)&&this.cxDotX.equals(rhs.cxDotX))))&&((this.userDefinedThrustUncertainty == rhs.userDefinedThrustUncertainty)||((this.userDefinedThrustUncertainty!= null)&&this.userDefinedThrustUncertainty.equals(rhs.userDefinedThrustUncertainty))))&&((this.userDefinedThrustPointingUncertainty == rhs.userDefinedThrustPointingUncertainty)||((this.userDefinedThrustPointingUncertainty!= null)&&this.userDefinedThrustPointingUncertainty.equals(rhs.userDefinedThrustPointingUncertainty))))&&((this.x == rhs.x)||((this.x!= null)&&this.x.equals(rhs.x))))&&((this.y == rhs.y)||((this.y!= null)&&this.y.equals(rhs.y))))&&((this.z == rhs.z)||((this.z!= null)&&this.z.equals(rhs.z))))&&((this.cyDotX == rhs.cyDotX)||((this.cyDotX!= null)&&this.cyDotX.equals(rhs.cyDotX))))&&((this.cyDotZ == rhs.cyDotZ)||((this.cyDotZ!= null)&&this.cyDotZ.equals(rhs.cyDotZ))))&&((this.cyDotY == rhs.cyDotY)||((this.cyDotY!= null)&&this.cyDotY.equals(rhs.cyDotY))));
     }
 
 

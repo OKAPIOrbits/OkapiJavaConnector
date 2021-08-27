@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "risk_prediction_id",
     "creation_date",
     "originator",
     "tca",
@@ -44,17 +45,30 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "sat2_covariance_r_scaling_factor",
     "sat2_covariance_t_scaling_factor",
     "sat2_covariance_n_scaling_factor",
-    "criticality"
+    "criticality",
+    "suggested",
+    "comment",
+    "based_on"
 })
 public class RiskPrediction {
 
     /**
-     * Date and time of the creation of this message
+     * Uuid
+     * <p>
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
+     * (Required)
+     * 
+     */
+    @JsonProperty("risk_prediction_id")
+    @JsonPropertyDescription("A Universally-Unique Identifier, as used by OKAPI:Orbits")
+    private String riskPredictionId;
+    /**
+     * Date and time of the creation of the CDM
      * (Required)
      * 
      */
     @JsonProperty("creation_date")
-    @JsonPropertyDescription("Date and time of the creation of this message")
+    @JsonPropertyDescription("Date and time of the creation of the CDM")
     private String creationDate;
     /**
      * Identifies where the message originated from
@@ -220,15 +234,66 @@ public class RiskPrediction {
     @JsonPropertyDescription("Covariance N component scaling factor used for object 2 / -")
     private Double sat2CovarianceNScalingFactor;
     /**
-     * Criticality of the analyzed conjunction
+     * Criticality
+     * <p>
+     * Conjunction criticality.
      * 
      */
     @JsonProperty("criticality")
-    @JsonPropertyDescription("Criticality of the analyzed conjunction")
+    @JsonPropertyDescription("Conjunction criticality.")
     private RiskPrediction.Criticality criticality;
+    /**
+     * Defines if this risk prediction is the one suggested by Okapi for the CDM it is based on. Is not evaluated for single-call risk predictions.
+     * (Required)
+     * 
+     */
+    @JsonProperty("suggested")
+    @JsonPropertyDescription("Defines if this risk prediction is the one suggested by Okapi for the CDM it is based on. Is not evaluated for single-call risk predictions.")
+    private Boolean suggested = true;
+    /**
+     * Gives context to this risk prediction.
+     * 
+     */
+    @JsonProperty("comment")
+    @JsonPropertyDescription("Gives context to this risk prediction.")
+    private String comment;
+    /**
+     * RiskBasedOn
+     * <p>
+     * Describes on what basis a risk estimation or prediction was calculated.
+     * (Required)
+     * 
+     */
+    @JsonProperty("based_on")
+    @JsonPropertyDescription("Describes on what basis a risk estimation or prediction was calculated.")
+    private RiskPrediction.RiskBasedOn basedOn = RiskPrediction.RiskBasedOn.fromValue("UNKNOWN");
 
     /**
-     * Date and time of the creation of this message
+     * Uuid
+     * <p>
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
+     * (Required)
+     * 
+     */
+    @JsonProperty("risk_prediction_id")
+    public String getRiskPredictionId() {
+        return riskPredictionId;
+    }
+
+    /**
+     * Uuid
+     * <p>
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
+     * (Required)
+     * 
+     */
+    @JsonProperty("risk_prediction_id")
+    public void setRiskPredictionId(String riskPredictionId) {
+        this.riskPredictionId = riskPredictionId;
+    }
+
+    /**
+     * Date and time of the creation of the CDM
      * (Required)
      * 
      */
@@ -238,7 +303,7 @@ public class RiskPrediction {
     }
 
     /**
-     * Date and time of the creation of this message
+     * Date and time of the creation of the CDM
      * (Required)
      * 
      */
@@ -660,7 +725,9 @@ public class RiskPrediction {
     }
 
     /**
-     * Criticality of the analyzed conjunction
+     * Criticality
+     * <p>
+     * Conjunction criticality.
      * 
      */
     @JsonProperty("criticality")
@@ -669,7 +736,9 @@ public class RiskPrediction {
     }
 
     /**
-     * Criticality of the analyzed conjunction
+     * Criticality
+     * <p>
+     * Conjunction criticality.
      * 
      */
     @JsonProperty("criticality")
@@ -677,10 +746,76 @@ public class RiskPrediction {
         this.criticality = criticality;
     }
 
+    /**
+     * Defines if this risk prediction is the one suggested by Okapi for the CDM it is based on. Is not evaluated for single-call risk predictions.
+     * (Required)
+     * 
+     */
+    @JsonProperty("suggested")
+    public Boolean getSuggested() {
+        return suggested;
+    }
+
+    /**
+     * Defines if this risk prediction is the one suggested by Okapi for the CDM it is based on. Is not evaluated for single-call risk predictions.
+     * (Required)
+     * 
+     */
+    @JsonProperty("suggested")
+    public void setSuggested(Boolean suggested) {
+        this.suggested = suggested;
+    }
+
+    /**
+     * Gives context to this risk prediction.
+     * 
+     */
+    @JsonProperty("comment")
+    public String getComment() {
+        return comment;
+    }
+
+    /**
+     * Gives context to this risk prediction.
+     * 
+     */
+    @JsonProperty("comment")
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    /**
+     * RiskBasedOn
+     * <p>
+     * Describes on what basis a risk estimation or prediction was calculated.
+     * (Required)
+     * 
+     */
+    @JsonProperty("based_on")
+    public RiskPrediction.RiskBasedOn getBasedOn() {
+        return basedOn;
+    }
+
+    /**
+     * RiskBasedOn
+     * <p>
+     * Describes on what basis a risk estimation or prediction was calculated.
+     * (Required)
+     * 
+     */
+    @JsonProperty("based_on")
+    public void setBasedOn(RiskPrediction.RiskBasedOn basedOn) {
+        this.basedOn = basedOn;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(RiskPrediction.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("riskPredictionId");
+        sb.append('=');
+        sb.append(((this.riskPredictionId == null)?"<null>":this.riskPredictionId));
+        sb.append(',');
         sb.append("creationDate");
         sb.append('=');
         sb.append(((this.creationDate == null)?"<null>":this.creationDate));
@@ -773,6 +908,18 @@ public class RiskPrediction {
         sb.append('=');
         sb.append(((this.criticality == null)?"<null>":this.criticality));
         sb.append(',');
+        sb.append("suggested");
+        sb.append('=');
+        sb.append(((this.suggested == null)?"<null>":this.suggested));
+        sb.append(',');
+        sb.append("comment");
+        sb.append('=');
+        sb.append(((this.comment == null)?"<null>":this.comment));
+        sb.append(',');
+        sb.append("basedOn");
+        sb.append('=');
+        sb.append(((this.basedOn == null)?"<null>":this.basedOn));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -786,27 +933,31 @@ public class RiskPrediction {
         int result = 1;
         result = ((result* 31)+((this.tDot == null)? 0 :this.tDot.hashCode()));
         result = ((result* 31)+((this.relativeSpeed == null)? 0 :this.relativeSpeed.hashCode()));
-        result = ((result* 31)+((this.riskTrend == null)? 0 :this.riskTrend.hashCode()));
+        result = ((result* 31)+((this.riskPredictionId == null)? 0 :this.riskPredictionId.hashCode()));
         result = ((result* 31)+((this.rDot == null)? 0 :this.rDot.hashCode()));
         result = ((result* 31)+((this.sat1CovarianceTScalingFactor == null)? 0 :this.sat1CovarianceTScalingFactor.hashCode()));
         result = ((result* 31)+((this.collisionProbabilityMethod == null)? 0 :this.collisionProbabilityMethod.hashCode()));
         result = ((result* 31)+((this.nDot == null)? 0 :this.nDot.hashCode()));
         result = ((result* 31)+((this.criticality == null)? 0 :this.criticality.hashCode()));
-        result = ((result* 31)+((this.missDistance == null)? 0 :this.missDistance.hashCode()));
         result = ((result* 31)+((this.sat2CovarianceRScalingFactor == null)? 0 :this.sat2CovarianceRScalingFactor.hashCode()));
         result = ((result* 31)+((this.collisionProbability == null)? 0 :this.collisionProbability.hashCode()));
         result = ((result* 31)+((this.originator == null)? 0 :this.originator.hashCode()));
-        result = ((result* 31)+((this.creationDate == null)? 0 :this.creationDate.hashCode()));
         result = ((result* 31)+((this.sat1CovarianceNScalingFactor == null)? 0 :this.sat1CovarianceNScalingFactor.hashCode()));
-        result = ((result* 31)+((this.n == null)? 0 :this.n.hashCode()));
-        result = ((result* 31)+((this.r == null)? 0 :this.r.hashCode()));
         result = ((result* 31)+((this.tca == null)? 0 :this.tca.hashCode()));
         result = ((result* 31)+((this.approxPeakRisk == null)? 0 :this.approxPeakRisk.hashCode()));
+        result = ((result* 31)+((this.sat2CovarianceNScalingFactor == null)? 0 :this.sat2CovarianceNScalingFactor.hashCode()));
+        result = ((result* 31)+((this.basedOn == null)? 0 :this.basedOn.hashCode()));
+        result = ((result* 31)+((this.sat1CovarianceRScalingFactor == null)? 0 :this.sat1CovarianceRScalingFactor.hashCode()));
+        result = ((result* 31)+((this.riskTrend == null)? 0 :this.riskTrend.hashCode()));
+        result = ((result* 31)+((this.missDistance == null)? 0 :this.missDistance.hashCode()));
+        result = ((result* 31)+((this.creationDate == null)? 0 :this.creationDate.hashCode()));
+        result = ((result* 31)+((this.n == null)? 0 :this.n.hashCode()));
+        result = ((result* 31)+((this.r == null)? 0 :this.r.hashCode()));
+        result = ((result* 31)+((this.suggested == null)? 0 :this.suggested.hashCode()));
         result = ((result* 31)+((this.t == null)? 0 :this.t.hashCode()));
         result = ((result* 31)+((this.sat2CovarianceTScalingFactor == null)? 0 :this.sat2CovarianceTScalingFactor.hashCode()));
-        result = ((result* 31)+((this.sat2CovarianceNScalingFactor == null)? 0 :this.sat2CovarianceNScalingFactor.hashCode()));
+        result = ((result* 31)+((this.comment == null)? 0 :this.comment.hashCode()));
         result = ((result* 31)+((this.timeOfPeakRisk == null)? 0 :this.timeOfPeakRisk.hashCode()));
-        result = ((result* 31)+((this.sat1CovarianceRScalingFactor == null)? 0 :this.sat1CovarianceRScalingFactor.hashCode()));
         return result;
     }
 
@@ -819,12 +970,14 @@ public class RiskPrediction {
             return false;
         }
         RiskPrediction rhs = ((RiskPrediction) other);
-        return ((((((((((((((((((((((((this.tDot == rhs.tDot)||((this.tDot!= null)&&this.tDot.equals(rhs.tDot)))&&((this.relativeSpeed == rhs.relativeSpeed)||((this.relativeSpeed!= null)&&this.relativeSpeed.equals(rhs.relativeSpeed))))&&((this.riskTrend == rhs.riskTrend)||((this.riskTrend!= null)&&this.riskTrend.equals(rhs.riskTrend))))&&((this.rDot == rhs.rDot)||((this.rDot!= null)&&this.rDot.equals(rhs.rDot))))&&((this.sat1CovarianceTScalingFactor == rhs.sat1CovarianceTScalingFactor)||((this.sat1CovarianceTScalingFactor!= null)&&this.sat1CovarianceTScalingFactor.equals(rhs.sat1CovarianceTScalingFactor))))&&((this.collisionProbabilityMethod == rhs.collisionProbabilityMethod)||((this.collisionProbabilityMethod!= null)&&this.collisionProbabilityMethod.equals(rhs.collisionProbabilityMethod))))&&((this.nDot == rhs.nDot)||((this.nDot!= null)&&this.nDot.equals(rhs.nDot))))&&((this.criticality == rhs.criticality)||((this.criticality!= null)&&this.criticality.equals(rhs.criticality))))&&((this.missDistance == rhs.missDistance)||((this.missDistance!= null)&&this.missDistance.equals(rhs.missDistance))))&&((this.sat2CovarianceRScalingFactor == rhs.sat2CovarianceRScalingFactor)||((this.sat2CovarianceRScalingFactor!= null)&&this.sat2CovarianceRScalingFactor.equals(rhs.sat2CovarianceRScalingFactor))))&&((this.collisionProbability == rhs.collisionProbability)||((this.collisionProbability!= null)&&this.collisionProbability.equals(rhs.collisionProbability))))&&((this.originator == rhs.originator)||((this.originator!= null)&&this.originator.equals(rhs.originator))))&&((this.creationDate == rhs.creationDate)||((this.creationDate!= null)&&this.creationDate.equals(rhs.creationDate))))&&((this.sat1CovarianceNScalingFactor == rhs.sat1CovarianceNScalingFactor)||((this.sat1CovarianceNScalingFactor!= null)&&this.sat1CovarianceNScalingFactor.equals(rhs.sat1CovarianceNScalingFactor))))&&((this.n == rhs.n)||((this.n!= null)&&this.n.equals(rhs.n))))&&((this.r == rhs.r)||((this.r!= null)&&this.r.equals(rhs.r))))&&((this.tca == rhs.tca)||((this.tca!= null)&&this.tca.equals(rhs.tca))))&&((this.approxPeakRisk == rhs.approxPeakRisk)||((this.approxPeakRisk!= null)&&this.approxPeakRisk.equals(rhs.approxPeakRisk))))&&((this.t == rhs.t)||((this.t!= null)&&this.t.equals(rhs.t))))&&((this.sat2CovarianceTScalingFactor == rhs.sat2CovarianceTScalingFactor)||((this.sat2CovarianceTScalingFactor!= null)&&this.sat2CovarianceTScalingFactor.equals(rhs.sat2CovarianceTScalingFactor))))&&((this.sat2CovarianceNScalingFactor == rhs.sat2CovarianceNScalingFactor)||((this.sat2CovarianceNScalingFactor!= null)&&this.sat2CovarianceNScalingFactor.equals(rhs.sat2CovarianceNScalingFactor))))&&((this.timeOfPeakRisk == rhs.timeOfPeakRisk)||((this.timeOfPeakRisk!= null)&&this.timeOfPeakRisk.equals(rhs.timeOfPeakRisk))))&&((this.sat1CovarianceRScalingFactor == rhs.sat1CovarianceRScalingFactor)||((this.sat1CovarianceRScalingFactor!= null)&&this.sat1CovarianceRScalingFactor.equals(rhs.sat1CovarianceRScalingFactor))));
+        return ((((((((((((((((((((((((((((this.tDot == rhs.tDot)||((this.tDot!= null)&&this.tDot.equals(rhs.tDot)))&&((this.relativeSpeed == rhs.relativeSpeed)||((this.relativeSpeed!= null)&&this.relativeSpeed.equals(rhs.relativeSpeed))))&&((this.riskPredictionId == rhs.riskPredictionId)||((this.riskPredictionId!= null)&&this.riskPredictionId.equals(rhs.riskPredictionId))))&&((this.rDot == rhs.rDot)||((this.rDot!= null)&&this.rDot.equals(rhs.rDot))))&&((this.sat1CovarianceTScalingFactor == rhs.sat1CovarianceTScalingFactor)||((this.sat1CovarianceTScalingFactor!= null)&&this.sat1CovarianceTScalingFactor.equals(rhs.sat1CovarianceTScalingFactor))))&&((this.collisionProbabilityMethod == rhs.collisionProbabilityMethod)||((this.collisionProbabilityMethod!= null)&&this.collisionProbabilityMethod.equals(rhs.collisionProbabilityMethod))))&&((this.nDot == rhs.nDot)||((this.nDot!= null)&&this.nDot.equals(rhs.nDot))))&&((this.criticality == rhs.criticality)||((this.criticality!= null)&&this.criticality.equals(rhs.criticality))))&&((this.sat2CovarianceRScalingFactor == rhs.sat2CovarianceRScalingFactor)||((this.sat2CovarianceRScalingFactor!= null)&&this.sat2CovarianceRScalingFactor.equals(rhs.sat2CovarianceRScalingFactor))))&&((this.collisionProbability == rhs.collisionProbability)||((this.collisionProbability!= null)&&this.collisionProbability.equals(rhs.collisionProbability))))&&((this.originator == rhs.originator)||((this.originator!= null)&&this.originator.equals(rhs.originator))))&&((this.sat1CovarianceNScalingFactor == rhs.sat1CovarianceNScalingFactor)||((this.sat1CovarianceNScalingFactor!= null)&&this.sat1CovarianceNScalingFactor.equals(rhs.sat1CovarianceNScalingFactor))))&&((this.tca == rhs.tca)||((this.tca!= null)&&this.tca.equals(rhs.tca))))&&((this.approxPeakRisk == rhs.approxPeakRisk)||((this.approxPeakRisk!= null)&&this.approxPeakRisk.equals(rhs.approxPeakRisk))))&&((this.sat2CovarianceNScalingFactor == rhs.sat2CovarianceNScalingFactor)||((this.sat2CovarianceNScalingFactor!= null)&&this.sat2CovarianceNScalingFactor.equals(rhs.sat2CovarianceNScalingFactor))))&&((this.basedOn == rhs.basedOn)||((this.basedOn!= null)&&this.basedOn.equals(rhs.basedOn))))&&((this.sat1CovarianceRScalingFactor == rhs.sat1CovarianceRScalingFactor)||((this.sat1CovarianceRScalingFactor!= null)&&this.sat1CovarianceRScalingFactor.equals(rhs.sat1CovarianceRScalingFactor))))&&((this.riskTrend == rhs.riskTrend)||((this.riskTrend!= null)&&this.riskTrend.equals(rhs.riskTrend))))&&((this.missDistance == rhs.missDistance)||((this.missDistance!= null)&&this.missDistance.equals(rhs.missDistance))))&&((this.creationDate == rhs.creationDate)||((this.creationDate!= null)&&this.creationDate.equals(rhs.creationDate))))&&((this.n == rhs.n)||((this.n!= null)&&this.n.equals(rhs.n))))&&((this.r == rhs.r)||((this.r!= null)&&this.r.equals(rhs.r))))&&((this.suggested == rhs.suggested)||((this.suggested!= null)&&this.suggested.equals(rhs.suggested))))&&((this.t == rhs.t)||((this.t!= null)&&this.t.equals(rhs.t))))&&((this.sat2CovarianceTScalingFactor == rhs.sat2CovarianceTScalingFactor)||((this.sat2CovarianceTScalingFactor!= null)&&this.sat2CovarianceTScalingFactor.equals(rhs.sat2CovarianceTScalingFactor))))&&((this.comment == rhs.comment)||((this.comment!= null)&&this.comment.equals(rhs.comment))))&&((this.timeOfPeakRisk == rhs.timeOfPeakRisk)||((this.timeOfPeakRisk!= null)&&this.timeOfPeakRisk.equals(rhs.timeOfPeakRisk))));
     }
 
 
     /**
-     * Criticality of the analyzed conjunction
+     * Criticality
+     * <p>
+     * Conjunction criticality.
      * 
      */
     public enum Criticality {
@@ -858,6 +1011,54 @@ public class RiskPrediction {
         @JsonCreator
         public static RiskPrediction.Criticality fromValue(String value) {
             RiskPrediction.Criticality constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            } else {
+                return constant;
+            }
+        }
+
+    }
+
+
+    /**
+     * RiskBasedOn
+     * <p>
+     * Describes on what basis a risk estimation or prediction was calculated.
+     * 
+     */
+    public enum RiskBasedOn {
+
+        SPACE_TRACK("SPACE_TRACK"),
+        GNSS("GNSS"),
+        FUSED("FUSED"),
+        UNKNOWN("UNKNOWN");
+        private final String value;
+        private final static Map<String, RiskPrediction.RiskBasedOn> CONSTANTS = new HashMap<String, RiskPrediction.RiskBasedOn>();
+
+        static {
+            for (RiskPrediction.RiskBasedOn c: values()) {
+                CONSTANTS.put(c.value, c);
+            }
+        }
+
+        private RiskBasedOn(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
+        @JsonValue
+        public String value() {
+            return this.value;
+        }
+
+        @JsonCreator
+        public static RiskPrediction.RiskBasedOn fromValue(String value) {
+            RiskPrediction.RiskBasedOn constant = CONSTANTS.get(value);
             if (constant == null) {
                 throw new IllegalArgumentException(value);
             } else {

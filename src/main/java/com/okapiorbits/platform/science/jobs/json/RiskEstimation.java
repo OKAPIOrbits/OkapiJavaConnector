@@ -2,14 +2,10 @@
 package com.okapiorbits.platform.science.jobs.json;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 
 /**
@@ -20,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "risk_estimation_id",
     "creation_date",
     "originator",
     "tca",
@@ -43,16 +40,29 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "sat2_covariance_n_scaling_factor",
     "sat1_state_at_tca",
     "sat2_state_at_tca",
-    "criticality"
+    "criticality",
+    "suggested",
+    "comment",
+    "based_on"
 })
 public class RiskEstimation {
 
     /**
-     * Message creation date/time in Coordinated Universal Time (UTC).
+     * Uuid
+     * <p>
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
+     * (Required)
+     * 
+     */
+    @JsonProperty("risk_estimation_id")
+    @JsonPropertyDescription("A Universally-Unique Identifier, as used by OKAPI:Orbits")
+    private String riskEstimationId;
+    /**
+     * CDM creation date/time in Coordinated Universal Time (UTC).
      * 
      */
     @JsonProperty("creation_date")
-    @JsonPropertyDescription("Message creation date/time in Coordinated Universal Time (UTC).")
+    @JsonPropertyDescription("CDM creation date/time in Coordinated Universal Time (UTC).")
     private Date creationDate;
     @JsonProperty("originator")
     private String originator;
@@ -227,15 +237,66 @@ public class RiskEstimation {
     @JsonPropertyDescription("Defintition of the CCSDS OPM, with one header, meta data and data section.")
     private CcsdsOpm sat2StateAtTca;
     /**
-     * Criticality of the analyzed conjunction
+     * Criticality
+     * <p>
+     * Conjunction criticality.
      * 
      */
     @JsonProperty("criticality")
-    @JsonPropertyDescription("Criticality of the analyzed conjunction")
-    private RiskEstimation.Criticality criticality;
+    @JsonPropertyDescription("Conjunction criticality.")
+    private com.okapiorbits.platform.science.jobs.json.RiskPrediction.Criticality criticality;
+    /**
+     * Defines if this risk estimation is the one suggested by Okapi for the CDM it is based on. Is not evaluated for single-call risk estimations.
+     * (Required)
+     * 
+     */
+    @JsonProperty("suggested")
+    @JsonPropertyDescription("Defines if this risk estimation is the one suggested by Okapi for the CDM it is based on. Is not evaluated for single-call risk estimations.")
+    private Boolean suggested = true;
+    /**
+     * Gives context to this risk estimation.
+     * 
+     */
+    @JsonProperty("comment")
+    @JsonPropertyDescription("Gives context to this risk estimation.")
+    private String comment;
+    /**
+     * RiskBasedOn
+     * <p>
+     * Describes on what basis a risk estimation or prediction was calculated.
+     * (Required)
+     * 
+     */
+    @JsonProperty("based_on")
+    @JsonPropertyDescription("Describes on what basis a risk estimation or prediction was calculated.")
+    private com.okapiorbits.platform.science.jobs.json.RiskPrediction.RiskBasedOn basedOn = com.okapiorbits.platform.science.jobs.json.RiskPrediction.RiskBasedOn.fromValue("UNKNOWN");
 
     /**
-     * Message creation date/time in Coordinated Universal Time (UTC).
+     * Uuid
+     * <p>
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
+     * (Required)
+     * 
+     */
+    @JsonProperty("risk_estimation_id")
+    public String getRiskEstimationId() {
+        return riskEstimationId;
+    }
+
+    /**
+     * Uuid
+     * <p>
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
+     * (Required)
+     * 
+     */
+    @JsonProperty("risk_estimation_id")
+    public void setRiskEstimationId(String riskEstimationId) {
+        this.riskEstimationId = riskEstimationId;
+    }
+
+    /**
+     * CDM creation date/time in Coordinated Universal Time (UTC).
      * 
      */
     @JsonProperty("creation_date")
@@ -244,7 +305,7 @@ public class RiskEstimation {
     }
 
     /**
-     * Message creation date/time in Coordinated Universal Time (UTC).
+     * CDM creation date/time in Coordinated Universal Time (UTC).
      * 
      */
     @JsonProperty("creation_date")
@@ -687,27 +748,97 @@ public class RiskEstimation {
     }
 
     /**
-     * Criticality of the analyzed conjunction
+     * Criticality
+     * <p>
+     * Conjunction criticality.
      * 
      */
     @JsonProperty("criticality")
-    public RiskEstimation.Criticality getCriticality() {
+    public com.okapiorbits.platform.science.jobs.json.RiskPrediction.Criticality getCriticality() {
         return criticality;
     }
 
     /**
-     * Criticality of the analyzed conjunction
+     * Criticality
+     * <p>
+     * Conjunction criticality.
      * 
      */
     @JsonProperty("criticality")
-    public void setCriticality(RiskEstimation.Criticality criticality) {
+    public void setCriticality(com.okapiorbits.platform.science.jobs.json.RiskPrediction.Criticality criticality) {
         this.criticality = criticality;
+    }
+
+    /**
+     * Defines if this risk estimation is the one suggested by Okapi for the CDM it is based on. Is not evaluated for single-call risk estimations.
+     * (Required)
+     * 
+     */
+    @JsonProperty("suggested")
+    public Boolean getSuggested() {
+        return suggested;
+    }
+
+    /**
+     * Defines if this risk estimation is the one suggested by Okapi for the CDM it is based on. Is not evaluated for single-call risk estimations.
+     * (Required)
+     * 
+     */
+    @JsonProperty("suggested")
+    public void setSuggested(Boolean suggested) {
+        this.suggested = suggested;
+    }
+
+    /**
+     * Gives context to this risk estimation.
+     * 
+     */
+    @JsonProperty("comment")
+    public String getComment() {
+        return comment;
+    }
+
+    /**
+     * Gives context to this risk estimation.
+     * 
+     */
+    @JsonProperty("comment")
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    /**
+     * RiskBasedOn
+     * <p>
+     * Describes on what basis a risk estimation or prediction was calculated.
+     * (Required)
+     * 
+     */
+    @JsonProperty("based_on")
+    public com.okapiorbits.platform.science.jobs.json.RiskPrediction.RiskBasedOn getBasedOn() {
+        return basedOn;
+    }
+
+    /**
+     * RiskBasedOn
+     * <p>
+     * Describes on what basis a risk estimation or prediction was calculated.
+     * (Required)
+     * 
+     */
+    @JsonProperty("based_on")
+    public void setBasedOn(com.okapiorbits.platform.science.jobs.json.RiskPrediction.RiskBasedOn basedOn) {
+        this.basedOn = basedOn;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(RiskEstimation.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("riskEstimationId");
+        sb.append('=');
+        sb.append(((this.riskEstimationId == null)?"<null>":this.riskEstimationId));
+        sb.append(',');
         sb.append("creationDate");
         sb.append('=');
         sb.append(((this.creationDate == null)?"<null>":this.creationDate));
@@ -804,6 +935,18 @@ public class RiskEstimation {
         sb.append('=');
         sb.append(((this.criticality == null)?"<null>":this.criticality));
         sb.append(',');
+        sb.append("suggested");
+        sb.append('=');
+        sb.append(((this.suggested == null)?"<null>":this.suggested));
+        sb.append(',');
+        sb.append("comment");
+        sb.append('=');
+        sb.append(((this.comment == null)?"<null>":this.comment));
+        sb.append(',');
+        sb.append("basedOn");
+        sb.append('=');
+        sb.append(((this.basedOn == null)?"<null>":this.basedOn));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -829,16 +972,20 @@ public class RiskEstimation {
         result = ((result* 31)+((this.sat1CovarianceNScalingFactor == null)? 0 :this.sat1CovarianceNScalingFactor.hashCode()));
         result = ((result* 31)+((this.tca == null)? 0 :this.tca.hashCode()));
         result = ((result* 31)+((this.sat2CovarianceNScalingFactor == null)? 0 :this.sat2CovarianceNScalingFactor.hashCode()));
+        result = ((result* 31)+((this.basedOn == null)? 0 :this.basedOn.hashCode()));
         result = ((result* 31)+((this.sat1CovarianceRScalingFactor == null)? 0 :this.sat1CovarianceRScalingFactor.hashCode()));
         result = ((result* 31)+((this.sat1StateAtTca == null)? 0 :this.sat1StateAtTca.hashCode()));
         result = ((result* 31)+((this.missDistance == null)? 0 :this.missDistance.hashCode()));
+        result = ((result* 31)+((this.riskEstimationId == null)? 0 :this.riskEstimationId.hashCode()));
         result = ((result* 31)+((this.creationDate == null)? 0 :this.creationDate.hashCode()));
         result = ((result* 31)+((this.sat2HardBodyRadius == null)? 0 :this.sat2HardBodyRadius.hashCode()));
         result = ((result* 31)+((this.n == null)? 0 :this.n.hashCode()));
         result = ((result* 31)+((this.sat2StateAtTca == null)? 0 :this.sat2StateAtTca.hashCode()));
         result = ((result* 31)+((this.r == null)? 0 :this.r.hashCode()));
+        result = ((result* 31)+((this.suggested == null)? 0 :this.suggested.hashCode()));
         result = ((result* 31)+((this.t == null)? 0 :this.t.hashCode()));
         result = ((result* 31)+((this.sat2CovarianceTScalingFactor == null)? 0 :this.sat2CovarianceTScalingFactor.hashCode()));
+        result = ((result* 31)+((this.comment == null)? 0 :this.comment.hashCode()));
         return result;
     }
 
@@ -851,52 +998,7 @@ public class RiskEstimation {
             return false;
         }
         RiskEstimation rhs = ((RiskEstimation) other);
-        return (((((((((((((((((((((((((this.tDot == rhs.tDot)||((this.tDot!= null)&&this.tDot.equals(rhs.tDot)))&&((this.relativeSpeed == rhs.relativeSpeed)||((this.relativeSpeed!= null)&&this.relativeSpeed.equals(rhs.relativeSpeed))))&&((this.sat1HardBodyRadius == rhs.sat1HardBodyRadius)||((this.sat1HardBodyRadius!= null)&&this.sat1HardBodyRadius.equals(rhs.sat1HardBodyRadius))))&&((this.rDot == rhs.rDot)||((this.rDot!= null)&&this.rDot.equals(rhs.rDot))))&&((this.sat1CovarianceTScalingFactor == rhs.sat1CovarianceTScalingFactor)||((this.sat1CovarianceTScalingFactor!= null)&&this.sat1CovarianceTScalingFactor.equals(rhs.sat1CovarianceTScalingFactor))))&&((this.collisionProbabilityMethod == rhs.collisionProbabilityMethod)||((this.collisionProbabilityMethod!= null)&&this.collisionProbabilityMethod.equals(rhs.collisionProbabilityMethod))))&&((this.nDot == rhs.nDot)||((this.nDot!= null)&&this.nDot.equals(rhs.nDot))))&&((this.criticality == rhs.criticality)||((this.criticality!= null)&&this.criticality.equals(rhs.criticality))))&&((this.sat2CovarianceRScalingFactor == rhs.sat2CovarianceRScalingFactor)||((this.sat2CovarianceRScalingFactor!= null)&&this.sat2CovarianceRScalingFactor.equals(rhs.sat2CovarianceRScalingFactor))))&&((this.collisionProbability == rhs.collisionProbability)||((this.collisionProbability!= null)&&this.collisionProbability.equals(rhs.collisionProbability))))&&((this.originator == rhs.originator)||((this.originator!= null)&&this.originator.equals(rhs.originator))))&&((this.sat1CovarianceNScalingFactor == rhs.sat1CovarianceNScalingFactor)||((this.sat1CovarianceNScalingFactor!= null)&&this.sat1CovarianceNScalingFactor.equals(rhs.sat1CovarianceNScalingFactor))))&&((this.tca == rhs.tca)||((this.tca!= null)&&this.tca.equals(rhs.tca))))&&((this.sat2CovarianceNScalingFactor == rhs.sat2CovarianceNScalingFactor)||((this.sat2CovarianceNScalingFactor!= null)&&this.sat2CovarianceNScalingFactor.equals(rhs.sat2CovarianceNScalingFactor))))&&((this.sat1CovarianceRScalingFactor == rhs.sat1CovarianceRScalingFactor)||((this.sat1CovarianceRScalingFactor!= null)&&this.sat1CovarianceRScalingFactor.equals(rhs.sat1CovarianceRScalingFactor))))&&((this.sat1StateAtTca == rhs.sat1StateAtTca)||((this.sat1StateAtTca!= null)&&this.sat1StateAtTca.equals(rhs.sat1StateAtTca))))&&((this.missDistance == rhs.missDistance)||((this.missDistance!= null)&&this.missDistance.equals(rhs.missDistance))))&&((this.creationDate == rhs.creationDate)||((this.creationDate!= null)&&this.creationDate.equals(rhs.creationDate))))&&((this.sat2HardBodyRadius == rhs.sat2HardBodyRadius)||((this.sat2HardBodyRadius!= null)&&this.sat2HardBodyRadius.equals(rhs.sat2HardBodyRadius))))&&((this.n == rhs.n)||((this.n!= null)&&this.n.equals(rhs.n))))&&((this.sat2StateAtTca == rhs.sat2StateAtTca)||((this.sat2StateAtTca!= null)&&this.sat2StateAtTca.equals(rhs.sat2StateAtTca))))&&((this.r == rhs.r)||((this.r!= null)&&this.r.equals(rhs.r))))&&((this.t == rhs.t)||((this.t!= null)&&this.t.equals(rhs.t))))&&((this.sat2CovarianceTScalingFactor == rhs.sat2CovarianceTScalingFactor)||((this.sat2CovarianceTScalingFactor!= null)&&this.sat2CovarianceTScalingFactor.equals(rhs.sat2CovarianceTScalingFactor))));
-    }
-
-
-    /**
-     * Criticality of the analyzed conjunction
-     * 
-     */
-    public enum Criticality {
-
-        NON_CRITICAL("non_critical"),
-        OBSERVE("observe"),
-        CRITICAL("critical");
-        private final String value;
-        private final static Map<String, RiskEstimation.Criticality> CONSTANTS = new HashMap<String, RiskEstimation.Criticality>();
-
-        static {
-            for (RiskEstimation.Criticality c: values()) {
-                CONSTANTS.put(c.value, c);
-            }
-        }
-
-        private Criticality(String value) {
-            this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-        @JsonValue
-        public String value() {
-            return this.value;
-        }
-
-        @JsonCreator
-        public static RiskEstimation.Criticality fromValue(String value) {
-            RiskEstimation.Criticality constant = CONSTANTS.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            } else {
-                return constant;
-            }
-        }
-
+        return (((((((((((((((((((((((((((((this.tDot == rhs.tDot)||((this.tDot!= null)&&this.tDot.equals(rhs.tDot)))&&((this.relativeSpeed == rhs.relativeSpeed)||((this.relativeSpeed!= null)&&this.relativeSpeed.equals(rhs.relativeSpeed))))&&((this.sat1HardBodyRadius == rhs.sat1HardBodyRadius)||((this.sat1HardBodyRadius!= null)&&this.sat1HardBodyRadius.equals(rhs.sat1HardBodyRadius))))&&((this.rDot == rhs.rDot)||((this.rDot!= null)&&this.rDot.equals(rhs.rDot))))&&((this.sat1CovarianceTScalingFactor == rhs.sat1CovarianceTScalingFactor)||((this.sat1CovarianceTScalingFactor!= null)&&this.sat1CovarianceTScalingFactor.equals(rhs.sat1CovarianceTScalingFactor))))&&((this.collisionProbabilityMethod == rhs.collisionProbabilityMethod)||((this.collisionProbabilityMethod!= null)&&this.collisionProbabilityMethod.equals(rhs.collisionProbabilityMethod))))&&((this.nDot == rhs.nDot)||((this.nDot!= null)&&this.nDot.equals(rhs.nDot))))&&((this.criticality == rhs.criticality)||((this.criticality!= null)&&this.criticality.equals(rhs.criticality))))&&((this.sat2CovarianceRScalingFactor == rhs.sat2CovarianceRScalingFactor)||((this.sat2CovarianceRScalingFactor!= null)&&this.sat2CovarianceRScalingFactor.equals(rhs.sat2CovarianceRScalingFactor))))&&((this.collisionProbability == rhs.collisionProbability)||((this.collisionProbability!= null)&&this.collisionProbability.equals(rhs.collisionProbability))))&&((this.originator == rhs.originator)||((this.originator!= null)&&this.originator.equals(rhs.originator))))&&((this.sat1CovarianceNScalingFactor == rhs.sat1CovarianceNScalingFactor)||((this.sat1CovarianceNScalingFactor!= null)&&this.sat1CovarianceNScalingFactor.equals(rhs.sat1CovarianceNScalingFactor))))&&((this.tca == rhs.tca)||((this.tca!= null)&&this.tca.equals(rhs.tca))))&&((this.sat2CovarianceNScalingFactor == rhs.sat2CovarianceNScalingFactor)||((this.sat2CovarianceNScalingFactor!= null)&&this.sat2CovarianceNScalingFactor.equals(rhs.sat2CovarianceNScalingFactor))))&&((this.basedOn == rhs.basedOn)||((this.basedOn!= null)&&this.basedOn.equals(rhs.basedOn))))&&((this.sat1CovarianceRScalingFactor == rhs.sat1CovarianceRScalingFactor)||((this.sat1CovarianceRScalingFactor!= null)&&this.sat1CovarianceRScalingFactor.equals(rhs.sat1CovarianceRScalingFactor))))&&((this.sat1StateAtTca == rhs.sat1StateAtTca)||((this.sat1StateAtTca!= null)&&this.sat1StateAtTca.equals(rhs.sat1StateAtTca))))&&((this.missDistance == rhs.missDistance)||((this.missDistance!= null)&&this.missDistance.equals(rhs.missDistance))))&&((this.riskEstimationId == rhs.riskEstimationId)||((this.riskEstimationId!= null)&&this.riskEstimationId.equals(rhs.riskEstimationId))))&&((this.creationDate == rhs.creationDate)||((this.creationDate!= null)&&this.creationDate.equals(rhs.creationDate))))&&((this.sat2HardBodyRadius == rhs.sat2HardBodyRadius)||((this.sat2HardBodyRadius!= null)&&this.sat2HardBodyRadius.equals(rhs.sat2HardBodyRadius))))&&((this.n == rhs.n)||((this.n!= null)&&this.n.equals(rhs.n))))&&((this.sat2StateAtTca == rhs.sat2StateAtTca)||((this.sat2StateAtTca!= null)&&this.sat2StateAtTca.equals(rhs.sat2StateAtTca))))&&((this.r == rhs.r)||((this.r!= null)&&this.r.equals(rhs.r))))&&((this.suggested == rhs.suggested)||((this.suggested!= null)&&this.suggested.equals(rhs.suggested))))&&((this.t == rhs.t)||((this.t!= null)&&this.t.equals(rhs.t))))&&((this.sat2CovarianceTScalingFactor == rhs.sat2CovarianceTScalingFactor)||((this.sat2CovarianceTScalingFactor!= null)&&this.sat2CovarianceTScalingFactor.equals(rhs.sat2CovarianceTScalingFactor))))&&((this.comment == rhs.comment)||((this.comment!= null)&&this.comment.equals(rhs.comment))));
     }
 
 }

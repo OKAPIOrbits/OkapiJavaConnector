@@ -1,16 +1,21 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
-import com.fasterxml.jackson.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
  * Conjunction
  * <p>
- * A conjunction between two objects defined using their norad ids and names. Optionally, this conjunction can contain a rsik estimation.
+ * A conjunction between two objects defined using their norad ids and names. Optionally contains newest risk estimation and prediction of this conjunction.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -20,8 +25,8 @@ import java.util.Map;
     "sat2_norad_id",
     "sat1_name",
     "sat2_name",
-    "risk_estimations",
-    "risk_predictions"
+    "newest_risk_estimation",
+    "newest_risk_prediction"
 })
 public class Conjunction {
 
@@ -68,23 +73,23 @@ public class Conjunction {
     @JsonPropertyDescription("Name of satellite 2")
     private String sat2Name;
     /**
-     * RiskEstimations
+     * RiskEstimation
      * <p>
-     * An array of risk estimations.
+     * A risk estimation with the Time of Closest Approach (TCA), collision probability, the associated method, miss vector and covariance scaling factors. In addition, a risk classification is available.
      * 
      */
-    @JsonProperty("risk_estimations")
-    @JsonPropertyDescription("An array of risk estimations.")
-    private RiskEstimations riskEstimations;
+    @JsonProperty("newest_risk_estimation")
+    @JsonPropertyDescription("A risk estimation with the Time of Closest Approach (TCA), collision probability, the associated method, miss vector and covariance scaling factors. In addition, a risk classification is available.")
+    private RiskEstimation newestRiskEstimation;
     /**
-     * RiskPredictions
+     * RiskPrediction
      * <p>
-     * An array of risk predictions.
+     * A risk prediction with a risk trend (series of collision probabilities), the peak risk, miss vector and risk classification.
      * 
      */
-    @JsonProperty("risk_predictions")
-    @JsonPropertyDescription("An array of risk predictions.")
-    private RiskPredictions riskPredictions;
+    @JsonProperty("newest_risk_prediction")
+    @JsonPropertyDescription("A risk prediction with a risk trend (series of collision probabilities), the peak risk, miss vector and risk classification.")
+    private RiskPrediction newestRiskPrediction;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -193,47 +198,47 @@ public class Conjunction {
     }
 
     /**
-     * RiskEstimations
+     * RiskEstimation
      * <p>
-     * An array of risk estimations.
+     * A risk estimation with the Time of Closest Approach (TCA), collision probability, the associated method, miss vector and covariance scaling factors. In addition, a risk classification is available.
      * 
      */
-    @JsonProperty("risk_estimations")
-    public RiskEstimations getRiskEstimations() {
-        return riskEstimations;
+    @JsonProperty("newest_risk_estimation")
+    public RiskEstimation getNewestRiskEstimation() {
+        return newestRiskEstimation;
     }
 
     /**
-     * RiskEstimations
+     * RiskEstimation
      * <p>
-     * An array of risk estimations.
+     * A risk estimation with the Time of Closest Approach (TCA), collision probability, the associated method, miss vector and covariance scaling factors. In addition, a risk classification is available.
      * 
      */
-    @JsonProperty("risk_estimations")
-    public void setRiskEstimations(RiskEstimations riskEstimations) {
-        this.riskEstimations = riskEstimations;
+    @JsonProperty("newest_risk_estimation")
+    public void setNewestRiskEstimation(RiskEstimation newestRiskEstimation) {
+        this.newestRiskEstimation = newestRiskEstimation;
     }
 
     /**
-     * RiskPredictions
+     * RiskPrediction
      * <p>
-     * An array of risk predictions.
+     * A risk prediction with a risk trend (series of collision probabilities), the peak risk, miss vector and risk classification.
      * 
      */
-    @JsonProperty("risk_predictions")
-    public RiskPredictions getRiskPredictions() {
-        return riskPredictions;
+    @JsonProperty("newest_risk_prediction")
+    public RiskPrediction getNewestRiskPrediction() {
+        return newestRiskPrediction;
     }
 
     /**
-     * RiskPredictions
+     * RiskPrediction
      * <p>
-     * An array of risk predictions.
+     * A risk prediction with a risk trend (series of collision probabilities), the peak risk, miss vector and risk classification.
      * 
      */
-    @JsonProperty("risk_predictions")
-    public void setRiskPredictions(RiskPredictions riskPredictions) {
-        this.riskPredictions = riskPredictions;
+    @JsonProperty("newest_risk_prediction")
+    public void setNewestRiskPrediction(RiskPrediction newestRiskPrediction) {
+        this.newestRiskPrediction = newestRiskPrediction;
     }
 
     @JsonAnyGetter
@@ -270,13 +275,13 @@ public class Conjunction {
         sb.append('=');
         sb.append(((this.sat2Name == null)?"<null>":this.sat2Name));
         sb.append(',');
-        sb.append("riskEstimations");
+        sb.append("newestRiskEstimation");
         sb.append('=');
-        sb.append(((this.riskEstimations == null)?"<null>":this.riskEstimations));
+        sb.append(((this.newestRiskEstimation == null)?"<null>":this.newestRiskEstimation));
         sb.append(',');
-        sb.append("riskPredictions");
+        sb.append("newestRiskPrediction");
         sb.append('=');
-        sb.append(((this.riskPredictions == null)?"<null>":this.riskPredictions));
+        sb.append(((this.newestRiskPrediction == null)?"<null>":this.newestRiskPrediction));
         sb.append(',');
         sb.append("additionalProperties");
         sb.append('=');
@@ -294,10 +299,10 @@ public class Conjunction {
     public int hashCode() {
         int result = 1;
         result = ((result* 31)+((this.sat2NoradId == null)? 0 :this.sat2NoradId.hashCode()));
-        result = ((result* 31)+((this.riskEstimations == null)? 0 :this.riskEstimations.hashCode()));
+        result = ((result* 31)+((this.newestRiskEstimation == null)? 0 :this.newestRiskEstimation.hashCode()));
         result = ((result* 31)+((this.sat1NoradId == null)? 0 :this.sat1NoradId.hashCode()));
-        result = ((result* 31)+((this.riskPredictions == null)? 0 :this.riskPredictions.hashCode()));
         result = ((result* 31)+((this.sat1Name == null)? 0 :this.sat1Name.hashCode()));
+        result = ((result* 31)+((this.newestRiskPrediction == null)? 0 :this.newestRiskPrediction.hashCode()));
         result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.sat2Name == null)? 0 :this.sat2Name.hashCode()));
         result = ((result* 31)+((this.conjunctionId == null)? 0 :this.conjunctionId.hashCode()));
@@ -313,7 +318,7 @@ public class Conjunction {
             return false;
         }
         Conjunction rhs = ((Conjunction) other);
-        return (((((((((this.sat2NoradId == rhs.sat2NoradId)||((this.sat2NoradId!= null)&&this.sat2NoradId.equals(rhs.sat2NoradId)))&&((this.riskEstimations == rhs.riskEstimations)||((this.riskEstimations!= null)&&this.riskEstimations.equals(rhs.riskEstimations))))&&((this.sat1NoradId == rhs.sat1NoradId)||((this.sat1NoradId!= null)&&this.sat1NoradId.equals(rhs.sat1NoradId))))&&((this.riskPredictions == rhs.riskPredictions)||((this.riskPredictions!= null)&&this.riskPredictions.equals(rhs.riskPredictions))))&&((this.sat1Name == rhs.sat1Name)||((this.sat1Name!= null)&&this.sat1Name.equals(rhs.sat1Name))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.sat2Name == rhs.sat2Name)||((this.sat2Name!= null)&&this.sat2Name.equals(rhs.sat2Name))))&&((this.conjunctionId == rhs.conjunctionId)||((this.conjunctionId!= null)&&this.conjunctionId.equals(rhs.conjunctionId))));
+        return (((((((((this.sat2NoradId == rhs.sat2NoradId)||((this.sat2NoradId!= null)&&this.sat2NoradId.equals(rhs.sat2NoradId)))&&((this.newestRiskEstimation == rhs.newestRiskEstimation)||((this.newestRiskEstimation!= null)&&this.newestRiskEstimation.equals(rhs.newestRiskEstimation))))&&((this.sat1NoradId == rhs.sat1NoradId)||((this.sat1NoradId!= null)&&this.sat1NoradId.equals(rhs.sat1NoradId))))&&((this.sat1Name == rhs.sat1Name)||((this.sat1Name!= null)&&this.sat1Name.equals(rhs.sat1Name))))&&((this.newestRiskPrediction == rhs.newestRiskPrediction)||((this.newestRiskPrediction!= null)&&this.newestRiskPrediction.equals(rhs.newestRiskPrediction))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.sat2Name == rhs.sat2Name)||((this.sat2Name!= null)&&this.sat2Name.equals(rhs.sat2Name))))&&((this.conjunctionId == rhs.conjunctionId)||((this.conjunctionId!= null)&&this.conjunctionId.equals(rhs.conjunctionId))));
     }
 
 }
