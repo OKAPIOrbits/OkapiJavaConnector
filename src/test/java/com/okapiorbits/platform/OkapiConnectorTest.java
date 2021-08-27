@@ -21,8 +21,6 @@ class OkapiConnectorTest {
         String testUsername = System.getenv("OKAPI_TEST_USERNAME");
         String testPassword = System.getenv("OKAPI_TEST_PASSWORD");
         String testUrl = System.getenv("OKAPI_TEST_URL");
-        System.out.println("Username:" + testUsername);
-        System.out.println("Url:" + testUrl);
         // initializing communication
         okapiConnector = new OkapiConnector(
                 testUsername,
