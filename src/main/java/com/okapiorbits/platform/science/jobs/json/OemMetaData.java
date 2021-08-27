@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 
 /**
- * CcsdsOem
+ * OemMetaData
  * <p>
  * Meta data as needed for the CCSDS OEM data type.
  * 
@@ -28,8 +28,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "REF_FRAME",
     "REF_FRAME_EPOCH",
     "TIME_SYSTEM",
-    "START_EPOCH",
-    "DATA"
+    "START_TIME",
+    "STOP_TIME",
+    "DATA",
+    "COMMENTS"
 })
 public class OemMetaData {
 
@@ -86,8 +88,10 @@ public class OemMetaData {
     @JsonProperty("TIME_SYSTEM")
     @JsonPropertyDescription("Time system in use. Note that only UTC is supported.")
     private OemMetaData.TimeSystem timeSystem = OemMetaData.TimeSystem.fromValue("UTC");
-    @JsonProperty("START_EPOCH")
-    private Date startEpoch;
+    @JsonProperty("START_TIME")
+    private Date startTime;
+    @JsonProperty("STOP_TIME")
+    private Date stopTime;
     /**
      * 
      * (Required)
@@ -95,6 +99,13 @@ public class OemMetaData {
      */
     @JsonProperty("DATA")
     private List<OpmData> data = new ArrayList<OpmData>();
+    /**
+     * Array of comments. Each entry relates to a COMMENT statement.
+     * 
+     */
+    @JsonProperty("COMMENTS")
+    @JsonPropertyDescription("Array of comments. Each entry relates to a COMMENT statement.")
+    private List<String> comments = new ArrayList<String>();
 
     /**
      * uninitialized if not provided with request
@@ -226,14 +237,24 @@ public class OemMetaData {
         this.timeSystem = timeSystem;
     }
 
-    @JsonProperty("START_EPOCH")
-    public Date getStartEpoch() {
-        return startEpoch;
+    @JsonProperty("START_TIME")
+    public Date getStartTime() {
+        return startTime;
     }
 
-    @JsonProperty("START_EPOCH")
-    public void setStartEpoch(Date startEpoch) {
-        this.startEpoch = startEpoch;
+    @JsonProperty("START_TIME")
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    @JsonProperty("STOP_TIME")
+    public Date getStopTime() {
+        return stopTime;
+    }
+
+    @JsonProperty("STOP_TIME")
+    public void setStopTime(Date stopTime) {
+        this.stopTime = stopTime;
     }
 
     /**
@@ -254,6 +275,24 @@ public class OemMetaData {
     @JsonProperty("DATA")
     public void setData(List<OpmData> data) {
         this.data = data;
+    }
+
+    /**
+     * Array of comments. Each entry relates to a COMMENT statement.
+     * 
+     */
+    @JsonProperty("COMMENTS")
+    public List<String> getComments() {
+        return comments;
+    }
+
+    /**
+     * Array of comments. Each entry relates to a COMMENT statement.
+     * 
+     */
+    @JsonProperty("COMMENTS")
+    public void setComments(List<String> comments) {
+        this.comments = comments;
     }
 
     @Override
@@ -284,13 +323,21 @@ public class OemMetaData {
         sb.append('=');
         sb.append(((this.timeSystem == null)?"<null>":this.timeSystem));
         sb.append(',');
-        sb.append("startEpoch");
+        sb.append("startTime");
         sb.append('=');
-        sb.append(((this.startEpoch == null)?"<null>":this.startEpoch));
+        sb.append(((this.startTime == null)?"<null>":this.startTime));
+        sb.append(',');
+        sb.append("stopTime");
+        sb.append('=');
+        sb.append(((this.stopTime == null)?"<null>":this.stopTime));
         sb.append(',');
         sb.append("data");
         sb.append('=');
         sb.append(((this.data == null)?"<null>":this.data));
+        sb.append(',');
+        sb.append("comments");
+        sb.append('=');
+        sb.append(((this.comments == null)?"<null>":this.comments));
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
@@ -305,9 +352,11 @@ public class OemMetaData {
         int result = 1;
         result = ((result* 31)+((this.refFrame == null)? 0 :this.refFrame.hashCode()));
         result = ((result* 31)+((this.timeSystem == null)? 0 :this.timeSystem.hashCode()));
+        result = ((result* 31)+((this.comments == null)? 0 :this.comments.hashCode()));
         result = ((result* 31)+((this.data == null)? 0 :this.data.hashCode()));
         result = ((result* 31)+((this.objectName == null)? 0 :this.objectName.hashCode()));
-        result = ((result* 31)+((this.startEpoch == null)? 0 :this.startEpoch.hashCode()));
+        result = ((result* 31)+((this.startTime == null)? 0 :this.startTime.hashCode()));
+        result = ((result* 31)+((this.stopTime == null)? 0 :this.stopTime.hashCode()));
         result = ((result* 31)+((this.objectId == null)? 0 :this.objectId.hashCode()));
         result = ((result* 31)+((this.centerName == null)? 0 :this.centerName.hashCode()));
         result = ((result* 31)+((this.refFrameEpoch == null)? 0 :this.refFrameEpoch.hashCode()));
@@ -323,7 +372,7 @@ public class OemMetaData {
             return false;
         }
         OemMetaData rhs = ((OemMetaData) other);
-        return (((((((((this.refFrame == rhs.refFrame)||((this.refFrame!= null)&&this.refFrame.equals(rhs.refFrame)))&&((this.timeSystem == rhs.timeSystem)||((this.timeSystem!= null)&&this.timeSystem.equals(rhs.timeSystem))))&&((this.data == rhs.data)||((this.data!= null)&&this.data.equals(rhs.data))))&&((this.objectName == rhs.objectName)||((this.objectName!= null)&&this.objectName.equals(rhs.objectName))))&&((this.startEpoch == rhs.startEpoch)||((this.startEpoch!= null)&&this.startEpoch.equals(rhs.startEpoch))))&&((this.objectId == rhs.objectId)||((this.objectId!= null)&&this.objectId.equals(rhs.objectId))))&&((this.centerName == rhs.centerName)||((this.centerName!= null)&&this.centerName.equals(rhs.centerName))))&&((this.refFrameEpoch == rhs.refFrameEpoch)||((this.refFrameEpoch!= null)&&this.refFrameEpoch.equals(rhs.refFrameEpoch))));
+        return (((((((((((this.refFrame == rhs.refFrame)||((this.refFrame!= null)&&this.refFrame.equals(rhs.refFrame)))&&((this.timeSystem == rhs.timeSystem)||((this.timeSystem!= null)&&this.timeSystem.equals(rhs.timeSystem))))&&((this.comments == rhs.comments)||((this.comments!= null)&&this.comments.equals(rhs.comments))))&&((this.data == rhs.data)||((this.data!= null)&&this.data.equals(rhs.data))))&&((this.objectName == rhs.objectName)||((this.objectName!= null)&&this.objectName.equals(rhs.objectName))))&&((this.startTime == rhs.startTime)||((this.startTime!= null)&&this.startTime.equals(rhs.startTime))))&&((this.stopTime == rhs.stopTime)||((this.stopTime!= null)&&this.stopTime.equals(rhs.stopTime))))&&((this.objectId == rhs.objectId)||((this.objectId!= null)&&this.objectId.equals(rhs.objectId))))&&((this.centerName == rhs.centerName)||((this.centerName!= null)&&this.centerName.equals(rhs.centerName))))&&((this.refFrameEpoch == rhs.refFrameEpoch)||((this.refFrameEpoch!= null)&&this.refFrameEpoch.equals(rhs.refFrameEpoch))));
     }
 
 

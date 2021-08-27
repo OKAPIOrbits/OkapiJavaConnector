@@ -1,6 +1,8 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -20,7 +22,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "CENTER_NAME",
     "REF_FRAME",
     "REF_FRAME_EPOCH",
-    "TIME_SYSTEM"
+    "TIME_SYSTEM",
+    "COMMENTS"
 })
 public class OpmMetaData {
 
@@ -32,11 +35,11 @@ public class OpmMetaData {
     @JsonPropertyDescription("Only used for new output.")
     private String objectName = "Unspecified";
     /**
-     * Only used for new output.
+     * The identifier used to correlate the obect against object catalogues. Currently only the Norad Id should be usedm when requesting services like /check-orbit.
      * 
      */
     @JsonProperty("OBJECT_ID")
-    @JsonPropertyDescription("Only used for new output.")
+    @JsonPropertyDescription("The identifier used to correlate the obect against object catalogues. Currently only the Norad Id should be usedm when requesting services like /check-orbit.")
     private String objectId = "Unspecified";
     /**
      * CenterName
@@ -75,6 +78,13 @@ public class OpmMetaData {
     @JsonProperty("TIME_SYSTEM")
     @JsonPropertyDescription("Time system in use. Note that only UTC is supported.")
     private com.okapiorbits.platform.science.jobs.json.OemMetaData.TimeSystem timeSystem = com.okapiorbits.platform.science.jobs.json.OemMetaData.TimeSystem.fromValue("UTC");
+    /**
+     * Array of comments. Each entry relates to a COMMENT statement.
+     * 
+     */
+    @JsonProperty("COMMENTS")
+    @JsonPropertyDescription("Array of comments. Each entry relates to a COMMENT statement.")
+    private List<String> comments = new ArrayList<String>();
 
     /**
      * Only used for new output.
@@ -95,7 +105,7 @@ public class OpmMetaData {
     }
 
     /**
-     * Only used for new output.
+     * The identifier used to correlate the obect against object catalogues. Currently only the Norad Id should be usedm when requesting services like /check-orbit.
      * 
      */
     @JsonProperty("OBJECT_ID")
@@ -104,7 +114,7 @@ public class OpmMetaData {
     }
 
     /**
-     * Only used for new output.
+     * The identifier used to correlate the obect against object catalogues. Currently only the Norad Id should be usedm when requesting services like /check-orbit.
      * 
      */
     @JsonProperty("OBJECT_ID")
@@ -202,6 +212,24 @@ public class OpmMetaData {
         this.timeSystem = timeSystem;
     }
 
+    /**
+     * Array of comments. Each entry relates to a COMMENT statement.
+     * 
+     */
+    @JsonProperty("COMMENTS")
+    public List<String> getComments() {
+        return comments;
+    }
+
+    /**
+     * Array of comments. Each entry relates to a COMMENT statement.
+     * 
+     */
+    @JsonProperty("COMMENTS")
+    public void setComments(List<String> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -230,6 +258,10 @@ public class OpmMetaData {
         sb.append('=');
         sb.append(((this.timeSystem == null)?"<null>":this.timeSystem));
         sb.append(',');
+        sb.append("comments");
+        sb.append('=');
+        sb.append(((this.comments == null)?"<null>":this.comments));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -243,6 +275,7 @@ public class OpmMetaData {
         int result = 1;
         result = ((result* 31)+((this.refFrame == null)? 0 :this.refFrame.hashCode()));
         result = ((result* 31)+((this.timeSystem == null)? 0 :this.timeSystem.hashCode()));
+        result = ((result* 31)+((this.comments == null)? 0 :this.comments.hashCode()));
         result = ((result* 31)+((this.objectName == null)? 0 :this.objectName.hashCode()));
         result = ((result* 31)+((this.objectId == null)? 0 :this.objectId.hashCode()));
         result = ((result* 31)+((this.centerName == null)? 0 :this.centerName.hashCode()));
@@ -259,7 +292,7 @@ public class OpmMetaData {
             return false;
         }
         OpmMetaData rhs = ((OpmMetaData) other);
-        return (((((((this.refFrame == rhs.refFrame)||((this.refFrame!= null)&&this.refFrame.equals(rhs.refFrame)))&&((this.timeSystem == rhs.timeSystem)||((this.timeSystem!= null)&&this.timeSystem.equals(rhs.timeSystem))))&&((this.objectName == rhs.objectName)||((this.objectName!= null)&&this.objectName.equals(rhs.objectName))))&&((this.objectId == rhs.objectId)||((this.objectId!= null)&&this.objectId.equals(rhs.objectId))))&&((this.centerName == rhs.centerName)||((this.centerName!= null)&&this.centerName.equals(rhs.centerName))))&&((this.refFrameEpoch == rhs.refFrameEpoch)||((this.refFrameEpoch!= null)&&this.refFrameEpoch.equals(rhs.refFrameEpoch))));
+        return ((((((((this.refFrame == rhs.refFrame)||((this.refFrame!= null)&&this.refFrame.equals(rhs.refFrame)))&&((this.timeSystem == rhs.timeSystem)||((this.timeSystem!= null)&&this.timeSystem.equals(rhs.timeSystem))))&&((this.comments == rhs.comments)||((this.comments!= null)&&this.comments.equals(rhs.comments))))&&((this.objectName == rhs.objectName)||((this.objectName!= null)&&this.objectName.equals(rhs.objectName))))&&((this.objectId == rhs.objectId)||((this.objectId!= null)&&this.objectId.equals(rhs.objectId))))&&((this.centerName == rhs.centerName)||((this.centerName!= null)&&this.centerName.equals(rhs.centerName))))&&((this.refFrameEpoch == rhs.refFrameEpoch)||((this.refFrameEpoch!= null)&&this.refFrameEpoch.equals(rhs.refFrameEpoch))));
     }
 
 }
