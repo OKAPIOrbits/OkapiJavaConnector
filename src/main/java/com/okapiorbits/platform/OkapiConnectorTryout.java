@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * @author Niels Perdijk
  * @version v2021-08
  */
-public class OkapiConnectorTest {
+public class OkapiConnectorTryout {
 
 	static String satelliteId;
 	static String conjunctionId;
@@ -46,6 +46,7 @@ public class OkapiConnectorTest {
 			okapiPlatformException.printStackTrace();
 			return;
 		}
+		System.out.println(accessToken);
 		System.out.println("[Authentication] - completed");
 
 		System.out.println("[Add satellite] - started");
