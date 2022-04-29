@@ -1028,7 +1028,8 @@ public class SharedPropagationSettings {
     public enum AtmosphericModel {
 
         EXPONENTIAL("Exponential"),
-        NRLMSISE_00("NRLMSISE-00");
+        NRLMSISE_00("NRLMSISE-00"),
+        JB_2008("JB2008");
         private final String value;
         private final static Map<String, SharedPropagationSettings.AtmosphericModel> CONSTANTS = new HashMap<String, SharedPropagationSettings.AtmosphericModel>();
 
@@ -1162,7 +1163,8 @@ public class SharedPropagationSettings {
 
         CELESTRAK("celestrak"),
         ESA("esa"),
-        CONSTANT("constant");
+        CONSTANT("constant"),
+        JB_2008("jb2008");
         private final String value;
         private final static Map<String, SharedPropagationSettings.SolarActivityForecast> CONSTANTS = new HashMap<String, SharedPropagationSettings.SolarActivityForecast>();
 

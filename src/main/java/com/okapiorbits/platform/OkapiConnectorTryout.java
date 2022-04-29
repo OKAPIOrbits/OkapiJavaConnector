@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * OKAPI platform.
  * @author Christopher Kebschull
  * @author Niels Perdijk
- * @version v2021-08
+ * @version v2022-04
  */
 public class OkapiConnectorTryout {
 

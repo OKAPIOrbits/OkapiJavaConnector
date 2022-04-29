@@ -1,11 +1,6 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
-import java.util.HashMap;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -15,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * ManeuverEval
  * <p>
- * A maneuver evaluation
+ * A maneuver evaluation, giving the required velocity and a new risk estimation.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,10 +19,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "strategy_name",
     "maneuver_file",
     "new_risk_estimation",
+    "new_risk_prediction",
     "thrust_total",
+    "delta_sma",
     "suggested",
     "dismissed",
-    "comment"
+    "comment",
+    "candidates_checked"
 })
 public class ManeuverEval {
 
@@ -65,12 +63,28 @@ public class ManeuverEval {
     @JsonPropertyDescription("A risk estimation with the Time of Closest Approach (TCA), collision probability, the associated method, miss vector and covariance scaling factors. In addition, a risk classification is available.")
     private RiskEstimation newRiskEstimation;
     /**
-     * Required delta-V (dV), in m/s
+     * RiskPrediction
+     * <p>
+     * A risk prediction with a risk trend (series of collision probabilities), the peak risk, miss vector and risk classification.
+     * 
+     */
+    @JsonProperty("new_risk_prediction")
+    @JsonPropertyDescription("A risk prediction with a risk trend (series of collision probabilities), the peak risk, miss vector and risk classification.")
+    private RiskPrediction newRiskPrediction;
+    /**
+     * Required velocity change (dV) / in m/s
      * 
      */
     @JsonProperty("thrust_total")
-    @JsonPropertyDescription("Required delta-V (dV), in m/s")
+    @JsonPropertyDescription("Required velocity change (dV) / in m/s")
     private Double thrustTotal;
+    /**
+     * Change of the semi-major axis / in km
+     * 
+     */
+    @JsonProperty("delta_sma")
+    @JsonPropertyDescription("Change of the semi-major axis / in km")
+    private Double deltaSma;
     /**
      * 
      * (Required)
@@ -82,8 +96,8 @@ public class ManeuverEval {
     private Boolean dismissed;
     @JsonProperty("comment")
     private String comment;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    @JsonProperty("candidates_checked")
+    private Integer candidatesChecked;
 
     /**
      * 
@@ -172,7 +186,29 @@ public class ManeuverEval {
     }
 
     /**
-     * Required delta-V (dV), in m/s
+     * RiskPrediction
+     * <p>
+     * A risk prediction with a risk trend (series of collision probabilities), the peak risk, miss vector and risk classification.
+     * 
+     */
+    @JsonProperty("new_risk_prediction")
+    public RiskPrediction getNewRiskPrediction() {
+        return newRiskPrediction;
+    }
+
+    /**
+     * RiskPrediction
+     * <p>
+     * A risk prediction with a risk trend (series of collision probabilities), the peak risk, miss vector and risk classification.
+     * 
+     */
+    @JsonProperty("new_risk_prediction")
+    public void setNewRiskPrediction(RiskPrediction newRiskPrediction) {
+        this.newRiskPrediction = newRiskPrediction;
+    }
+
+    /**
+     * Required velocity change (dV) / in m/s
      * 
      */
     @JsonProperty("thrust_total")
@@ -181,12 +217,30 @@ public class ManeuverEval {
     }
 
     /**
-     * Required delta-V (dV), in m/s
+     * Required velocity change (dV) / in m/s
      * 
      */
     @JsonProperty("thrust_total")
     public void setThrustTotal(Double thrustTotal) {
         this.thrustTotal = thrustTotal;
+    }
+
+    /**
+     * Change of the semi-major axis / in km
+     * 
+     */
+    @JsonProperty("delta_sma")
+    public Double getDeltaSma() {
+        return deltaSma;
+    }
+
+    /**
+     * Change of the semi-major axis / in km
+     * 
+     */
+    @JsonProperty("delta_sma")
+    public void setDeltaSma(Double deltaSma) {
+        this.deltaSma = deltaSma;
     }
 
     /**
@@ -229,14 +283,14 @@ public class ManeuverEval {
         this.comment = comment;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
+    @JsonProperty("candidates_checked")
+    public Integer getCandidatesChecked() {
+        return candidatesChecked;
     }
 
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
+    @JsonProperty("candidates_checked")
+    public void setCandidatesChecked(Integer candidatesChecked) {
+        this.candidatesChecked = candidatesChecked;
     }
 
     @Override
@@ -259,9 +313,17 @@ public class ManeuverEval {
         sb.append('=');
         sb.append(((this.newRiskEstimation == null)?"<null>":this.newRiskEstimation));
         sb.append(',');
+        sb.append("newRiskPrediction");
+        sb.append('=');
+        sb.append(((this.newRiskPrediction == null)?"<null>":this.newRiskPrediction));
+        sb.append(',');
         sb.append("thrustTotal");
         sb.append('=');
         sb.append(((this.thrustTotal == null)?"<null>":this.thrustTotal));
+        sb.append(',');
+        sb.append("deltaSma");
+        sb.append('=');
+        sb.append(((this.deltaSma == null)?"<null>":this.deltaSma));
         sb.append(',');
         sb.append("suggested");
         sb.append('=');
@@ -275,9 +337,9 @@ public class ManeuverEval {
         sb.append('=');
         sb.append(((this.comment == null)?"<null>":this.comment));
         sb.append(',');
-        sb.append("additionalProperties");
+        sb.append("candidatesChecked");
         sb.append('=');
-        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(((this.candidatesChecked == null)?"<null>":this.candidatesChecked));
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
@@ -293,11 +355,13 @@ public class ManeuverEval {
         result = ((result* 31)+((this.thrustTotal == null)? 0 :this.thrustTotal.hashCode()));
         result = ((result* 31)+((this.strategyName == null)? 0 :this.strategyName.hashCode()));
         result = ((result* 31)+((this.suggested == null)? 0 :this.suggested.hashCode()));
+        result = ((result* 31)+((this.newRiskPrediction == null)? 0 :this.newRiskPrediction.hashCode()));
         result = ((result* 31)+((this.maneuverFile == null)? 0 :this.maneuverFile.hashCode()));
         result = ((result* 31)+((this.newRiskEstimation == null)? 0 :this.newRiskEstimation.hashCode()));
         result = ((result* 31)+((this.dismissed == null)? 0 :this.dismissed.hashCode()));
+        result = ((result* 31)+((this.candidatesChecked == null)? 0 :this.candidatesChecked.hashCode()));
+        result = ((result* 31)+((this.deltaSma == null)? 0 :this.deltaSma.hashCode()));
         result = ((result* 31)+((this.comment == null)? 0 :this.comment.hashCode()));
-        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.strategyNumber == null)? 0 :this.strategyNumber.hashCode()));
         return result;
     }
@@ -311,7 +375,7 @@ public class ManeuverEval {
             return false;
         }
         ManeuverEval rhs = ((ManeuverEval) other);
-        return ((((((((((this.thrustTotal == rhs.thrustTotal)||((this.thrustTotal!= null)&&this.thrustTotal.equals(rhs.thrustTotal)))&&((this.strategyName == rhs.strategyName)||((this.strategyName!= null)&&this.strategyName.equals(rhs.strategyName))))&&((this.suggested == rhs.suggested)||((this.suggested!= null)&&this.suggested.equals(rhs.suggested))))&&((this.maneuverFile == rhs.maneuverFile)||((this.maneuverFile!= null)&&this.maneuverFile.equals(rhs.maneuverFile))))&&((this.newRiskEstimation == rhs.newRiskEstimation)||((this.newRiskEstimation!= null)&&this.newRiskEstimation.equals(rhs.newRiskEstimation))))&&((this.dismissed == rhs.dismissed)||((this.dismissed!= null)&&this.dismissed.equals(rhs.dismissed))))&&((this.comment == rhs.comment)||((this.comment!= null)&&this.comment.equals(rhs.comment))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.strategyNumber == rhs.strategyNumber)||((this.strategyNumber!= null)&&this.strategyNumber.equals(rhs.strategyNumber))));
+        return ((((((((((((this.thrustTotal == rhs.thrustTotal)||((this.thrustTotal!= null)&&this.thrustTotal.equals(rhs.thrustTotal)))&&((this.strategyName == rhs.strategyName)||((this.strategyName!= null)&&this.strategyName.equals(rhs.strategyName))))&&((this.suggested == rhs.suggested)||((this.suggested!= null)&&this.suggested.equals(rhs.suggested))))&&((this.newRiskPrediction == rhs.newRiskPrediction)||((this.newRiskPrediction!= null)&&this.newRiskPrediction.equals(rhs.newRiskPrediction))))&&((this.maneuverFile == rhs.maneuverFile)||((this.maneuverFile!= null)&&this.maneuverFile.equals(rhs.maneuverFile))))&&((this.newRiskEstimation == rhs.newRiskEstimation)||((this.newRiskEstimation!= null)&&this.newRiskEstimation.equals(rhs.newRiskEstimation))))&&((this.dismissed == rhs.dismissed)||((this.dismissed!= null)&&this.dismissed.equals(rhs.dismissed))))&&((this.candidatesChecked == rhs.candidatesChecked)||((this.candidatesChecked!= null)&&this.candidatesChecked.equals(rhs.candidatesChecked))))&&((this.deltaSma == rhs.deltaSma)||((this.deltaSma!= null)&&this.deltaSma.equals(rhs.deltaSma))))&&((this.comment == rhs.comment)||((this.comment!= null)&&this.comment.equals(rhs.comment))))&&((this.strategyNumber == rhs.strategyNumber)||((this.strategyNumber!= null)&&this.strategyNumber.equals(rhs.strategyNumber))));
     }
 
 }
