@@ -31,7 +31,19 @@ Click on `Edit Configurations...` then `+` (Add New Configuration) and select `A
 `com.okapiorbits.platform.OkapiConnectorTryout`. JRE should be A valid Java 11 runtime environment. Click `OK`and you can execute the 
 `OkapiConnectorTest` by clicking on the `Run` button.
 
+When using the JUnit tests, again click on `Edit Configurations...` then `+` (Add New Configuration) and select `JUnit`. 
+Make sure that the test username and password are defined in the `Environment variables`:
+```
+OKAPI_TEST_USERNAME=<your_username>
+OKAPI_TEST_PASSWORD=<your_password>
+```
+
 ### The build process using Maven on the command line
+Define your OKAPI username and password via environment variables:
+```shell
+export OKAPI_TEST_USERNAME=<your_username>
+export OKAPI_TEST_PASSWORD=<your_password>
+```
 Run Maven via command line in the directory you cloned:
 ```shell
 mvn clean package

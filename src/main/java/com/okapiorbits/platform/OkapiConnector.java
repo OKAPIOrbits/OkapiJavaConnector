@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
  * 
  * @author Christopher Kebschull
  * @author Niels Perdijk
- * @version v2021-03
+ * @version v2022-04
  */
 public class OkapiConnector {
 

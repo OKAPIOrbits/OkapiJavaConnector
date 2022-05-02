@@ -32,6 +32,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "thrust_pointing_uncertainty",
     "thrust_output",
     "max_thrust_duration",
+    "min_thrust_duration",
+    "in_sun_constraint",
+    "min_time_in_sun",
+    "symmetric_manoeuvres",
     "propulsion_type",
     "accepted_collision_probability",
     "accepted_minimum_distance",
@@ -109,11 +113,11 @@ public class Satellite {
     @JsonPropertyDescription("in kg")
     private Double mass = 1.3D;
     /**
-     * Relative thrust uncertainty / -
+     * Relative thrust uncertainty / -   e.g. 5 percent is expressed as 0.05
      * 
      */
     @JsonProperty("thrust_uncertainty")
-    @JsonPropertyDescription("Relative thrust uncertainty / -")
+    @JsonPropertyDescription("Relative thrust uncertainty / -   e.g. 5 percent is expressed as 0.05")
     private Double thrustUncertainty = 0.0D;
     /**
      * Uncertainty in pointing the thrust / arc seconds
@@ -135,7 +139,35 @@ public class Satellite {
      */
     @JsonProperty("max_thrust_duration")
     @JsonPropertyDescription("The maximum duration the thruster can operate at a time in Seconds")
-    private Double maxThrustDuration;
+    private Double maxThrustDuration = 1.0D;
+    /**
+     * The minimum duration the thruster can operate at a time in Seconds
+     * 
+     */
+    @JsonProperty("min_thrust_duration")
+    @JsonPropertyDescription("The minimum duration the thruster can operate at a time in Seconds")
+    private Double minThrustDuration;
+    /**
+     * Enables the requirement of a satellite being in the Sun during thruster activation. If symmetric manoeuvres are enabled, as well, symmetric manoeuvres are not created.
+     * 
+     */
+    @JsonProperty("in_sun_constraint")
+    @JsonPropertyDescription("Enables the requirement of a satellite being in the Sun during thruster activation. If symmetric manoeuvres are enabled, as well, symmetric manoeuvres are not created.")
+    private Boolean inSunConstraint = false;
+    /**
+     * Makes sure that the generated manoeuvre will be performed after the satellite being in the Sun for a minimum amount of time (in Seconds).
+     * 
+     */
+    @JsonProperty("min_time_in_sun")
+    @JsonPropertyDescription("Makes sure that the generated manoeuvre will be performed after the satellite being in the Sun for a minimum amount of time (in Seconds).")
+    private Double minTimeInSun;
+    /**
+     * Enables to distribute the thrust on opposite sides of the orbits, e.g. to keep the eccentricity constant. If the in-sun constraint is enabled, as well, symmetric manoeuvres are not created.
+     * 
+     */
+    @JsonProperty("symmetric_manoeuvres")
+    @JsonPropertyDescription("Enables to distribute the thrust on opposite sides of the orbits, e.g. to keep the eccentricity constant. If the in-sun constraint is enabled, as well, symmetric manoeuvres are not created.")
+    private Boolean symmetricManoeuvres = false;
     @JsonProperty("propulsion_type")
     private Satellite.PropulsionType propulsionType = Satellite.PropulsionType.fromValue("continuous");
     /**
@@ -405,7 +437,7 @@ public class Satellite {
     }
 
     /**
-     * Relative thrust uncertainty / -
+     * Relative thrust uncertainty / -   e.g. 5 percent is expressed as 0.05
      * 
      */
     @JsonProperty("thrust_uncertainty")
@@ -414,7 +446,7 @@ public class Satellite {
     }
 
     /**
-     * Relative thrust uncertainty / -
+     * Relative thrust uncertainty / -   e.g. 5 percent is expressed as 0.05
      * 
      */
     @JsonProperty("thrust_uncertainty")
@@ -474,6 +506,78 @@ public class Satellite {
     @JsonProperty("max_thrust_duration")
     public void setMaxThrustDuration(Double maxThrustDuration) {
         this.maxThrustDuration = maxThrustDuration;
+    }
+
+    /**
+     * The minimum duration the thruster can operate at a time in Seconds
+     * 
+     */
+    @JsonProperty("min_thrust_duration")
+    public Double getMinThrustDuration() {
+        return minThrustDuration;
+    }
+
+    /**
+     * The minimum duration the thruster can operate at a time in Seconds
+     * 
+     */
+    @JsonProperty("min_thrust_duration")
+    public void setMinThrustDuration(Double minThrustDuration) {
+        this.minThrustDuration = minThrustDuration;
+    }
+
+    /**
+     * Enables the requirement of a satellite being in the Sun during thruster activation. If symmetric manoeuvres are enabled, as well, symmetric manoeuvres are not created.
+     * 
+     */
+    @JsonProperty("in_sun_constraint")
+    public Boolean getInSunConstraint() {
+        return inSunConstraint;
+    }
+
+    /**
+     * Enables the requirement of a satellite being in the Sun during thruster activation. If symmetric manoeuvres are enabled, as well, symmetric manoeuvres are not created.
+     * 
+     */
+    @JsonProperty("in_sun_constraint")
+    public void setInSunConstraint(Boolean inSunConstraint) {
+        this.inSunConstraint = inSunConstraint;
+    }
+
+    /**
+     * Makes sure that the generated manoeuvre will be performed after the satellite being in the Sun for a minimum amount of time (in Seconds).
+     * 
+     */
+    @JsonProperty("min_time_in_sun")
+    public Double getMinTimeInSun() {
+        return minTimeInSun;
+    }
+
+    /**
+     * Makes sure that the generated manoeuvre will be performed after the satellite being in the Sun for a minimum amount of time (in Seconds).
+     * 
+     */
+    @JsonProperty("min_time_in_sun")
+    public void setMinTimeInSun(Double minTimeInSun) {
+        this.minTimeInSun = minTimeInSun;
+    }
+
+    /**
+     * Enables to distribute the thrust on opposite sides of the orbits, e.g. to keep the eccentricity constant. If the in-sun constraint is enabled, as well, symmetric manoeuvres are not created.
+     * 
+     */
+    @JsonProperty("symmetric_manoeuvres")
+    public Boolean getSymmetricManoeuvres() {
+        return symmetricManoeuvres;
+    }
+
+    /**
+     * Enables to distribute the thrust on opposite sides of the orbits, e.g. to keep the eccentricity constant. If the in-sun constraint is enabled, as well, symmetric manoeuvres are not created.
+     * 
+     */
+    @JsonProperty("symmetric_manoeuvres")
+    public void setSymmetricManoeuvres(Boolean symmetricManoeuvres) {
+        this.symmetricManoeuvres = symmetricManoeuvres;
     }
 
     @JsonProperty("propulsion_type")
@@ -864,6 +968,22 @@ public class Satellite {
         sb.append('=');
         sb.append(((this.maxThrustDuration == null)?"<null>":this.maxThrustDuration));
         sb.append(',');
+        sb.append("minThrustDuration");
+        sb.append('=');
+        sb.append(((this.minThrustDuration == null)?"<null>":this.minThrustDuration));
+        sb.append(',');
+        sb.append("inSunConstraint");
+        sb.append('=');
+        sb.append(((this.inSunConstraint == null)?"<null>":this.inSunConstraint));
+        sb.append(',');
+        sb.append("minTimeInSun");
+        sb.append('=');
+        sb.append(((this.minTimeInSun == null)?"<null>":this.minTimeInSun));
+        sb.append(',');
+        sb.append("symmetricManoeuvres");
+        sb.append('=');
+        sb.append(((this.symmetricManoeuvres == null)?"<null>":this.symmetricManoeuvres));
+        sb.append(',');
         sb.append("propulsionType");
         sb.append('=');
         sb.append(((this.propulsionType == null)?"<null>":this.propulsionType));
@@ -957,7 +1077,10 @@ public class Satellite {
         result = ((result* 31)+((this.mass == null)? 0 :this.mass.hashCode()));
         result = ((result* 31)+((this.spaceTrackStatus == null)? 0 :this.spaceTrackStatus.hashCode()));
         result = ((result* 31)+((this.gnssSensor == null)? 0 :this.gnssSensor.hashCode()));
+        result = ((result* 31)+((this.minThrustDuration == null)? 0 :this.minThrustDuration.hashCode()));
+        result = ((result* 31)+((this.minTimeInSun == null)? 0 :this.minTimeInSun.hashCode()));
         result = ((result* 31)+((this.thrustPointingUncertainty == null)? 0 :this.thrustPointingUncertainty.hashCode()));
+        result = ((result* 31)+((this.inSunConstraint == null)? 0 :this.inSunConstraint.hashCode()));
         result = ((result* 31)+((this.notificationVerbosity == null)? 0 :this.notificationVerbosity.hashCode()));
         result = ((result* 31)+((this.propulsionType == null)? 0 :this.propulsionType.hashCode()));
         result = ((result* 31)+((this.sendTeamsNotifications == null)? 0 :this.sendTeamsNotifications.hashCode()));
@@ -981,6 +1104,7 @@ public class Satellite {
         result = ((result* 31)+((this.sendMailNotifications == null)? 0 :this.sendMailNotifications.hashCode()));
         result = ((result* 31)+((this.spaceTrackPocName == null)? 0 :this.spaceTrackPocName.hashCode()));
         result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
+        result = ((result* 31)+((this.symmetricManoeuvres == null)? 0 :this.symmetricManoeuvres.hashCode()));
         return result;
     }
 
@@ -993,7 +1117,7 @@ public class Satellite {
             return false;
         }
         Satellite rhs = ((Satellite) other);
-        return (((((((((((((((((((((((((((((((this.thrustUncertainty == rhs.thrustUncertainty)||((this.thrustUncertainty!= null)&&this.thrustUncertainty.equals(rhs.thrustUncertainty)))&&((this.useAiRiskPrediction == rhs.useAiRiskPrediction)||((this.useAiRiskPrediction!= null)&&this.useAiRiskPrediction.equals(rhs.useAiRiskPrediction))))&&((this.noradIds == rhs.noradIds)||((this.noradIds!= null)&&this.noradIds.equals(rhs.noradIds))))&&((this.mass == rhs.mass)||((this.mass!= null)&&this.mass.equals(rhs.mass))))&&((this.spaceTrackStatus == rhs.spaceTrackStatus)||((this.spaceTrackStatus!= null)&&this.spaceTrackStatus.equals(rhs.spaceTrackStatus))))&&((this.gnssSensor == rhs.gnssSensor)||((this.gnssSensor!= null)&&this.gnssSensor.equals(rhs.gnssSensor))))&&((this.thrustPointingUncertainty == rhs.thrustPointingUncertainty)||((this.thrustPointingUncertainty!= null)&&this.thrustPointingUncertainty.equals(rhs.thrustPointingUncertainty))))&&((this.notificationVerbosity == rhs.notificationVerbosity)||((this.notificationVerbosity!= null)&&this.notificationVerbosity.equals(rhs.notificationVerbosity))))&&((this.propulsionType == rhs.propulsionType)||((this.propulsionType!= null)&&this.propulsionType.equals(rhs.propulsionType))))&&((this.sendTeamsNotifications == rhs.sendTeamsNotifications)||((this.sendTeamsNotifications!= null)&&this.sendTeamsNotifications.equals(rhs.sendTeamsNotifications))))&&((this.spaceTrackLogin == rhs.spaceTrackLogin)||((this.spaceTrackLogin!= null)&&this.spaceTrackLogin.equals(rhs.spaceTrackLogin))))&&((this.maneuverStrategy == rhs.maneuverStrategy)||((this.maneuverStrategy!= null)&&this.maneuverStrategy.equals(rhs.maneuverStrategy))))&&((this.slackWebhook == rhs.slackWebhook)||((this.slackWebhook!= null)&&this.slackWebhook.equals(rhs.slackWebhook))))&&((this.acceptedMinimumDistance == rhs.acceptedMinimumDistance)||((this.acceptedMinimumDistance!= null)&&this.acceptedMinimumDistance.equals(rhs.acceptedMinimumDistance))))&&((this.info == rhs.info)||((this.info!= null)&&this.info.equals(rhs.info))))&&((this.area == rhs.area)||((this.area!= null)&&this.area.equals(rhs.area))))&&((this.spaceTrackCompanyName == rhs.spaceTrackCompanyName)||((this.spaceTrackCompanyName!= null)&&this.spaceTrackCompanyName.equals(rhs.spaceTrackCompanyName))))&&((this.spaceTrackPocAddress == rhs.spaceTrackPocAddress)||((this.spaceTrackPocAddress!= null)&&this.spaceTrackPocAddress.equals(rhs.spaceTrackPocAddress))))&&((this.sendSlackNotifications == rhs.sendSlackNotifications)||((this.sendSlackNotifications!= null)&&this.sendSlackNotifications.equals(rhs.sendSlackNotifications))))&&((this.maxThrustDuration == rhs.maxThrustDuration)||((this.maxThrustDuration!= null)&&this.maxThrustDuration.equals(rhs.maxThrustDuration))))&&((this.teamsWebhook == rhs.teamsWebhook)||((this.teamsWebhook!= null)&&this.teamsWebhook.equals(rhs.teamsWebhook))))&&((this.satelliteId == rhs.satelliteId)||((this.satelliteId!= null)&&this.satelliteId.equals(rhs.satelliteId))))&&((this.active == rhs.active)||((this.active!= null)&&this.active.equals(rhs.active))))&&((this.acceptedCollisionProbability == rhs.acceptedCollisionProbability)||((this.acceptedCollisionProbability!= null)&&this.acceptedCollisionProbability.equals(rhs.acceptedCollisionProbability))))&&((this.thrustOutput == rhs.thrustOutput)||((this.thrustOutput!= null)&&this.thrustOutput.equals(rhs.thrustOutput))))&&((this.spaceTrackStatusOther == rhs.spaceTrackStatusOther)||((this.spaceTrackStatusOther!= null)&&this.spaceTrackStatusOther.equals(rhs.spaceTrackStatusOther))))&&((this.dragArea == rhs.dragArea)||((this.dragArea!= null)&&this.dragArea.equals(rhs.dragArea))))&&((this.sendMailNotifications == rhs.sendMailNotifications)||((this.sendMailNotifications!= null)&&this.sendMailNotifications.equals(rhs.sendMailNotifications))))&&((this.spaceTrackPocName == rhs.spaceTrackPocName)||((this.spaceTrackPocName!= null)&&this.spaceTrackPocName.equals(rhs.spaceTrackPocName))))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))));
+        return (((((((((((((((((((((((((((((((((((this.thrustUncertainty == rhs.thrustUncertainty)||((this.thrustUncertainty!= null)&&this.thrustUncertainty.equals(rhs.thrustUncertainty)))&&((this.useAiRiskPrediction == rhs.useAiRiskPrediction)||((this.useAiRiskPrediction!= null)&&this.useAiRiskPrediction.equals(rhs.useAiRiskPrediction))))&&((this.noradIds == rhs.noradIds)||((this.noradIds!= null)&&this.noradIds.equals(rhs.noradIds))))&&((this.mass == rhs.mass)||((this.mass!= null)&&this.mass.equals(rhs.mass))))&&((this.spaceTrackStatus == rhs.spaceTrackStatus)||((this.spaceTrackStatus!= null)&&this.spaceTrackStatus.equals(rhs.spaceTrackStatus))))&&((this.gnssSensor == rhs.gnssSensor)||((this.gnssSensor!= null)&&this.gnssSensor.equals(rhs.gnssSensor))))&&((this.minThrustDuration == rhs.minThrustDuration)||((this.minThrustDuration!= null)&&this.minThrustDuration.equals(rhs.minThrustDuration))))&&((this.minTimeInSun == rhs.minTimeInSun)||((this.minTimeInSun!= null)&&this.minTimeInSun.equals(rhs.minTimeInSun))))&&((this.thrustPointingUncertainty == rhs.thrustPointingUncertainty)||((this.thrustPointingUncertainty!= null)&&this.thrustPointingUncertainty.equals(rhs.thrustPointingUncertainty))))&&((this.inSunConstraint == rhs.inSunConstraint)||((this.inSunConstraint!= null)&&this.inSunConstraint.equals(rhs.inSunConstraint))))&&((this.notificationVerbosity == rhs.notificationVerbosity)||((this.notificationVerbosity!= null)&&this.notificationVerbosity.equals(rhs.notificationVerbosity))))&&((this.propulsionType == rhs.propulsionType)||((this.propulsionType!= null)&&this.propulsionType.equals(rhs.propulsionType))))&&((this.sendTeamsNotifications == rhs.sendTeamsNotifications)||((this.sendTeamsNotifications!= null)&&this.sendTeamsNotifications.equals(rhs.sendTeamsNotifications))))&&((this.spaceTrackLogin == rhs.spaceTrackLogin)||((this.spaceTrackLogin!= null)&&this.spaceTrackLogin.equals(rhs.spaceTrackLogin))))&&((this.maneuverStrategy == rhs.maneuverStrategy)||((this.maneuverStrategy!= null)&&this.maneuverStrategy.equals(rhs.maneuverStrategy))))&&((this.slackWebhook == rhs.slackWebhook)||((this.slackWebhook!= null)&&this.slackWebhook.equals(rhs.slackWebhook))))&&((this.acceptedMinimumDistance == rhs.acceptedMinimumDistance)||((this.acceptedMinimumDistance!= null)&&this.acceptedMinimumDistance.equals(rhs.acceptedMinimumDistance))))&&((this.info == rhs.info)||((this.info!= null)&&this.info.equals(rhs.info))))&&((this.area == rhs.area)||((this.area!= null)&&this.area.equals(rhs.area))))&&((this.spaceTrackCompanyName == rhs.spaceTrackCompanyName)||((this.spaceTrackCompanyName!= null)&&this.spaceTrackCompanyName.equals(rhs.spaceTrackCompanyName))))&&((this.spaceTrackPocAddress == rhs.spaceTrackPocAddress)||((this.spaceTrackPocAddress!= null)&&this.spaceTrackPocAddress.equals(rhs.spaceTrackPocAddress))))&&((this.sendSlackNotifications == rhs.sendSlackNotifications)||((this.sendSlackNotifications!= null)&&this.sendSlackNotifications.equals(rhs.sendSlackNotifications))))&&((this.maxThrustDuration == rhs.maxThrustDuration)||((this.maxThrustDuration!= null)&&this.maxThrustDuration.equals(rhs.maxThrustDuration))))&&((this.teamsWebhook == rhs.teamsWebhook)||((this.teamsWebhook!= null)&&this.teamsWebhook.equals(rhs.teamsWebhook))))&&((this.satelliteId == rhs.satelliteId)||((this.satelliteId!= null)&&this.satelliteId.equals(rhs.satelliteId))))&&((this.active == rhs.active)||((this.active!= null)&&this.active.equals(rhs.active))))&&((this.acceptedCollisionProbability == rhs.acceptedCollisionProbability)||((this.acceptedCollisionProbability!= null)&&this.acceptedCollisionProbability.equals(rhs.acceptedCollisionProbability))))&&((this.thrustOutput == rhs.thrustOutput)||((this.thrustOutput!= null)&&this.thrustOutput.equals(rhs.thrustOutput))))&&((this.spaceTrackStatusOther == rhs.spaceTrackStatusOther)||((this.spaceTrackStatusOther!= null)&&this.spaceTrackStatusOther.equals(rhs.spaceTrackStatusOther))))&&((this.dragArea == rhs.dragArea)||((this.dragArea!= null)&&this.dragArea.equals(rhs.dragArea))))&&((this.sendMailNotifications == rhs.sendMailNotifications)||((this.sendMailNotifications!= null)&&this.sendMailNotifications.equals(rhs.sendMailNotifications))))&&((this.spaceTrackPocName == rhs.spaceTrackPocName)||((this.spaceTrackPocName!= null)&&this.spaceTrackPocName.equals(rhs.spaceTrackPocName))))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))))&&((this.symmetricManoeuvres == rhs.symmetricManoeuvres)||((this.symmetricManoeuvres!= null)&&this.symmetricManoeuvres.equals(rhs.symmetricManoeuvres))));
     }
 
 
