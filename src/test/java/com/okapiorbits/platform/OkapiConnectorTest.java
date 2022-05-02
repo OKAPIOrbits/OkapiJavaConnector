@@ -3,6 +3,7 @@ package com.okapiorbits.platform;
 import com.okapiorbits.platform.science.jobs.json.Satellite;
 import com.okapiorbits.platform.science.jobs.json.Satellites;
 import io.github.cdimascio.dotenv.Dotenv;
+import io.github.cdimascio.dotenv.DotenvException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -19,9 +20,15 @@ class OkapiConnectorTest {
 
     @org.junit.jupiter.api.BeforeAll
     public static void setUp() {
-        Dotenv dotenv = Dotenv.load();
-        String username = dotenv.get("OKAPI_USERNAME");
-        String password = dotenv.get("OKAPI_PASSWORD");
+        String username = null;
+        String password = null;
+        try {
+            Dotenv dotenv = Dotenv.load();
+            username = dotenv.get("OKAPI_USERNAME");
+            password = dotenv.get("OKAPI_PASSWORD");
+        } catch (DotenvException e) {
+            System.out.println("Not .env file found. Proceeding with environment variables");
+        }
         String testUsername = System.getenv("OKAPI_TEST_USERNAME");
         String testPassword = System.getenv("OKAPI_TEST_PASSWORD");
         String testUrl = System.getenv("OKAPI_TEST_URL");
@@ -45,6 +52,7 @@ class OkapiConnectorTest {
                     password
             );
         }
+        Assertions.assertNotEquals(okapiConnector, null);
     }
 
     @org.junit.jupiter.api.Test
