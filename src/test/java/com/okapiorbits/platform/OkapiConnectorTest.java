@@ -2,6 +2,7 @@ package com.okapiorbits.platform;
 
 import com.okapiorbits.platform.science.jobs.json.Satellite;
 import com.okapiorbits.platform.science.jobs.json.Satellites;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -18,15 +19,32 @@ class OkapiConnectorTest {
 
     @org.junit.jupiter.api.BeforeAll
     public static void setUp() {
+        Dotenv dotenv = Dotenv.load();
+        String username = dotenv.get("OKAPI_USERNAME");
+        String password = dotenv.get("OKAPI_PASSWORD");
         String testUsername = System.getenv("OKAPI_TEST_USERNAME");
         String testPassword = System.getenv("OKAPI_TEST_PASSWORD");
         String testUrl = System.getenv("OKAPI_TEST_URL");
-        // initializing communication
-        okapiConnector = new OkapiConnector(
-                testUsername,
-                testPassword,
-                testUrl
-        );
+        if (testUsername != null && testPassword != null && testUrl != null) {
+            // initializing communication with test accounts and custom URL
+            okapiConnector = new OkapiConnector(
+                    testUsername,
+                    testPassword,
+                    testUrl
+            );
+        } else if (testUsername != null && testPassword != null) {
+            // initializing communication with test accounts
+            okapiConnector = new OkapiConnector(
+                    testUsername,
+                    testPassword
+            );
+        } else if (username != null && password != null) {
+            // initializing communication
+            okapiConnector = new OkapiConnector(
+                    username,
+                    password
+            );
+        }
     }
 
     @org.junit.jupiter.api.Test
