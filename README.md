@@ -52,3 +52,6 @@ mvn clean package
 ### Documentation
 For further information on the available end points of the OKAPI API and the documentation visit 
 [okapiorbits.space/documentation](https://okapiorbits.space/documentation).
+
+### NOTE
+This repository is currently not maintained. For a more recent version, please contact sven@okapiorbits.com
