@@ -9,6 +9,11 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+import java.util.Date;
+import java.text.ParseException;
+
 /**
  * This class tests the {@link OkapiConnector} using example input and sends them to the end points of the available
  * OKAPI platform.
@@ -472,6 +477,79 @@ public class OkapiConnectorTryout {
 
 		if (okapi.responseCode == 200) {
 			System.out.println(evals.toString());
+		}
+	}
+
+	/**
+	 * Tests the addition of ground station passes for two satellites to the OKAPI backend
+	 * @param okapi - the initialized {@link OkapiConnector}
+	 * @param accessToken - a valid accessToken obtained using {@link OkapiConnector#getToken()}
+	 */
+	private static void addGroundStationPassesTest(OkapiConnector okapi, String accessToken)
+	  throws ParseException {
+
+		MultiGroundStationPasses multiGroundStationPasses = new MultiGroundStationPasses();
+		GroundStationPasses groundStationPasses = new GroundStationPasses();
+		multiGroundStationPasses.getElements().add(groundStationPasses);
+		groundStationPasses.setSpacecraft("My Sat 1");
+		addPassWindow(groundStationPasses, "2020-10-13T10:00:23.000Z", "2020-10-13T10:09:54.000Z");
+		addPassWindow(groundStationPasses, "2020-10-13T12:57:08.000Z", "2020-10-13T13:08:50.000Z");
+		addPassWindow(groundStationPasses, "2020-10-13T20:41:06.000Z", "2020-10-13T20:49:45.000Z");
+		groundStationPasses = new GroundStationPasses();
+		multiGroundStationPasses.getElements().add(groundStationPasses);
+		groundStationPasses.setSpacecraft("My Sat 2");
+		addPassWindow(groundStationPasses, "2020-10-13T22:15:37.000Z", "2020-10-13T22:24:34.000Z");
+		addPassWindow(groundStationPasses, "2020-10-14T09:49:20.000Z", "2020-10-14T09:58:45.000Z");
+		addPassWindow(groundStationPasses, "2020-10-14T12:45:58.000Z", "2020-10-14T12:57:41.000Z");
+		
+
+		// Send new ground station passes definitions to the backend to add to the DB and retrieve the new instance from the
+		// backend.
+		try {
+			multiGroundStationPasses = okapi.addMultiGroundStationPasses(multiGroundStationPasses, accessToken);
+
+		} catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
+			okapiPlatformException.printStackTrace();
+			return;
+		}
+
+		// Retrieve the newly assigned satellite id
+		if (okapi.responseCode == 200) {
+			System.out.println(multiGroundStationPasses.toString());
+		}
+	}
+	
+	private static void addPassWindow(GroundStationPasses groundStationPasses, String isoStringStart, String isoStringEnd)
+	  throws ParseException {
+		PassWindow passWindow = new PassWindow();
+		groundStationPasses.getPasses().add(passWindow);
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+    df.setTimeZone(TimeZone.getTimeZone("UTC"));
+    Date date = df.parse(isoStringStart);
+		passWindow.setStart(date);
+    date = df.parse(isoStringEnd);
+		passWindow.setEnd(date);
+	}
+
+	/**
+	 * Tests the retrieval of ground station passes
+	 * @param okapi - the initialized {@link OkapiConnector}
+	 * @param accessToken - a valid accessToken obtained using {@link OkapiConnector#getToken()}
+	 */
+	private static void getMultiGroundStationPassesInfoTest(OkapiConnector okapi, String accessToken) {
+
+		MultiGroundStationPassesInfo multiGroundStationPassesInfo;
+
+		// Retrieve all of them
+		try {
+			multiGroundStationPassesInfo = okapi.getMultiGroundStationPassesInfo(accessToken);
+		} catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
+			okapiPlatformException.printStackTrace();
+			return;
+		}
+
+		if (okapi.responseCode == 200) {
+			System.out.println(multiGroundStationPassesInfo.toString());
 		}
 	}
 }

@@ -473,4 +473,36 @@ public class OkapiConnector {
 
 		return evals;
 	}
+
+	/**
+	 * Adds new ground station passes as {@link MultiGroundStationPasses} to the OKAPI backend.
+	 * @param newGroundStationPasses - A new {@link Satellite} definition, which must contain the name, satelliteId and Space-Track status
+	 * @param accessToken - the access token enabling the access to the OKAPI services
+	 * @return the {@link Satellite} as received in the backend. It will have a new satelliteId, which has been assigned by the backend!
+	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
+	 * @throws IOException Raised when the communication to the backend fails.
+	 */
+	public MultiGroundStationPasses addMultiGroundStationPasses(MultiGroundStationPasses newGroundStationPasses, String accessToken) throws OkapiPlatformException, IOException {
+		String newGroundStationPassesAsString = this.objectMapper.writeValueAsString(newGroundStationPasses);
+		newGroundStationPassesAsString = send(
+				"/multi-ground-station-passes",
+				newGroundStationPassesAsString,
+				accessToken);
+		return this.objectMapper.readValue(newGroundStationPassesAsString, MultiGroundStationPasses.class);
+	}
+
+	/**
+	 * Retrieves ground station passes as {@link MultiGroundStationPassesInfo}.
+	 * @param accessToken - the access token enabling the access to the OKAPI services
+	 * @return {@link MultiGroundStationPassesInfo}, which contains all ground station passes of the current user and additional information
+	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
+	 * @throws IOException Raised when the communication to the backend fails.
+	 */
+	public MultiGroundStationPassesInfo getMultiGroundStationPassesInfo(String accessToken) throws OkapiPlatformException, IOException {
+		MultiGroundStationPassesInfo passes;
+		String jsonString = waitForProcessingAndGetValues("/multi-ground-station-passes-info", accessToken);
+		passes = this.objectMapper.readValue(jsonString, MultiGroundStationPassesInfo.class);
+
+		return passes;
+	}
 }
