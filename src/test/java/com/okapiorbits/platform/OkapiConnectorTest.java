@@ -155,16 +155,16 @@ class OkapiConnectorTest {
 		    MultiGroundStationPasses multiGroundStationPasses = new MultiGroundStationPasses();
 		    GroundStationPasses groundStationPasses = new GroundStationPasses();
 		    multiGroundStationPasses.getElements().add(groundStationPasses);
-		    groundStationPasses.setSpacecraft("My Sat 1");
+		    groundStationPasses.setSpacecraft("SALSAT");
 		    addPassWindow(groundStationPasses, "2020-10-13T10:00:23Z", "2020-10-13T10:09:54Z");
 		    addPassWindow(groundStationPasses, "2020-10-13T12:57:08Z", "2020-10-13T13:08:50Z");
 		    addPassWindow(groundStationPasses, "2020-10-13T20:41:06Z", "2020-10-13T20:49:45Z");
 		    groundStationPasses = new GroundStationPasses();
 		    multiGroundStationPasses.getElements().add(groundStationPasses);
-		    groundStationPasses.setSpacecraft("My Sat 2");
+		    groundStationPasses.setSpacecraft("TUBIN");
 		    addPassWindow(groundStationPasses, "2020-10-13T22:15:37Z", "2020-10-13T22:24:34Z");
 		    addPassWindow(groundStationPasses, "2020-10-14T09:49:20Z", "2020-10-14T09:58:45Z");
-		    addPassWindow(groundStationPasses, "2020-10-14T12:45:58.Z", "2020-10-14T12:57:41Z");
+		    addPassWindow(groundStationPasses, "2020-10-14T12:45:58Z", "2020-10-14T12:57:41Z");
 		    
 
 		    // Send new ground station passes definitions to the backend to add to the DB and retrieve the new instance from the
@@ -190,7 +190,7 @@ class OkapiConnectorTest {
 	      throws ParseException {
 		    PassWindow passWindow = new PassWindow();
 		    groundStationPasses.getPasses().add(passWindow);
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmX");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = df.parse(isoStringStart);
 		    passWindow.setStart(date);
