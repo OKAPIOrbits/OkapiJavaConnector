@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "id",
     "strategy_number",
     "strategy_name",
     "maneuver_file",
@@ -29,6 +30,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 })
 public class ManeuverEval {
 
+    /**
+     * Uuid
+     * <p>
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
+     * 
+     */
+    @JsonProperty("id")
+    @JsonPropertyDescription("A Universally-Unique Identifier, as used by OKAPI:Orbits")
+    private String id;
     /**
      * 
      * (Required)
@@ -98,6 +108,28 @@ public class ManeuverEval {
     private String comment;
     @JsonProperty("candidates_checked")
     private Integer candidatesChecked;
+
+    /**
+     * Uuid
+     * <p>
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
+     * 
+     */
+    @JsonProperty("id")
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Uuid
+     * <p>
+     * A Universally-Unique Identifier, as used by OKAPI:Orbits
+     * 
+     */
+    @JsonProperty("id")
+    public void setId(String id) {
+        this.id = id;
+    }
 
     /**
      * 
@@ -297,6 +329,10 @@ public class ManeuverEval {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(ManeuverEval.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("id");
+        sb.append('=');
+        sb.append(((this.id == null)?"<null>":this.id));
+        sb.append(',');
         sb.append("strategyNumber");
         sb.append('=');
         sb.append(((this.strategyNumber == null)?"<null>":this.strategyNumber));
@@ -354,15 +390,16 @@ public class ManeuverEval {
         int result = 1;
         result = ((result* 31)+((this.thrustTotal == null)? 0 :this.thrustTotal.hashCode()));
         result = ((result* 31)+((this.strategyName == null)? 0 :this.strategyName.hashCode()));
-        result = ((result* 31)+((this.suggested == null)? 0 :this.suggested.hashCode()));
         result = ((result* 31)+((this.newRiskPrediction == null)? 0 :this.newRiskPrediction.hashCode()));
+        result = ((result* 31)+((this.dismissed == null)? 0 :this.dismissed.hashCode()));
+        result = ((result* 31)+((this.deltaSma == null)? 0 :this.deltaSma.hashCode()));
+        result = ((result* 31)+((this.strategyNumber == null)? 0 :this.strategyNumber.hashCode()));
+        result = ((result* 31)+((this.suggested == null)? 0 :this.suggested.hashCode()));
         result = ((result* 31)+((this.maneuverFile == null)? 0 :this.maneuverFile.hashCode()));
         result = ((result* 31)+((this.newRiskEstimation == null)? 0 :this.newRiskEstimation.hashCode()));
-        result = ((result* 31)+((this.dismissed == null)? 0 :this.dismissed.hashCode()));
         result = ((result* 31)+((this.candidatesChecked == null)? 0 :this.candidatesChecked.hashCode()));
-        result = ((result* 31)+((this.deltaSma == null)? 0 :this.deltaSma.hashCode()));
         result = ((result* 31)+((this.comment == null)? 0 :this.comment.hashCode()));
-        result = ((result* 31)+((this.strategyNumber == null)? 0 :this.strategyNumber.hashCode()));
+        result = ((result* 31)+((this.id == null)? 0 :this.id.hashCode()));
         return result;
     }
 
@@ -375,7 +412,7 @@ public class ManeuverEval {
             return false;
         }
         ManeuverEval rhs = ((ManeuverEval) other);
-        return ((((((((((((this.thrustTotal == rhs.thrustTotal)||((this.thrustTotal!= null)&&this.thrustTotal.equals(rhs.thrustTotal)))&&((this.strategyName == rhs.strategyName)||((this.strategyName!= null)&&this.strategyName.equals(rhs.strategyName))))&&((this.suggested == rhs.suggested)||((this.suggested!= null)&&this.suggested.equals(rhs.suggested))))&&((this.newRiskPrediction == rhs.newRiskPrediction)||((this.newRiskPrediction!= null)&&this.newRiskPrediction.equals(rhs.newRiskPrediction))))&&((this.maneuverFile == rhs.maneuverFile)||((this.maneuverFile!= null)&&this.maneuverFile.equals(rhs.maneuverFile))))&&((this.newRiskEstimation == rhs.newRiskEstimation)||((this.newRiskEstimation!= null)&&this.newRiskEstimation.equals(rhs.newRiskEstimation))))&&((this.dismissed == rhs.dismissed)||((this.dismissed!= null)&&this.dismissed.equals(rhs.dismissed))))&&((this.candidatesChecked == rhs.candidatesChecked)||((this.candidatesChecked!= null)&&this.candidatesChecked.equals(rhs.candidatesChecked))))&&((this.deltaSma == rhs.deltaSma)||((this.deltaSma!= null)&&this.deltaSma.equals(rhs.deltaSma))))&&((this.comment == rhs.comment)||((this.comment!= null)&&this.comment.equals(rhs.comment))))&&((this.strategyNumber == rhs.strategyNumber)||((this.strategyNumber!= null)&&this.strategyNumber.equals(rhs.strategyNumber))));
+        return (((((((((((((this.thrustTotal == rhs.thrustTotal)||((this.thrustTotal!= null)&&this.thrustTotal.equals(rhs.thrustTotal)))&&((this.strategyName == rhs.strategyName)||((this.strategyName!= null)&&this.strategyName.equals(rhs.strategyName))))&&((this.newRiskPrediction == rhs.newRiskPrediction)||((this.newRiskPrediction!= null)&&this.newRiskPrediction.equals(rhs.newRiskPrediction))))&&((this.dismissed == rhs.dismissed)||((this.dismissed!= null)&&this.dismissed.equals(rhs.dismissed))))&&((this.deltaSma == rhs.deltaSma)||((this.deltaSma!= null)&&this.deltaSma.equals(rhs.deltaSma))))&&((this.strategyNumber == rhs.strategyNumber)||((this.strategyNumber!= null)&&this.strategyNumber.equals(rhs.strategyNumber))))&&((this.suggested == rhs.suggested)||((this.suggested!= null)&&this.suggested.equals(rhs.suggested))))&&((this.maneuverFile == rhs.maneuverFile)||((this.maneuverFile!= null)&&this.maneuverFile.equals(rhs.maneuverFile))))&&((this.newRiskEstimation == rhs.newRiskEstimation)||((this.newRiskEstimation!= null)&&this.newRiskEstimation.equals(rhs.newRiskEstimation))))&&((this.candidatesChecked == rhs.candidatesChecked)||((this.candidatesChecked!= null)&&this.candidatesChecked.equals(rhs.candidatesChecked))))&&((this.comment == rhs.comment)||((this.comment!= null)&&this.comment.equals(rhs.comment))))&&((this.id == rhs.id)||((this.id!= null)&&this.id.equals(rhs.id))));
     }
 
 }
