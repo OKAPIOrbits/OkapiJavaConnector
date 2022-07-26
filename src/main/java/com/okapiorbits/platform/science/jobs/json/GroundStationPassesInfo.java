@@ -39,17 +39,24 @@ public class GroundStationPassesInfo {
      * Uuid
      * <p>
      * A Universally-Unique Identifier, as used by OKAPI:Orbits
+     * (Required)
      * 
      */
     @JsonProperty("ground_station_passes_id")
     @JsonPropertyDescription("A Universally-Unique Identifier, as used by OKAPI:Orbits")
     private String groundStationPassesId;
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("object_id")
     private Object objectId;
     /**
      * IsoDateTime
      * <p>
      * ISO8601 date/time definition.
+     * (Required)
      * 
      */
     @JsonProperty("start_epoch")
@@ -59,13 +66,19 @@ public class GroundStationPassesInfo {
      * IsoDateTime
      * <p>
      * ISO8601 date/time definition.
+     * (Required)
      * 
      */
     @JsonProperty("stop_epoch")
     @JsonPropertyDescription("ISO8601 date/time definition.")
     private Date stopEpoch;
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("ground_station_passes")
-    private List<PassWindow> groundStationPasses = new ArrayList<PassWindow>();
+    private List<PassWindowMillis> groundStationPasses = new ArrayList<PassWindowMillis>();
 
     /**
      * The name of the spacecraft as contained in the public SpaceTrack ("TLE") catalogue
@@ -91,6 +104,7 @@ public class GroundStationPassesInfo {
      * Uuid
      * <p>
      * A Universally-Unique Identifier, as used by OKAPI:Orbits
+     * (Required)
      * 
      */
     @JsonProperty("ground_station_passes_id")
@@ -102,6 +116,7 @@ public class GroundStationPassesInfo {
      * Uuid
      * <p>
      * A Universally-Unique Identifier, as used by OKAPI:Orbits
+     * (Required)
      * 
      */
     @JsonProperty("ground_station_passes_id")
@@ -109,11 +124,21 @@ public class GroundStationPassesInfo {
         this.groundStationPassesId = groundStationPassesId;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("object_id")
     public Object getObjectId() {
         return objectId;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("object_id")
     public void setObjectId(Object objectId) {
         this.objectId = objectId;
@@ -123,6 +148,7 @@ public class GroundStationPassesInfo {
      * IsoDateTime
      * <p>
      * ISO8601 date/time definition.
+     * (Required)
      * 
      */
     @JsonProperty("start_epoch")
@@ -134,6 +160,7 @@ public class GroundStationPassesInfo {
      * IsoDateTime
      * <p>
      * ISO8601 date/time definition.
+     * (Required)
      * 
      */
     @JsonProperty("start_epoch")
@@ -145,6 +172,7 @@ public class GroundStationPassesInfo {
      * IsoDateTime
      * <p>
      * ISO8601 date/time definition.
+     * (Required)
      * 
      */
     @JsonProperty("stop_epoch")
@@ -156,6 +184,7 @@ public class GroundStationPassesInfo {
      * IsoDateTime
      * <p>
      * ISO8601 date/time definition.
+     * (Required)
      * 
      */
     @JsonProperty("stop_epoch")
@@ -163,13 +192,23 @@ public class GroundStationPassesInfo {
         this.stopEpoch = stopEpoch;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("ground_station_passes")
-    public List<PassWindow> getGroundStationPasses() {
+    public List<PassWindowMillis> getGroundStationPasses() {
         return groundStationPasses;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("ground_station_passes")
-    public void setGroundStationPasses(List<PassWindow> groundStationPasses) {
+    public void setGroundStationPasses(List<PassWindowMillis> groundStationPasses) {
         this.groundStationPasses = groundStationPasses;
     }
 
