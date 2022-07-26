@@ -1,9 +1,7 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -13,12 +11,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * GroundStationPassesInfo
  * <p>
- * Ground station passes information (= ground station passes + additional information) of a named satellite over one or multiple ground stations
+ * Ground station passes information (= ground station passes, nested into additional information) of a named satellite over one or multiple ground stations
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "spacecraft",
     "ground_station_passes_id",
     "object_id",
     "start_epoch",
@@ -27,14 +24,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 })
 public class GroundStationPassesInfo {
 
-    /**
-     * The name of the spacecraft as contained in the public SpaceTrack ("TLE") catalogue
-     * (Required)
-     * 
-     */
-    @JsonProperty("spacecraft")
-    @JsonPropertyDescription("The name of the spacecraft as contained in the public SpaceTrack (\"TLE\") catalogue")
-    private String spacecraft;
     /**
      * Uuid
      * <p>
@@ -73,32 +62,15 @@ public class GroundStationPassesInfo {
     @JsonPropertyDescription("ISO8601 date/time definition.")
     private Date stopEpoch;
     /**
-     * 
+     * GroundStationPasses
+     * <p>
+     * Ground station passes of a named satellite over one or multiple ground stations
      * (Required)
      * 
      */
     @JsonProperty("ground_station_passes")
-    private List<PassWindowMillis> groundStationPasses = new ArrayList<PassWindowMillis>();
-
-    /**
-     * The name of the spacecraft as contained in the public SpaceTrack ("TLE") catalogue
-     * (Required)
-     * 
-     */
-    @JsonProperty("spacecraft")
-    public String getSpacecraft() {
-        return spacecraft;
-    }
-
-    /**
-     * The name of the spacecraft as contained in the public SpaceTrack ("TLE") catalogue
-     * (Required)
-     * 
-     */
-    @JsonProperty("spacecraft")
-    public void setSpacecraft(String spacecraft) {
-        this.spacecraft = spacecraft;
-    }
+    @JsonPropertyDescription("Ground station passes of a named satellite over one or multiple ground stations")
+    private GroundStationPasses groundStationPasses;
 
     /**
      * Uuid
@@ -193,22 +165,26 @@ public class GroundStationPassesInfo {
     }
 
     /**
-     * 
+     * GroundStationPasses
+     * <p>
+     * Ground station passes of a named satellite over one or multiple ground stations
      * (Required)
      * 
      */
     @JsonProperty("ground_station_passes")
-    public List<PassWindowMillis> getGroundStationPasses() {
+    public GroundStationPasses getGroundStationPasses() {
         return groundStationPasses;
     }
 
     /**
-     * 
+     * GroundStationPasses
+     * <p>
+     * Ground station passes of a named satellite over one or multiple ground stations
      * (Required)
      * 
      */
     @JsonProperty("ground_station_passes")
-    public void setGroundStationPasses(List<PassWindowMillis> groundStationPasses) {
+    public void setGroundStationPasses(GroundStationPasses groundStationPasses) {
         this.groundStationPasses = groundStationPasses;
     }
 
@@ -216,10 +192,6 @@ public class GroundStationPassesInfo {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(GroundStationPassesInfo.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("spacecraft");
-        sb.append('=');
-        sb.append(((this.spacecraft == null)?"<null>":this.spacecraft));
-        sb.append(',');
         sb.append("groundStationPassesId");
         sb.append('=');
         sb.append(((this.groundStationPassesId == null)?"<null>":this.groundStationPassesId));
@@ -251,12 +223,11 @@ public class GroundStationPassesInfo {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.spacecraft == null)? 0 :this.spacecraft.hashCode()));
-        result = ((result* 31)+((this.groundStationPassesId == null)? 0 :this.groundStationPassesId.hashCode()));
-        result = ((result* 31)+((this.groundStationPasses == null)? 0 :this.groundStationPasses.hashCode()));
         result = ((result* 31)+((this.startEpoch == null)? 0 :this.startEpoch.hashCode()));
+        result = ((result* 31)+((this.groundStationPassesId == null)? 0 :this.groundStationPassesId.hashCode()));
         result = ((result* 31)+((this.objectId == null)? 0 :this.objectId.hashCode()));
         result = ((result* 31)+((this.stopEpoch == null)? 0 :this.stopEpoch.hashCode()));
+        result = ((result* 31)+((this.groundStationPasses == null)? 0 :this.groundStationPasses.hashCode()));
         return result;
     }
 
@@ -269,7 +240,7 @@ public class GroundStationPassesInfo {
             return false;
         }
         GroundStationPassesInfo rhs = ((GroundStationPassesInfo) other);
-        return (((((((this.spacecraft == rhs.spacecraft)||((this.spacecraft!= null)&&this.spacecraft.equals(rhs.spacecraft)))&&((this.groundStationPassesId == rhs.groundStationPassesId)||((this.groundStationPassesId!= null)&&this.groundStationPassesId.equals(rhs.groundStationPassesId))))&&((this.groundStationPasses == rhs.groundStationPasses)||((this.groundStationPasses!= null)&&this.groundStationPasses.equals(rhs.groundStationPasses))))&&((this.startEpoch == rhs.startEpoch)||((this.startEpoch!= null)&&this.startEpoch.equals(rhs.startEpoch))))&&((this.objectId == rhs.objectId)||((this.objectId!= null)&&this.objectId.equals(rhs.objectId))))&&((this.stopEpoch == rhs.stopEpoch)||((this.stopEpoch!= null)&&this.stopEpoch.equals(rhs.stopEpoch))));
+        return ((((((this.startEpoch == rhs.startEpoch)||((this.startEpoch!= null)&&this.startEpoch.equals(rhs.startEpoch)))&&((this.groundStationPassesId == rhs.groundStationPassesId)||((this.groundStationPassesId!= null)&&this.groundStationPassesId.equals(rhs.groundStationPassesId))))&&((this.objectId == rhs.objectId)||((this.objectId!= null)&&this.objectId.equals(rhs.objectId))))&&((this.stopEpoch == rhs.stopEpoch)||((this.stopEpoch!= null)&&this.stopEpoch.equals(rhs.stopEpoch))))&&((this.groundStationPasses == rhs.groundStationPasses)||((this.groundStationPasses!= null)&&this.groundStationPasses.equals(rhs.groundStationPasses))));
     }
 
 }

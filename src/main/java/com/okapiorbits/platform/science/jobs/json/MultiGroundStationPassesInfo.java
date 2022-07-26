@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * MultiGroundStationPassesInfo
  * <p>
- * Ground station passes information (= ground station passes + additional information) of multiple named satellites over one or multiple ground stations
+ * Ground station passes information (= ground station passes, nested into additional information) of multiple named satellites over one or multiple ground stations
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
