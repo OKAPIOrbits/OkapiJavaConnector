@@ -1,7 +1,9 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -71,15 +73,13 @@ public class GroundStationPassesInfo {
     @JsonPropertyDescription("ISO8601 date/time definition.")
     private Date stopEpoch;
     /**
-     * PassWindowMillis
-     * <p>
-     * Pass Window including pass start and end epochs (with milliseconds).
+     * Note that these are expected to be in timely order
      * (Required)
      * 
      */
     @JsonProperty("passes")
-    @JsonPropertyDescription("Pass Window including pass start and end epochs (with milliseconds).")
-    private PassWindowMillis passes;
+    @JsonPropertyDescription("Note that these are expected to be in timely order")
+    private List<PassWindowMillis> passes = new ArrayList<PassWindowMillis>();
 
     /**
      * Uuid
@@ -194,26 +194,22 @@ public class GroundStationPassesInfo {
     }
 
     /**
-     * PassWindowMillis
-     * <p>
-     * Pass Window including pass start and end epochs (with milliseconds).
+     * Note that these are expected to be in timely order
      * (Required)
      * 
      */
     @JsonProperty("passes")
-    public PassWindowMillis getPasses() {
+    public List<PassWindowMillis> getPasses() {
         return passes;
     }
 
     /**
-     * PassWindowMillis
-     * <p>
-     * Pass Window including pass start and end epochs (with milliseconds).
+     * Note that these are expected to be in timely order
      * (Required)
      * 
      */
     @JsonProperty("passes")
-    public void setPasses(PassWindowMillis passes) {
+    public void setPasses(List<PassWindowMillis> passes) {
         this.passes = passes;
     }
 
