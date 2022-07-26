@@ -532,7 +532,7 @@ public class OkapiConnector {
 	public MultiGroundStationPassesInfo getMultiGroundStationPassesInfo(String accessToken) throws OkapiPlatformException, IOException {
 		MultiGroundStationPassesInfo passes;
 		String jsonString = waitForProcessingAndGetValues("/multi-ground-station-passes-info", accessToken);
-		System.out.println(jsonString);
+		//System.out.println(jsonString);
 		passes = this.objectMapper.readValue(jsonString, MultiGroundStationPassesInfo.class);
 
 		return passes;
