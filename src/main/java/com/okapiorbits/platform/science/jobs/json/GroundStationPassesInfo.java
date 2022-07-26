@@ -17,10 +17,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "ground_station_passes_id",
+    "spacecraft",
     "object_id",
     "start_epoch",
     "stop_epoch",
-    "ground_station_passes"
+    "passes"
 })
 public class GroundStationPassesInfo {
 
@@ -34,6 +35,14 @@ public class GroundStationPassesInfo {
     @JsonProperty("ground_station_passes_id")
     @JsonPropertyDescription("A Universally-Unique Identifier, as used by OKAPI:Orbits")
     private String groundStationPassesId;
+    /**
+     * The name of the spacecraft as contained in the public SpaceTrack ("TLE") catalogue
+     * (Required)
+     * 
+     */
+    @JsonProperty("spacecraft")
+    @JsonPropertyDescription("The name of the spacecraft as contained in the public SpaceTrack (\"TLE\") catalogue")
+    private String spacecraft;
     /**
      * 
      * (Required)
@@ -62,15 +71,15 @@ public class GroundStationPassesInfo {
     @JsonPropertyDescription("ISO8601 date/time definition.")
     private Date stopEpoch;
     /**
-     * GroundStationPasses
+     * PassWindowMillis
      * <p>
-     * Ground station passes of a named satellite over one or multiple ground stations
+     * Pass Window including pass start and end epochs (with milliseconds).
      * (Required)
      * 
      */
-    @JsonProperty("ground_station_passes")
-    @JsonPropertyDescription("Ground station passes of a named satellite over one or multiple ground stations")
-    private GroundStationPasses groundStationPasses;
+    @JsonProperty("passes")
+    @JsonPropertyDescription("Pass Window including pass start and end epochs (with milliseconds).")
+    private PassWindowMillis passes;
 
     /**
      * Uuid
@@ -94,6 +103,26 @@ public class GroundStationPassesInfo {
     @JsonProperty("ground_station_passes_id")
     public void setGroundStationPassesId(String groundStationPassesId) {
         this.groundStationPassesId = groundStationPassesId;
+    }
+
+    /**
+     * The name of the spacecraft as contained in the public SpaceTrack ("TLE") catalogue
+     * (Required)
+     * 
+     */
+    @JsonProperty("spacecraft")
+    public String getSpacecraft() {
+        return spacecraft;
+    }
+
+    /**
+     * The name of the spacecraft as contained in the public SpaceTrack ("TLE") catalogue
+     * (Required)
+     * 
+     */
+    @JsonProperty("spacecraft")
+    public void setSpacecraft(String spacecraft) {
+        this.spacecraft = spacecraft;
     }
 
     /**
@@ -165,27 +194,27 @@ public class GroundStationPassesInfo {
     }
 
     /**
-     * GroundStationPasses
+     * PassWindowMillis
      * <p>
-     * Ground station passes of a named satellite over one or multiple ground stations
+     * Pass Window including pass start and end epochs (with milliseconds).
      * (Required)
      * 
      */
-    @JsonProperty("ground_station_passes")
-    public GroundStationPasses getGroundStationPasses() {
-        return groundStationPasses;
+    @JsonProperty("passes")
+    public PassWindowMillis getPasses() {
+        return passes;
     }
 
     /**
-     * GroundStationPasses
+     * PassWindowMillis
      * <p>
-     * Ground station passes of a named satellite over one or multiple ground stations
+     * Pass Window including pass start and end epochs (with milliseconds).
      * (Required)
      * 
      */
-    @JsonProperty("ground_station_passes")
-    public void setGroundStationPasses(GroundStationPasses groundStationPasses) {
-        this.groundStationPasses = groundStationPasses;
+    @JsonProperty("passes")
+    public void setPasses(PassWindowMillis passes) {
+        this.passes = passes;
     }
 
     @Override
@@ -195,6 +224,10 @@ public class GroundStationPassesInfo {
         sb.append("groundStationPassesId");
         sb.append('=');
         sb.append(((this.groundStationPassesId == null)?"<null>":this.groundStationPassesId));
+        sb.append(',');
+        sb.append("spacecraft");
+        sb.append('=');
+        sb.append(((this.spacecraft == null)?"<null>":this.spacecraft));
         sb.append(',');
         sb.append("objectId");
         sb.append('=');
@@ -208,9 +241,9 @@ public class GroundStationPassesInfo {
         sb.append('=');
         sb.append(((this.stopEpoch == null)?"<null>":this.stopEpoch));
         sb.append(',');
-        sb.append("groundStationPasses");
+        sb.append("passes");
         sb.append('=');
-        sb.append(((this.groundStationPasses == null)?"<null>":this.groundStationPasses));
+        sb.append(((this.passes == null)?"<null>":this.passes));
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
@@ -223,11 +256,12 @@ public class GroundStationPassesInfo {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.startEpoch == null)? 0 :this.startEpoch.hashCode()));
+        result = ((result* 31)+((this.spacecraft == null)? 0 :this.spacecraft.hashCode()));
+        result = ((result* 31)+((this.passes == null)? 0 :this.passes.hashCode()));
         result = ((result* 31)+((this.groundStationPassesId == null)? 0 :this.groundStationPassesId.hashCode()));
+        result = ((result* 31)+((this.startEpoch == null)? 0 :this.startEpoch.hashCode()));
         result = ((result* 31)+((this.objectId == null)? 0 :this.objectId.hashCode()));
         result = ((result* 31)+((this.stopEpoch == null)? 0 :this.stopEpoch.hashCode()));
-        result = ((result* 31)+((this.groundStationPasses == null)? 0 :this.groundStationPasses.hashCode()));
         return result;
     }
 
@@ -240,7 +274,7 @@ public class GroundStationPassesInfo {
             return false;
         }
         GroundStationPassesInfo rhs = ((GroundStationPassesInfo) other);
-        return ((((((this.startEpoch == rhs.startEpoch)||((this.startEpoch!= null)&&this.startEpoch.equals(rhs.startEpoch)))&&((this.groundStationPassesId == rhs.groundStationPassesId)||((this.groundStationPassesId!= null)&&this.groundStationPassesId.equals(rhs.groundStationPassesId))))&&((this.objectId == rhs.objectId)||((this.objectId!= null)&&this.objectId.equals(rhs.objectId))))&&((this.stopEpoch == rhs.stopEpoch)||((this.stopEpoch!= null)&&this.stopEpoch.equals(rhs.stopEpoch))))&&((this.groundStationPasses == rhs.groundStationPasses)||((this.groundStationPasses!= null)&&this.groundStationPasses.equals(rhs.groundStationPasses))));
+        return (((((((this.spacecraft == rhs.spacecraft)||((this.spacecraft!= null)&&this.spacecraft.equals(rhs.spacecraft)))&&((this.passes == rhs.passes)||((this.passes!= null)&&this.passes.equals(rhs.passes))))&&((this.groundStationPassesId == rhs.groundStationPassesId)||((this.groundStationPassesId!= null)&&this.groundStationPassesId.equals(rhs.groundStationPassesId))))&&((this.startEpoch == rhs.startEpoch)||((this.startEpoch!= null)&&this.startEpoch.equals(rhs.startEpoch))))&&((this.objectId == rhs.objectId)||((this.objectId!= null)&&this.objectId.equals(rhs.objectId))))&&((this.stopEpoch == rhs.stopEpoch)||((this.stopEpoch!= null)&&this.stopEpoch.equals(rhs.stopEpoch))));
     }
 
 }
