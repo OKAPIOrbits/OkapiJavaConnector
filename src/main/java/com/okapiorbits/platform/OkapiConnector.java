@@ -11,6 +11,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.TimeUnit;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+
 /**
  * This class provides helper methods to send and retrieve information to and from the OKAPI platform.
  * <p>
@@ -86,6 +90,20 @@ public class OkapiConnector {
 		this.username = username;
 		this.password = password;
 		this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
+		
+		// Otherwise, when we write dates into the objects they are stringified
+		// as timestamps. We want simple strings
+    this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    
+    // This way, the mapper can read the simple string dates as Date objects
+    // This is the default format
+    this.resetDateFormat();
+	}
+	
+	private void resetDateFormat() {
+	  SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+    df.setTimeZone(TimeZone.getTimeZone("UTC"));
+    this.objectMapper.setDateFormat(df);
 	}
 
 	/**
@@ -483,11 +501,24 @@ public class OkapiConnector {
 	 * @throws IOException Raised when the communication to the backend fails.
 	 */
 	public MultiGroundStationPasses addMultiGroundStationPasses(MultiGroundStationPasses newGroundStationPasses, String accessToken) throws OkapiPlatformException, IOException {
+	  // Set non-default date format
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
+    df.setTimeZone(TimeZone.getTimeZone("UTC"));
+    this.objectMapper.setDateFormat(df);
+    
+    // Stringify
 		String newGroundStationPassesAsString = this.objectMapper.writeValueAsString(newGroundStationPasses);
+		
+		// Reset format
+		this.resetDateFormat();
+		
+		// Send
 		newGroundStationPassesAsString = send(
 				"/multi-ground-station-passes",
 				newGroundStationPassesAsString,
 				accessToken);
+				
+    // Read/return
 		return this.objectMapper.readValue(newGroundStationPassesAsString, MultiGroundStationPasses.class);
 	}
 
@@ -501,6 +532,7 @@ public class OkapiConnector {
 	public MultiGroundStationPassesInfo getMultiGroundStationPassesInfo(String accessToken) throws OkapiPlatformException, IOException {
 		MultiGroundStationPassesInfo passes;
 		String jsonString = waitForProcessingAndGetValues("/multi-ground-station-passes-info", accessToken);
+		System.out.println(jsonString);
 		passes = this.objectMapper.readValue(jsonString, MultiGroundStationPassesInfo.class);
 
 		return passes;

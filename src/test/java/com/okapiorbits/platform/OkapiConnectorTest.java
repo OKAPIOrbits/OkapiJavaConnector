@@ -1,7 +1,6 @@
 package com.okapiorbits.platform;
 
-import com.okapiorbits.platform.science.jobs.json.Satellite;
-import com.okapiorbits.platform.science.jobs.json.Satellites;
+import com.okapiorbits.platform.science.jobs.json.*;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
 import org.junit.jupiter.api.Assertions;
@@ -10,6 +9,11 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.IOException;
 import java.util.Collections;
+
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+import java.util.Date;
+import java.text.ParseException;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class OkapiConnectorTest {
@@ -139,4 +143,83 @@ class OkapiConnectorTest {
         Assertions.assertNotEquals(satellites, null);
         Assertions.assertEquals(okapiConnector.responseCode, 200);
     }
+
+	/**
+	 * Tests the addition of ground station passes for two satellites to the OKAPI backend
+	 */
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.Order(5)
+	  void addGroundStationPasses()
+	      throws ParseException {
+
+		    MultiGroundStationPasses multiGroundStationPasses = new MultiGroundStationPasses();
+		    GroundStationPasses groundStationPasses = new GroundStationPasses();
+		    multiGroundStationPasses.getElements().add(groundStationPasses);
+		    groundStationPasses.setSpacecraft("My Sat 1");
+		    addPassWindow(groundStationPasses, "2020-10-13T10:00:23Z", "2020-10-13T10:09:54Z");
+		    addPassWindow(groundStationPasses, "2020-10-13T12:57:08Z", "2020-10-13T13:08:50Z");
+		    addPassWindow(groundStationPasses, "2020-10-13T20:41:06Z", "2020-10-13T20:49:45Z");
+		    groundStationPasses = new GroundStationPasses();
+		    multiGroundStationPasses.getElements().add(groundStationPasses);
+		    groundStationPasses.setSpacecraft("My Sat 2");
+		    addPassWindow(groundStationPasses, "2020-10-13T22:15:37Z", "2020-10-13T22:24:34Z");
+		    addPassWindow(groundStationPasses, "2020-10-14T09:49:20Z", "2020-10-14T09:58:45Z");
+		    addPassWindow(groundStationPasses, "2020-10-14T12:45:58.Z", "2020-10-14T12:57:41Z");
+		    
+
+		    // Send new ground station passes definitions to the backend to add to the DB and retrieve the new instance from the
+		    // backend.
+		    try {
+			      multiGroundStationPasses = okapiConnector.addMultiGroundStationPasses(multiGroundStationPasses, accessToken);
+
+		    } catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
+			      okapiPlatformException.printStackTrace();
+			      return;
+		    }
+
+		    // Retrieve the newly assigned satellite id
+		    if (okapiConnector.responseCode == 200) {
+			      System.out.println(multiGroundStationPasses.toString());
+		    }
+		    
+        Assertions.assertNotEquals(multiGroundStationPasses, null);
+        Assertions.assertEquals(okapiConnector.responseCode, 200);
+	  }
+	  
+	  private void addPassWindow(GroundStationPasses groundStationPasses, String isoStringStart, String isoStringEnd)
+	      throws ParseException {
+		    PassWindow passWindow = new PassWindow();
+		    groundStationPasses.getPasses().add(passWindow);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmX");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = df.parse(isoStringStart);
+		    passWindow.setStart(date);
+        date = df.parse(isoStringEnd);
+		    passWindow.setEnd(date);
+	  }
+
+	  /**
+	   * Tests the retrieval of ground station passes
+	   */
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.Order(6)
+	  void getMultiGroundStationPassesInfo() {
+
+		    MultiGroundStationPassesInfo multiGroundStationPassesInfo;
+
+		    // Retrieve all of them
+		    try {
+			      multiGroundStationPassesInfo = okapiConnector.getMultiGroundStationPassesInfo(accessToken);
+		    } catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
+			      okapiPlatformException.printStackTrace();
+			      return;
+		    }
+
+		    if (okapiConnector.responseCode == 200) {
+			      System.out.println(multiGroundStationPassesInfo.toString());
+		    }
+		    
+        Assertions.assertNotEquals(multiGroundStationPassesInfo, null);
+        Assertions.assertEquals(okapiConnector.responseCode, 200);
+	  }
 }
