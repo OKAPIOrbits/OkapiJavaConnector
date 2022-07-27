@@ -5,6 +5,11 @@ on:
     branches: [ master, v2022-04 ]
   pull_request:
     branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      dummy:
+        description: 'dummy'     
+        required: false
 
 jobs:
   build:
