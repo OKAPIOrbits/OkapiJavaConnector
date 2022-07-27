@@ -19,7 +19,7 @@ jobs:
           distribution: 'adopt'
       - name: Build with Maven
         env:
-          OKAPI_TEST_URL: ${{ secrets.OKAPI_STAGING_URL }}
+          OKAPI_TEST_URL: ${{ secrets.OKAPI_TEST_URL }}
           OKAPI_TEST_USERNAME: ${{ secrets.OKAPI_TEST_USERNAME }}
           OKAPI_TEST_PASSWORD: ${{ secrets.OKAPI_TEST_PASSWORD }}
         run: mvn --batch-mode --update-snapshots verify
@@ -36,7 +36,7 @@ jobs:
           distribution: 'adopt'
       - name: Build with Maven
         env:
-          OKAPI_TEST_URL: ${{ secrets.OKAPI_TEST_URL }}
+          OKAPI_TEST_URL: ${{ secrets.OKAPI_STAGING_URL }}
           OKAPI_TEST_USERNAME: ${{ secrets.OKAPI_TEST_USERNAME }}
           OKAPI_TEST_PASSWORD: ${{ secrets.OKAPI_TEST_PASSWORD }}
         run: mvn --batch-mode --update-snapshots verify
