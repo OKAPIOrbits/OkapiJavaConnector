@@ -23,20 +23,3 @@ jobs:
           OKAPI_TEST_USERNAME: ${{ secrets.OKAPI_TEST_USERNAME }}
           OKAPI_TEST_PASSWORD: ${{ secrets.OKAPI_TEST_PASSWORD }}
         run: mvn --batch-mode --update-snapshots verify
-
-  build-staging:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-          distribution: 'adopt'
-      - name: Build with Maven
-        env:
-          OKAPI_TEST_URL: ${{ secrets.OKAPI_TEST_URL }}
-          OKAPI_TEST_USERNAME: ${{ secrets.OKAPI_TEST_USERNAME }}
-          OKAPI_TEST_PASSWORD: ${{ secrets.OKAPI_TEST_PASSWORD }}
-        run: mvn --batch-mode --update-snapshots verify
