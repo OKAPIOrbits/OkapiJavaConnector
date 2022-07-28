@@ -27,7 +27,12 @@ public class RiskAtTca {
     @JsonProperty("time_to_tca")
     @JsonPropertyDescription("in seconds")
     private Double timeToTca;
+    /**
+     * If this value is null or non-existing, a value could not be derived due to anomalies in the data.
+     * 
+     */
     @JsonProperty("collision_probability")
+    @JsonPropertyDescription("If this value is null or non-existing, a value could not be derived due to anomalies in the data.")
     private Double collisionProbability;
 
     /**
@@ -48,11 +53,19 @@ public class RiskAtTca {
         this.timeToTca = timeToTca;
     }
 
+    /**
+     * If this value is null or non-existing, a value could not be derived due to anomalies in the data.
+     * 
+     */
     @JsonProperty("collision_probability")
     public Double getCollisionProbability() {
         return collisionProbability;
     }
 
+    /**
+     * If this value is null or non-existing, a value could not be derived due to anomalies in the data.
+     * 
+     */
     @JsonProperty("collision_probability")
     public void setCollisionProbability(Double collisionProbability) {
         this.collisionProbability = collisionProbability;

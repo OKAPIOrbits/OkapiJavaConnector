@@ -75,12 +75,11 @@ public class RiskEstimation {
     @JsonPropertyDescription("Date and time of the time of close approach")
     private Date tca;
     /**
-     * Probability of collision at TCA
-     * (Required)
+     * Probability of collision at TCA. If this value is null or non-existing, a value could not be derived due to anomalies in the data.
      * 
      */
     @JsonProperty("collision_probability")
-    @JsonPropertyDescription("Probability of collision at TCA")
+    @JsonPropertyDescription("Probability of collision at TCA. If this value is null or non-existing, a value could not be derived due to anomalies in the data.")
     private Double collisionProbability;
     /**
      * Defines the method that was used to derive the collision probability
@@ -344,8 +343,7 @@ public class RiskEstimation {
     }
 
     /**
-     * Probability of collision at TCA
-     * (Required)
+     * Probability of collision at TCA. If this value is null or non-existing, a value could not be derived due to anomalies in the data.
      * 
      */
     @JsonProperty("collision_probability")
@@ -354,8 +352,7 @@ public class RiskEstimation {
     }
 
     /**
-     * Probability of collision at TCA
-     * (Required)
+     * Probability of collision at TCA. If this value is null or non-existing, a value could not be derived due to anomalies in the data.
      * 
      */
     @JsonProperty("collision_probability")

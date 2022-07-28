@@ -36,6 +36,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "in_sun_constraint",
     "min_time_in_sun",
     "symmetric_manoeuvres",
+    "use_ground_station_passes",
+    "use_offset_cdm_and_earliest_maneuver",
+    "offset_cdm_and_earliest_maneuver",
+    "use_min_time_till_pass",
+    "min_time_till_pass",
     "propulsion_type",
     "accepted_collision_probability",
     "accepted_minimum_distance",
@@ -168,6 +173,41 @@ public class Satellite {
     @JsonProperty("symmetric_manoeuvres")
     @JsonPropertyDescription("Enables to distribute the thrust on opposite sides of the orbits, e.g. to keep the eccentricity constant. If the in-sun constraint is enabled, as well, symmetric manoeuvres are not created.")
     private Boolean symmetricManoeuvres = false;
+    /**
+     * Enables to use ground station passes and calculate maneuvers to provide enough time for situation assessment and maneuver generationn till next planned ground station pass.
+     * 
+     */
+    @JsonProperty("use_ground_station_passes")
+    @JsonPropertyDescription("Enables to use ground station passes and calculate maneuvers to provide enough time for situation assessment and maneuver generationn till next planned ground station pass.")
+    private Boolean useGroundStationPasses;
+    /**
+     * Enables use of the parameter for offset between cdm insertion epoch and earliest maneuver epoch.
+     * 
+     */
+    @JsonProperty("use_offset_cdm_and_earliest_maneuver")
+    @JsonPropertyDescription("Enables use of the parameter for offset between cdm insertion epoch and earliest maneuver epoch.")
+    private Boolean useOffsetCdmAndEarliestManeuver = true;
+    /**
+     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in hours).
+     * 
+     */
+    @JsonProperty("offset_cdm_and_earliest_maneuver")
+    @JsonPropertyDescription("Time offset between CDM insertion epoch and earliest possible epoch for CAM (in hours).")
+    private Double offsetCdmAndEarliestManeuver = 7.0D;
+    /**
+     * Enables use of the parameter to consider minimum time between cdm insertion epoch and next ground station pass.
+     * 
+     */
+    @JsonProperty("use_min_time_till_pass")
+    @JsonPropertyDescription("Enables use of the parameter to consider minimum time between cdm insertion epoch and next ground station pass.")
+    private Boolean useMinTimeTillPass;
+    /**
+     * Minimum time required between CDM insertion epoch and the upcoming ground station pass (in seconds).
+     * 
+     */
+    @JsonProperty("min_time_till_pass")
+    @JsonPropertyDescription("Minimum time required between CDM insertion epoch and the upcoming ground station pass (in seconds).")
+    private Double minTimeTillPass = 3600.0D;
     @JsonProperty("propulsion_type")
     private Satellite.PropulsionType propulsionType = Satellite.PropulsionType.fromValue("continuous");
     /**
@@ -580,6 +620,96 @@ public class Satellite {
         this.symmetricManoeuvres = symmetricManoeuvres;
     }
 
+    /**
+     * Enables to use ground station passes and calculate maneuvers to provide enough time for situation assessment and maneuver generationn till next planned ground station pass.
+     * 
+     */
+    @JsonProperty("use_ground_station_passes")
+    public Boolean getUseGroundStationPasses() {
+        return useGroundStationPasses;
+    }
+
+    /**
+     * Enables to use ground station passes and calculate maneuvers to provide enough time for situation assessment and maneuver generationn till next planned ground station pass.
+     * 
+     */
+    @JsonProperty("use_ground_station_passes")
+    public void setUseGroundStationPasses(Boolean useGroundStationPasses) {
+        this.useGroundStationPasses = useGroundStationPasses;
+    }
+
+    /**
+     * Enables use of the parameter for offset between cdm insertion epoch and earliest maneuver epoch.
+     * 
+     */
+    @JsonProperty("use_offset_cdm_and_earliest_maneuver")
+    public Boolean getUseOffsetCdmAndEarliestManeuver() {
+        return useOffsetCdmAndEarliestManeuver;
+    }
+
+    /**
+     * Enables use of the parameter for offset between cdm insertion epoch and earliest maneuver epoch.
+     * 
+     */
+    @JsonProperty("use_offset_cdm_and_earliest_maneuver")
+    public void setUseOffsetCdmAndEarliestManeuver(Boolean useOffsetCdmAndEarliestManeuver) {
+        this.useOffsetCdmAndEarliestManeuver = useOffsetCdmAndEarliestManeuver;
+    }
+
+    /**
+     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in hours).
+     * 
+     */
+    @JsonProperty("offset_cdm_and_earliest_maneuver")
+    public Double getOffsetCdmAndEarliestManeuver() {
+        return offsetCdmAndEarliestManeuver;
+    }
+
+    /**
+     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in hours).
+     * 
+     */
+    @JsonProperty("offset_cdm_and_earliest_maneuver")
+    public void setOffsetCdmAndEarliestManeuver(Double offsetCdmAndEarliestManeuver) {
+        this.offsetCdmAndEarliestManeuver = offsetCdmAndEarliestManeuver;
+    }
+
+    /**
+     * Enables use of the parameter to consider minimum time between cdm insertion epoch and next ground station pass.
+     * 
+     */
+    @JsonProperty("use_min_time_till_pass")
+    public Boolean getUseMinTimeTillPass() {
+        return useMinTimeTillPass;
+    }
+
+    /**
+     * Enables use of the parameter to consider minimum time between cdm insertion epoch and next ground station pass.
+     * 
+     */
+    @JsonProperty("use_min_time_till_pass")
+    public void setUseMinTimeTillPass(Boolean useMinTimeTillPass) {
+        this.useMinTimeTillPass = useMinTimeTillPass;
+    }
+
+    /**
+     * Minimum time required between CDM insertion epoch and the upcoming ground station pass (in seconds).
+     * 
+     */
+    @JsonProperty("min_time_till_pass")
+    public Double getMinTimeTillPass() {
+        return minTimeTillPass;
+    }
+
+    /**
+     * Minimum time required between CDM insertion epoch and the upcoming ground station pass (in seconds).
+     * 
+     */
+    @JsonProperty("min_time_till_pass")
+    public void setMinTimeTillPass(Double minTimeTillPass) {
+        this.minTimeTillPass = minTimeTillPass;
+    }
+
     @JsonProperty("propulsion_type")
     public Satellite.PropulsionType getPropulsionType() {
         return propulsionType;
@@ -984,6 +1114,26 @@ public class Satellite {
         sb.append('=');
         sb.append(((this.symmetricManoeuvres == null)?"<null>":this.symmetricManoeuvres));
         sb.append(',');
+        sb.append("useGroundStationPasses");
+        sb.append('=');
+        sb.append(((this.useGroundStationPasses == null)?"<null>":this.useGroundStationPasses));
+        sb.append(',');
+        sb.append("useOffsetCdmAndEarliestManeuver");
+        sb.append('=');
+        sb.append(((this.useOffsetCdmAndEarliestManeuver == null)?"<null>":this.useOffsetCdmAndEarliestManeuver));
+        sb.append(',');
+        sb.append("offsetCdmAndEarliestManeuver");
+        sb.append('=');
+        sb.append(((this.offsetCdmAndEarliestManeuver == null)?"<null>":this.offsetCdmAndEarliestManeuver));
+        sb.append(',');
+        sb.append("useMinTimeTillPass");
+        sb.append('=');
+        sb.append(((this.useMinTimeTillPass == null)?"<null>":this.useMinTimeTillPass));
+        sb.append(',');
+        sb.append("minTimeTillPass");
+        sb.append('=');
+        sb.append(((this.minTimeTillPass == null)?"<null>":this.minTimeTillPass));
+        sb.append(',');
         sb.append("propulsionType");
         sb.append('=');
         sb.append(((this.propulsionType == null)?"<null>":this.propulsionType));
@@ -1072,6 +1222,7 @@ public class Satellite {
     public int hashCode() {
         int result = 1;
         result = ((result* 31)+((this.thrustUncertainty == null)? 0 :this.thrustUncertainty.hashCode()));
+        result = ((result* 31)+((this.minTimeTillPass == null)? 0 :this.minTimeTillPass.hashCode()));
         result = ((result* 31)+((this.useAiRiskPrediction == null)? 0 :this.useAiRiskPrediction.hashCode()));
         result = ((result* 31)+((this.noradIds == null)? 0 :this.noradIds.hashCode()));
         result = ((result* 31)+((this.mass == null)? 0 :this.mass.hashCode()));
@@ -1096,6 +1247,8 @@ public class Satellite {
         result = ((result* 31)+((this.maxThrustDuration == null)? 0 :this.maxThrustDuration.hashCode()));
         result = ((result* 31)+((this.teamsWebhook == null)? 0 :this.teamsWebhook.hashCode()));
         result = ((result* 31)+((this.satelliteId == null)? 0 :this.satelliteId.hashCode()));
+        result = ((result* 31)+((this.useMinTimeTillPass == null)? 0 :this.useMinTimeTillPass.hashCode()));
+        result = ((result* 31)+((this.offsetCdmAndEarliestManeuver == null)? 0 :this.offsetCdmAndEarliestManeuver.hashCode()));
         result = ((result* 31)+((this.active == null)? 0 :this.active.hashCode()));
         result = ((result* 31)+((this.acceptedCollisionProbability == null)? 0 :this.acceptedCollisionProbability.hashCode()));
         result = ((result* 31)+((this.thrustOutput == null)? 0 :this.thrustOutput.hashCode()));
@@ -1103,7 +1256,9 @@ public class Satellite {
         result = ((result* 31)+((this.dragArea == null)? 0 :this.dragArea.hashCode()));
         result = ((result* 31)+((this.sendMailNotifications == null)? 0 :this.sendMailNotifications.hashCode()));
         result = ((result* 31)+((this.spaceTrackPocName == null)? 0 :this.spaceTrackPocName.hashCode()));
+        result = ((result* 31)+((this.useOffsetCdmAndEarliestManeuver == null)? 0 :this.useOffsetCdmAndEarliestManeuver.hashCode()));
         result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
+        result = ((result* 31)+((this.useGroundStationPasses == null)? 0 :this.useGroundStationPasses.hashCode()));
         result = ((result* 31)+((this.symmetricManoeuvres == null)? 0 :this.symmetricManoeuvres.hashCode()));
         return result;
     }
@@ -1117,7 +1272,7 @@ public class Satellite {
             return false;
         }
         Satellite rhs = ((Satellite) other);
-        return (((((((((((((((((((((((((((((((((((this.thrustUncertainty == rhs.thrustUncertainty)||((this.thrustUncertainty!= null)&&this.thrustUncertainty.equals(rhs.thrustUncertainty)))&&((this.useAiRiskPrediction == rhs.useAiRiskPrediction)||((this.useAiRiskPrediction!= null)&&this.useAiRiskPrediction.equals(rhs.useAiRiskPrediction))))&&((this.noradIds == rhs.noradIds)||((this.noradIds!= null)&&this.noradIds.equals(rhs.noradIds))))&&((this.mass == rhs.mass)||((this.mass!= null)&&this.mass.equals(rhs.mass))))&&((this.spaceTrackStatus == rhs.spaceTrackStatus)||((this.spaceTrackStatus!= null)&&this.spaceTrackStatus.equals(rhs.spaceTrackStatus))))&&((this.gnssSensor == rhs.gnssSensor)||((this.gnssSensor!= null)&&this.gnssSensor.equals(rhs.gnssSensor))))&&((this.minThrustDuration == rhs.minThrustDuration)||((this.minThrustDuration!= null)&&this.minThrustDuration.equals(rhs.minThrustDuration))))&&((this.minTimeInSun == rhs.minTimeInSun)||((this.minTimeInSun!= null)&&this.minTimeInSun.equals(rhs.minTimeInSun))))&&((this.thrustPointingUncertainty == rhs.thrustPointingUncertainty)||((this.thrustPointingUncertainty!= null)&&this.thrustPointingUncertainty.equals(rhs.thrustPointingUncertainty))))&&((this.inSunConstraint == rhs.inSunConstraint)||((this.inSunConstraint!= null)&&this.inSunConstraint.equals(rhs.inSunConstraint))))&&((this.notificationVerbosity == rhs.notificationVerbosity)||((this.notificationVerbosity!= null)&&this.notificationVerbosity.equals(rhs.notificationVerbosity))))&&((this.propulsionType == rhs.propulsionType)||((this.propulsionType!= null)&&this.propulsionType.equals(rhs.propulsionType))))&&((this.sendTeamsNotifications == rhs.sendTeamsNotifications)||((this.sendTeamsNotifications!= null)&&this.sendTeamsNotifications.equals(rhs.sendTeamsNotifications))))&&((this.spaceTrackLogin == rhs.spaceTrackLogin)||((this.spaceTrackLogin!= null)&&this.spaceTrackLogin.equals(rhs.spaceTrackLogin))))&&((this.maneuverStrategy == rhs.maneuverStrategy)||((this.maneuverStrategy!= null)&&this.maneuverStrategy.equals(rhs.maneuverStrategy))))&&((this.slackWebhook == rhs.slackWebhook)||((this.slackWebhook!= null)&&this.slackWebhook.equals(rhs.slackWebhook))))&&((this.acceptedMinimumDistance == rhs.acceptedMinimumDistance)||((this.acceptedMinimumDistance!= null)&&this.acceptedMinimumDistance.equals(rhs.acceptedMinimumDistance))))&&((this.info == rhs.info)||((this.info!= null)&&this.info.equals(rhs.info))))&&((this.area == rhs.area)||((this.area!= null)&&this.area.equals(rhs.area))))&&((this.spaceTrackCompanyName == rhs.spaceTrackCompanyName)||((this.spaceTrackCompanyName!= null)&&this.spaceTrackCompanyName.equals(rhs.spaceTrackCompanyName))))&&((this.spaceTrackPocAddress == rhs.spaceTrackPocAddress)||((this.spaceTrackPocAddress!= null)&&this.spaceTrackPocAddress.equals(rhs.spaceTrackPocAddress))))&&((this.sendSlackNotifications == rhs.sendSlackNotifications)||((this.sendSlackNotifications!= null)&&this.sendSlackNotifications.equals(rhs.sendSlackNotifications))))&&((this.maxThrustDuration == rhs.maxThrustDuration)||((this.maxThrustDuration!= null)&&this.maxThrustDuration.equals(rhs.maxThrustDuration))))&&((this.teamsWebhook == rhs.teamsWebhook)||((this.teamsWebhook!= null)&&this.teamsWebhook.equals(rhs.teamsWebhook))))&&((this.satelliteId == rhs.satelliteId)||((this.satelliteId!= null)&&this.satelliteId.equals(rhs.satelliteId))))&&((this.active == rhs.active)||((this.active!= null)&&this.active.equals(rhs.active))))&&((this.acceptedCollisionProbability == rhs.acceptedCollisionProbability)||((this.acceptedCollisionProbability!= null)&&this.acceptedCollisionProbability.equals(rhs.acceptedCollisionProbability))))&&((this.thrustOutput == rhs.thrustOutput)||((this.thrustOutput!= null)&&this.thrustOutput.equals(rhs.thrustOutput))))&&((this.spaceTrackStatusOther == rhs.spaceTrackStatusOther)||((this.spaceTrackStatusOther!= null)&&this.spaceTrackStatusOther.equals(rhs.spaceTrackStatusOther))))&&((this.dragArea == rhs.dragArea)||((this.dragArea!= null)&&this.dragArea.equals(rhs.dragArea))))&&((this.sendMailNotifications == rhs.sendMailNotifications)||((this.sendMailNotifications!= null)&&this.sendMailNotifications.equals(rhs.sendMailNotifications))))&&((this.spaceTrackPocName == rhs.spaceTrackPocName)||((this.spaceTrackPocName!= null)&&this.spaceTrackPocName.equals(rhs.spaceTrackPocName))))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))))&&((this.symmetricManoeuvres == rhs.symmetricManoeuvres)||((this.symmetricManoeuvres!= null)&&this.symmetricManoeuvres.equals(rhs.symmetricManoeuvres))));
+        return ((((((((((((((((((((((((((((((((((((((((this.thrustUncertainty == rhs.thrustUncertainty)||((this.thrustUncertainty!= null)&&this.thrustUncertainty.equals(rhs.thrustUncertainty)))&&((this.minTimeTillPass == rhs.minTimeTillPass)||((this.minTimeTillPass!= null)&&this.minTimeTillPass.equals(rhs.minTimeTillPass))))&&((this.useAiRiskPrediction == rhs.useAiRiskPrediction)||((this.useAiRiskPrediction!= null)&&this.useAiRiskPrediction.equals(rhs.useAiRiskPrediction))))&&((this.noradIds == rhs.noradIds)||((this.noradIds!= null)&&this.noradIds.equals(rhs.noradIds))))&&((this.mass == rhs.mass)||((this.mass!= null)&&this.mass.equals(rhs.mass))))&&((this.spaceTrackStatus == rhs.spaceTrackStatus)||((this.spaceTrackStatus!= null)&&this.spaceTrackStatus.equals(rhs.spaceTrackStatus))))&&((this.gnssSensor == rhs.gnssSensor)||((this.gnssSensor!= null)&&this.gnssSensor.equals(rhs.gnssSensor))))&&((this.minThrustDuration == rhs.minThrustDuration)||((this.minThrustDuration!= null)&&this.minThrustDuration.equals(rhs.minThrustDuration))))&&((this.minTimeInSun == rhs.minTimeInSun)||((this.minTimeInSun!= null)&&this.minTimeInSun.equals(rhs.minTimeInSun))))&&((this.thrustPointingUncertainty == rhs.thrustPointingUncertainty)||((this.thrustPointingUncertainty!= null)&&this.thrustPointingUncertainty.equals(rhs.thrustPointingUncertainty))))&&((this.inSunConstraint == rhs.inSunConstraint)||((this.inSunConstraint!= null)&&this.inSunConstraint.equals(rhs.inSunConstraint))))&&((this.notificationVerbosity == rhs.notificationVerbosity)||((this.notificationVerbosity!= null)&&this.notificationVerbosity.equals(rhs.notificationVerbosity))))&&((this.propulsionType == rhs.propulsionType)||((this.propulsionType!= null)&&this.propulsionType.equals(rhs.propulsionType))))&&((this.sendTeamsNotifications == rhs.sendTeamsNotifications)||((this.sendTeamsNotifications!= null)&&this.sendTeamsNotifications.equals(rhs.sendTeamsNotifications))))&&((this.spaceTrackLogin == rhs.spaceTrackLogin)||((this.spaceTrackLogin!= null)&&this.spaceTrackLogin.equals(rhs.spaceTrackLogin))))&&((this.maneuverStrategy == rhs.maneuverStrategy)||((this.maneuverStrategy!= null)&&this.maneuverStrategy.equals(rhs.maneuverStrategy))))&&((this.slackWebhook == rhs.slackWebhook)||((this.slackWebhook!= null)&&this.slackWebhook.equals(rhs.slackWebhook))))&&((this.acceptedMinimumDistance == rhs.acceptedMinimumDistance)||((this.acceptedMinimumDistance!= null)&&this.acceptedMinimumDistance.equals(rhs.acceptedMinimumDistance))))&&((this.info == rhs.info)||((this.info!= null)&&this.info.equals(rhs.info))))&&((this.area == rhs.area)||((this.area!= null)&&this.area.equals(rhs.area))))&&((this.spaceTrackCompanyName == rhs.spaceTrackCompanyName)||((this.spaceTrackCompanyName!= null)&&this.spaceTrackCompanyName.equals(rhs.spaceTrackCompanyName))))&&((this.spaceTrackPocAddress == rhs.spaceTrackPocAddress)||((this.spaceTrackPocAddress!= null)&&this.spaceTrackPocAddress.equals(rhs.spaceTrackPocAddress))))&&((this.sendSlackNotifications == rhs.sendSlackNotifications)||((this.sendSlackNotifications!= null)&&this.sendSlackNotifications.equals(rhs.sendSlackNotifications))))&&((this.maxThrustDuration == rhs.maxThrustDuration)||((this.maxThrustDuration!= null)&&this.maxThrustDuration.equals(rhs.maxThrustDuration))))&&((this.teamsWebhook == rhs.teamsWebhook)||((this.teamsWebhook!= null)&&this.teamsWebhook.equals(rhs.teamsWebhook))))&&((this.satelliteId == rhs.satelliteId)||((this.satelliteId!= null)&&this.satelliteId.equals(rhs.satelliteId))))&&((this.useMinTimeTillPass == rhs.useMinTimeTillPass)||((this.useMinTimeTillPass!= null)&&this.useMinTimeTillPass.equals(rhs.useMinTimeTillPass))))&&((this.offsetCdmAndEarliestManeuver == rhs.offsetCdmAndEarliestManeuver)||((this.offsetCdmAndEarliestManeuver!= null)&&this.offsetCdmAndEarliestManeuver.equals(rhs.offsetCdmAndEarliestManeuver))))&&((this.active == rhs.active)||((this.active!= null)&&this.active.equals(rhs.active))))&&((this.acceptedCollisionProbability == rhs.acceptedCollisionProbability)||((this.acceptedCollisionProbability!= null)&&this.acceptedCollisionProbability.equals(rhs.acceptedCollisionProbability))))&&((this.thrustOutput == rhs.thrustOutput)||((this.thrustOutput!= null)&&this.thrustOutput.equals(rhs.thrustOutput))))&&((this.spaceTrackStatusOther == rhs.spaceTrackStatusOther)||((this.spaceTrackStatusOther!= null)&&this.spaceTrackStatusOther.equals(rhs.spaceTrackStatusOther))))&&((this.dragArea == rhs.dragArea)||((this.dragArea!= null)&&this.dragArea.equals(rhs.dragArea))))&&((this.sendMailNotifications == rhs.sendMailNotifications)||((this.sendMailNotifications!= null)&&this.sendMailNotifications.equals(rhs.sendMailNotifications))))&&((this.spaceTrackPocName == rhs.spaceTrackPocName)||((this.spaceTrackPocName!= null)&&this.spaceTrackPocName.equals(rhs.spaceTrackPocName))))&&((this.useOffsetCdmAndEarliestManeuver == rhs.useOffsetCdmAndEarliestManeuver)||((this.useOffsetCdmAndEarliestManeuver!= null)&&this.useOffsetCdmAndEarliestManeuver.equals(rhs.useOffsetCdmAndEarliestManeuver))))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))))&&((this.useGroundStationPasses == rhs.useGroundStationPasses)||((this.useGroundStationPasses!= null)&&this.useGroundStationPasses.equals(rhs.useGroundStationPasses))))&&((this.symmetricManoeuvres == rhs.symmetricManoeuvres)||((this.symmetricManoeuvres!= null)&&this.symmetricManoeuvres.equals(rhs.symmetricManoeuvres))));
     }
 
 

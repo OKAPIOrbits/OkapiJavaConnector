@@ -89,12 +89,11 @@ public class RiskPrediction {
     @JsonPropertyDescription("ISO8601 date/time definition.")
     private Date tca;
     /**
-     * Probability of collision at TCA
-     * (Required)
+     * Probability of collision at TCA. If this value is null or non-existing, a value could not be derived due to anomalies in the data.
      * 
      */
     @JsonProperty("collision_probability")
-    @JsonPropertyDescription("Probability of collision at TCA")
+    @JsonPropertyDescription("Probability of collision at TCA. If this value is null or non-existing, a value could not be derived due to anomalies in the data.")
     private Double collisionProbability;
     /**
      * Defines the method that was used to derive the collision probability
@@ -105,12 +104,11 @@ public class RiskPrediction {
     @JsonPropertyDescription("Defines the method that was used to derive the collision probability")
     private String collisionProbabilityMethod;
     /**
-     * Peak collision probability in the trend
-     * (Required)
+     * Peak collision probability in the trend. If this value is null or non-existing, a value could not be derived due to anomalies in the data.
      * 
      */
     @JsonProperty("approx_peak_risk")
-    @JsonPropertyDescription("Peak collision probability in the trend")
+    @JsonPropertyDescription("Peak collision probability in the trend. If this value is null or non-existing, a value could not be derived due to anomalies in the data.")
     private Double approxPeakRisk;
     /**
      * Date and time of peak collision probability
@@ -357,8 +355,7 @@ public class RiskPrediction {
     }
 
     /**
-     * Probability of collision at TCA
-     * (Required)
+     * Probability of collision at TCA. If this value is null or non-existing, a value could not be derived due to anomalies in the data.
      * 
      */
     @JsonProperty("collision_probability")
@@ -367,8 +364,7 @@ public class RiskPrediction {
     }
 
     /**
-     * Probability of collision at TCA
-     * (Required)
+     * Probability of collision at TCA. If this value is null or non-existing, a value could not be derived due to anomalies in the data.
      * 
      */
     @JsonProperty("collision_probability")
@@ -397,8 +393,7 @@ public class RiskPrediction {
     }
 
     /**
-     * Peak collision probability in the trend
-     * (Required)
+     * Peak collision probability in the trend. If this value is null or non-existing, a value could not be derived due to anomalies in the data.
      * 
      */
     @JsonProperty("approx_peak_risk")
@@ -407,8 +402,7 @@ public class RiskPrediction {
     }
 
     /**
-     * Peak collision probability in the trend
-     * (Required)
+     * Peak collision probability in the trend. If this value is null or non-existing, a value could not be derived due to anomalies in the data.
      * 
      */
     @JsonProperty("approx_peak_risk")

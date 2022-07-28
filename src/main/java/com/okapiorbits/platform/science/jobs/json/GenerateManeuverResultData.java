@@ -21,6 +21,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "status",
     "db_sat_in_sun",
     "db_sat_min_time_in_sun",
+    "db_sat_use_ground_station_passes",
+    "db_sat_use_offset_cdm_and_earliest_maneuver",
+    "db_sat_offset_cdm_and_earliest_maneuver",
+    "db_sat_use_min_time_till_pass",
+    "db_sat_min_time_till_pass",
     "db_sat_min_thrust_duration",
     "db_sat_max_thrust_duration",
     "db_sat_thrust_output",
@@ -54,6 +59,41 @@ public class GenerateManeuverResultData {
     @JsonProperty("db_sat_min_time_in_sun")
     @JsonPropertyDescription("Makes sure that the generated manoeuvre will be performed after the satellite being in the Sun for a minimum amount of time (in Seconds).")
     private Double dbSatMinTimeInSun;
+    /**
+     * Enables the use of satellite ground station passes while maneuver computation.
+     * 
+     */
+    @JsonProperty("db_sat_use_ground_station_passes")
+    @JsonPropertyDescription("Enables the use of satellite ground station passes while maneuver computation.")
+    private Boolean dbSatUseGroundStationPasses;
+    /**
+     * Enables use of the parameter for offset between cdm and earliest maneuver epoch.
+     * 
+     */
+    @JsonProperty("db_sat_use_offset_cdm_and_earliest_maneuver")
+    @JsonPropertyDescription("Enables use of the parameter for offset between cdm and earliest maneuver epoch.")
+    private Boolean dbSatUseOffsetCdmAndEarliestManeuver;
+    /**
+     * Time offset between CDM and earliest possible epoch for CAM (in hours).
+     * 
+     */
+    @JsonProperty("db_sat_offset_cdm_and_earliest_maneuver")
+    @JsonPropertyDescription("Time offset between CDM and earliest possible epoch for CAM (in hours).")
+    private Double dbSatOffsetCdmAndEarliestManeuver;
+    /**
+     * Enables use of the parameter to consider minimum time between cdm and next ground station pass.
+     * 
+     */
+    @JsonProperty("db_sat_use_min_time_till_pass")
+    @JsonPropertyDescription("Enables use of the parameter to consider minimum time between cdm and next ground station pass.")
+    private Boolean dbSatUseMinTimeTillPass;
+    /**
+     * Minimum time required between start of a maneuver and the next ground station pass. (in seconds).
+     * 
+     */
+    @JsonProperty("db_sat_min_time_till_pass")
+    @JsonPropertyDescription("Minimum time required between start of a maneuver and the next ground station pass. (in seconds).")
+    private Double dbSatMinTimeTillPass;
     /**
      * The minimum duration the thruster can operate at a time in Seconds
      * 
@@ -156,6 +196,96 @@ public class GenerateManeuverResultData {
     }
 
     /**
+     * Enables the use of satellite ground station passes while maneuver computation.
+     * 
+     */
+    @JsonProperty("db_sat_use_ground_station_passes")
+    public Boolean getDbSatUseGroundStationPasses() {
+        return dbSatUseGroundStationPasses;
+    }
+
+    /**
+     * Enables the use of satellite ground station passes while maneuver computation.
+     * 
+     */
+    @JsonProperty("db_sat_use_ground_station_passes")
+    public void setDbSatUseGroundStationPasses(Boolean dbSatUseGroundStationPasses) {
+        this.dbSatUseGroundStationPasses = dbSatUseGroundStationPasses;
+    }
+
+    /**
+     * Enables use of the parameter for offset between cdm and earliest maneuver epoch.
+     * 
+     */
+    @JsonProperty("db_sat_use_offset_cdm_and_earliest_maneuver")
+    public Boolean getDbSatUseOffsetCdmAndEarliestManeuver() {
+        return dbSatUseOffsetCdmAndEarliestManeuver;
+    }
+
+    /**
+     * Enables use of the parameter for offset between cdm and earliest maneuver epoch.
+     * 
+     */
+    @JsonProperty("db_sat_use_offset_cdm_and_earliest_maneuver")
+    public void setDbSatUseOffsetCdmAndEarliestManeuver(Boolean dbSatUseOffsetCdmAndEarliestManeuver) {
+        this.dbSatUseOffsetCdmAndEarliestManeuver = dbSatUseOffsetCdmAndEarliestManeuver;
+    }
+
+    /**
+     * Time offset between CDM and earliest possible epoch for CAM (in hours).
+     * 
+     */
+    @JsonProperty("db_sat_offset_cdm_and_earliest_maneuver")
+    public Double getDbSatOffsetCdmAndEarliestManeuver() {
+        return dbSatOffsetCdmAndEarliestManeuver;
+    }
+
+    /**
+     * Time offset between CDM and earliest possible epoch for CAM (in hours).
+     * 
+     */
+    @JsonProperty("db_sat_offset_cdm_and_earliest_maneuver")
+    public void setDbSatOffsetCdmAndEarliestManeuver(Double dbSatOffsetCdmAndEarliestManeuver) {
+        this.dbSatOffsetCdmAndEarliestManeuver = dbSatOffsetCdmAndEarliestManeuver;
+    }
+
+    /**
+     * Enables use of the parameter to consider minimum time between cdm and next ground station pass.
+     * 
+     */
+    @JsonProperty("db_sat_use_min_time_till_pass")
+    public Boolean getDbSatUseMinTimeTillPass() {
+        return dbSatUseMinTimeTillPass;
+    }
+
+    /**
+     * Enables use of the parameter to consider minimum time between cdm and next ground station pass.
+     * 
+     */
+    @JsonProperty("db_sat_use_min_time_till_pass")
+    public void setDbSatUseMinTimeTillPass(Boolean dbSatUseMinTimeTillPass) {
+        this.dbSatUseMinTimeTillPass = dbSatUseMinTimeTillPass;
+    }
+
+    /**
+     * Minimum time required between start of a maneuver and the next ground station pass. (in seconds).
+     * 
+     */
+    @JsonProperty("db_sat_min_time_till_pass")
+    public Double getDbSatMinTimeTillPass() {
+        return dbSatMinTimeTillPass;
+    }
+
+    /**
+     * Minimum time required between start of a maneuver and the next ground station pass. (in seconds).
+     * 
+     */
+    @JsonProperty("db_sat_min_time_till_pass")
+    public void setDbSatMinTimeTillPass(Double dbSatMinTimeTillPass) {
+        this.dbSatMinTimeTillPass = dbSatMinTimeTillPass;
+    }
+
+    /**
      * The minimum duration the thruster can operate at a time in Seconds
      * 
      */
@@ -251,6 +381,26 @@ public class GenerateManeuverResultData {
         sb.append('=');
         sb.append(((this.dbSatMinTimeInSun == null)?"<null>":this.dbSatMinTimeInSun));
         sb.append(',');
+        sb.append("dbSatUseGroundStationPasses");
+        sb.append('=');
+        sb.append(((this.dbSatUseGroundStationPasses == null)?"<null>":this.dbSatUseGroundStationPasses));
+        sb.append(',');
+        sb.append("dbSatUseOffsetCdmAndEarliestManeuver");
+        sb.append('=');
+        sb.append(((this.dbSatUseOffsetCdmAndEarliestManeuver == null)?"<null>":this.dbSatUseOffsetCdmAndEarliestManeuver));
+        sb.append(',');
+        sb.append("dbSatOffsetCdmAndEarliestManeuver");
+        sb.append('=');
+        sb.append(((this.dbSatOffsetCdmAndEarliestManeuver == null)?"<null>":this.dbSatOffsetCdmAndEarliestManeuver));
+        sb.append(',');
+        sb.append("dbSatUseMinTimeTillPass");
+        sb.append('=');
+        sb.append(((this.dbSatUseMinTimeTillPass == null)?"<null>":this.dbSatUseMinTimeTillPass));
+        sb.append(',');
+        sb.append("dbSatMinTimeTillPass");
+        sb.append('=');
+        sb.append(((this.dbSatMinTimeTillPass == null)?"<null>":this.dbSatMinTimeTillPass));
+        sb.append(',');
         sb.append("dbSatMinThrustDuration");
         sb.append('=');
         sb.append(((this.dbSatMinThrustDuration == null)?"<null>":this.dbSatMinThrustDuration));
@@ -279,12 +429,17 @@ public class GenerateManeuverResultData {
     public int hashCode() {
         int result = 1;
         result = ((result* 31)+((this.dbSatMinTimeInSun == null)? 0 :this.dbSatMinTimeInSun.hashCode()));
-        result = ((result* 31)+((this.dbSatInSun == null)? 0 :this.dbSatInSun.hashCode()));
-        result = ((result* 31)+((this.dbSatMinThrustDuration == null)? 0 :this.dbSatMinThrustDuration.hashCode()));
-        result = ((result* 31)+((this.camResultData == null)? 0 :this.camResultData.hashCode()));
-        result = ((result* 31)+((this.dbSatThrustOutput == null)? 0 :this.dbSatThrustOutput.hashCode()));
+        result = ((result* 31)+((this.dbSatUseMinTimeTillPass == null)? 0 :this.dbSatUseMinTimeTillPass.hashCode()));
         result = ((result* 31)+((this.dbSatMaxThrustDuration == null)? 0 :this.dbSatMaxThrustDuration.hashCode()));
         result = ((result* 31)+((this.maneuverConstraints == null)? 0 :this.maneuverConstraints.hashCode()));
+        result = ((result* 31)+((this.dbSatOffsetCdmAndEarliestManeuver == null)? 0 :this.dbSatOffsetCdmAndEarliestManeuver.hashCode()));
+        result = ((result* 31)+((this.dbSatInSun == null)? 0 :this.dbSatInSun.hashCode()));
+        result = ((result* 31)+((this.dbSatUseGroundStationPasses == null)? 0 :this.dbSatUseGroundStationPasses.hashCode()));
+        result = ((result* 31)+((this.dbSatUseOffsetCdmAndEarliestManeuver == null)? 0 :this.dbSatUseOffsetCdmAndEarliestManeuver.hashCode()));
+        result = ((result* 31)+((this.dbSatMinThrustDuration == null)? 0 :this.dbSatMinThrustDuration.hashCode()));
+        result = ((result* 31)+((this.camResultData == null)? 0 :this.camResultData.hashCode()));
+        result = ((result* 31)+((this.dbSatMinTimeTillPass == null)? 0 :this.dbSatMinTimeTillPass.hashCode()));
+        result = ((result* 31)+((this.dbSatThrustOutput == null)? 0 :this.dbSatThrustOutput.hashCode()));
         result = ((result* 31)+((this.status == null)? 0 :this.status.hashCode()));
         return result;
     }
@@ -298,7 +453,7 @@ public class GenerateManeuverResultData {
             return false;
         }
         GenerateManeuverResultData rhs = ((GenerateManeuverResultData) other);
-        return (((((((((this.dbSatMinTimeInSun == rhs.dbSatMinTimeInSun)||((this.dbSatMinTimeInSun!= null)&&this.dbSatMinTimeInSun.equals(rhs.dbSatMinTimeInSun)))&&((this.dbSatInSun == rhs.dbSatInSun)||((this.dbSatInSun!= null)&&this.dbSatInSun.equals(rhs.dbSatInSun))))&&((this.dbSatMinThrustDuration == rhs.dbSatMinThrustDuration)||((this.dbSatMinThrustDuration!= null)&&this.dbSatMinThrustDuration.equals(rhs.dbSatMinThrustDuration))))&&((this.camResultData == rhs.camResultData)||((this.camResultData!= null)&&this.camResultData.equals(rhs.camResultData))))&&((this.dbSatThrustOutput == rhs.dbSatThrustOutput)||((this.dbSatThrustOutput!= null)&&this.dbSatThrustOutput.equals(rhs.dbSatThrustOutput))))&&((this.dbSatMaxThrustDuration == rhs.dbSatMaxThrustDuration)||((this.dbSatMaxThrustDuration!= null)&&this.dbSatMaxThrustDuration.equals(rhs.dbSatMaxThrustDuration))))&&((this.maneuverConstraints == rhs.maneuverConstraints)||((this.maneuverConstraints!= null)&&this.maneuverConstraints.equals(rhs.maneuverConstraints))))&&((this.status == rhs.status)||((this.status!= null)&&this.status.equals(rhs.status))));
+        return ((((((((((((((this.dbSatMinTimeInSun == rhs.dbSatMinTimeInSun)||((this.dbSatMinTimeInSun!= null)&&this.dbSatMinTimeInSun.equals(rhs.dbSatMinTimeInSun)))&&((this.dbSatUseMinTimeTillPass == rhs.dbSatUseMinTimeTillPass)||((this.dbSatUseMinTimeTillPass!= null)&&this.dbSatUseMinTimeTillPass.equals(rhs.dbSatUseMinTimeTillPass))))&&((this.dbSatMaxThrustDuration == rhs.dbSatMaxThrustDuration)||((this.dbSatMaxThrustDuration!= null)&&this.dbSatMaxThrustDuration.equals(rhs.dbSatMaxThrustDuration))))&&((this.maneuverConstraints == rhs.maneuverConstraints)||((this.maneuverConstraints!= null)&&this.maneuverConstraints.equals(rhs.maneuverConstraints))))&&((this.dbSatOffsetCdmAndEarliestManeuver == rhs.dbSatOffsetCdmAndEarliestManeuver)||((this.dbSatOffsetCdmAndEarliestManeuver!= null)&&this.dbSatOffsetCdmAndEarliestManeuver.equals(rhs.dbSatOffsetCdmAndEarliestManeuver))))&&((this.dbSatInSun == rhs.dbSatInSun)||((this.dbSatInSun!= null)&&this.dbSatInSun.equals(rhs.dbSatInSun))))&&((this.dbSatUseGroundStationPasses == rhs.dbSatUseGroundStationPasses)||((this.dbSatUseGroundStationPasses!= null)&&this.dbSatUseGroundStationPasses.equals(rhs.dbSatUseGroundStationPasses))))&&((this.dbSatUseOffsetCdmAndEarliestManeuver == rhs.dbSatUseOffsetCdmAndEarliestManeuver)||((this.dbSatUseOffsetCdmAndEarliestManeuver!= null)&&this.dbSatUseOffsetCdmAndEarliestManeuver.equals(rhs.dbSatUseOffsetCdmAndEarliestManeuver))))&&((this.dbSatMinThrustDuration == rhs.dbSatMinThrustDuration)||((this.dbSatMinThrustDuration!= null)&&this.dbSatMinThrustDuration.equals(rhs.dbSatMinThrustDuration))))&&((this.camResultData == rhs.camResultData)||((this.camResultData!= null)&&this.camResultData.equals(rhs.camResultData))))&&((this.dbSatMinTimeTillPass == rhs.dbSatMinTimeTillPass)||((this.dbSatMinTimeTillPass!= null)&&this.dbSatMinTimeTillPass.equals(rhs.dbSatMinTimeTillPass))))&&((this.dbSatThrustOutput == rhs.dbSatThrustOutput)||((this.dbSatThrustOutput!= null)&&this.dbSatThrustOutput.equals(rhs.dbSatThrustOutput))))&&((this.status == rhs.status)||((this.status!= null)&&this.status.equals(rhs.status))));
     }
 
 }
