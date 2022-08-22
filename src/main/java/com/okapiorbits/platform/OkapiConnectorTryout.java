@@ -7,6 +7,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -48,11 +49,11 @@ public class OkapiConnectorTryout {
 		}
 		System.out.println(accessToken);
 		System.out.println("[Authentication] - completed");
-
+		
 		System.out.println("[Add satellite] - started");
 		addSatelliteTest(okapiConnector,accessToken);
 		System.out.println("[Add satellite] - completed");
-
+		
 		System.out.println("[Update satellite] - started");
 		updateSatelliteTest(okapiConnector,accessToken);
 		System.out.println("[Update satellite] - completed");
@@ -60,7 +61,7 @@ public class OkapiConnectorTryout {
 		System.out.println("[Get satellites] - started");
 		getSatellitesTest(okapiConnector,accessToken);
 		System.out.println("[Get satellites] - completed");
-
+		
 		System.out.println("[Remove satellite] - started");
 		removeSatelliteTest(okapiConnector,accessToken);
 		System.out.println("[Remove satellite] - completed");
@@ -92,6 +93,7 @@ public class OkapiConnectorTryout {
 		System.out.println("[Propagate orbit NEPTUNE] - completed");
 
 		System.out.println("Testing End");
+		
 	}
 
 	/**
@@ -366,14 +368,18 @@ public class OkapiConnectorTryout {
 	 */
 	private static void updateSatelliteTest(OkapiConnector okapi, String accessToken) {
 
-		Satellite currentSatellite = new Satellite();
-		currentSatellite.setName("SPUTNIK-2");
-		currentSatellite.setSatelliteId(satelliteId);
-		currentSatellite.setSpaceTrackStatus(Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED);
+		// Specify satellite fields that require updates
+		// Fields: satellite_id and name are required
+		Satellite currentSatellite ;
+		HashMap<String, Object> updates = new HashMap<>();
+		updates.put("satellite_id", satelliteId);
+		updates.put("name", "The satellite has a new name !");
+		updates.put("mass", 1.2);
+		updates.put("space_track_status", Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED);
 
 		// Send updated satellite definition to the backend and retrieve the updated instance
 		try {
-			currentSatellite = okapi.updateSatellite(currentSatellite,accessToken);
+			currentSatellite = okapi.updateSatellite(updates,accessToken);
 		} catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
 			okapiPlatformException.printStackTrace();
 			return;

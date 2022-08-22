@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.TimeZone;
 
 /**
@@ -228,7 +229,7 @@ public class OkapiConnector {
 				.uri(URI.create(this.baseUrl + (endpoint.startsWith("/") ? endpoint.substring(1) : endpoint)))
 				.header("Content-Type", "application/json")
 				.header("Authorization", "Bearer " + accessToken)
-				.PUT(HttpRequest.BodyPublishers.ofString(bodyString))
+				.method("PATCH", HttpRequest.BodyPublishers.ofString(bodyString))
 				.build();
 
 		HttpResponse<String> response = null;
@@ -401,17 +402,17 @@ public class OkapiConnector {
 
 	/**
 	 * Updates a {@link Satellite} already present in the OKAPI backend.
-	 * @param existingSatellite - A {@link Satellite} definition already contained in the OKAPI backend collection.
+	 * @param currentSatellite - A {@link Satellite} definition already contained in the OKAPI backend collection.
 	 *                             It must contain the name, satelliteId and Space-Track status
 	 * @param accessToken - the access token enabling the access to the OKAPI services
 	 * @return the {@link Satellite} as received in the backend.
 	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
 	 * @throws IOException Raised when the communication to the backend fails.
 	 */
-	public Satellite updateSatellite(Satellite existingSatellite, String accessToken) throws OkapiPlatformException, IOException {
-		String existingSatelliteAsString = this.objectMapper.writeValueAsString(existingSatellite);
+	public Satellite updateSatellite(HashMap<String, Object> updates, String accessToken) throws OkapiPlatformException, IOException {
+		String existingSatelliteAsString = this.objectMapper.writeValueAsString(updates);
 		String updatedSatellitesJsonString = update(
-				"/satellites/" + existingSatellite.getSatelliteId(),
+				"/satellites/" + updates.get("satellite_id"),
 				existingSatelliteAsString,
 				accessToken);
 		return this.objectMapper.readValue(updatedSatellitesJsonString, Satellite.class);

@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import java.util.Date;
+import java.util.HashMap;
 import java.text.ParseException;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -101,13 +102,15 @@ class OkapiConnectorTest {
     @org.junit.jupiter.api.Order(3)
     void updateSatellite()
             throws OkapiConnector.OkapiPlatformException, IOException {
-        Satellite currentSatellite = new Satellite();
-        currentSatellite.setName("SPUTNIK-2");
-        currentSatellite.setSatelliteId(satelliteId);
-        currentSatellite.setSpaceTrackStatus(Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED);
+    	
+		HashMap<String, Object> updates = new HashMap<>();
+		updates.put("satellite_id", satelliteId);
+		updates.put("name", "The satellite has a new name !");
+		updates.put("mass", 1.2);
+		updates.put("space_track_status", Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED);
 
         // Send updated satellite definition to the backend and retrieve the updated instance
-        okapiConnector.updateSatellite(currentSatellite,accessToken);
+        okapiConnector.updateSatellite(updates,accessToken);
         Assertions.assertEquals(okapiConnector.responseCode, 200);
     }
 
