@@ -342,7 +342,7 @@ public class OkapiConnectorTryout {
 		// This is a random ID, which will be changed by the backend but currently it is still required
 		newSatellite.setSatelliteId("550e8400-e29b-11d4-a716-446655440000");
 		newSatellite.setNoradIds(Collections.singletonList(1234567));
-		newSatellite.setSpaceTrackStatus(Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED);
+		newSatellite.setSpaceTrackStatus(Satellite.SpaceTrackStatus.SATELLITE_REGISTERED);
 
 		// Send new satellite definition to the backend to add to the collection and retrieve the new instance from the
 		// backend.
@@ -372,14 +372,13 @@ public class OkapiConnectorTryout {
 		// Fields: satellite_id and name are required
 		Satellite currentSatellite ;
 		HashMap<String, Object> updates = new HashMap<>();
-		updates.put("satellite_id", satelliteId);
-		updates.put("name", "The satellite has a new name !");
+		updates.put("name", "Спутник");
 		updates.put("mass", 1.2);
 		updates.put("space_track_status", Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED);
 
 		// Send updated satellite definition to the backend and retrieve the updated instance
 		try {
-			currentSatellite = okapi.updateSatellite(updates,accessToken);
+			currentSatellite = okapi.updateSatellite(satelliteId, updates, accessToken);
 		} catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
 			okapiPlatformException.printStackTrace();
 			return;

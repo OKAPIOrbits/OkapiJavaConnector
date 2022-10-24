@@ -8,12 +8,9 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.*;
 
 import java.text.SimpleDateFormat;
-import java.util.TimeZone;
-import java.util.Date;
-import java.util.HashMap;
 import java.text.ParseException;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -81,7 +78,7 @@ class OkapiConnectorTest {
         // This is a random ID, which will be changed by the backend, but currently it is still required
         newSatellite.setSatelliteId("550e8400-e29b-11d4-a716-446655440000");
         newSatellite.setNoradIds(Collections.singletonList(1234567));
-        newSatellite.setSpaceTrackStatus(Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED);
+        newSatellite.setSpaceTrackStatus(Satellite.SpaceTrackStatus.SATELLITE_REGISTERED);
 
         // Send new satellite definition to the backend to add to the collection and retrieve the new instance from the
         // backend.
@@ -100,18 +97,47 @@ class OkapiConnectorTest {
 
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Order(3)
-    void updateSatellite()
+    void updateSatelliteWithMap()
             throws OkapiConnector.OkapiPlatformException, IOException {
     	
-		HashMap<String, Object> updates = new HashMap<>();
-		updates.put("satellite_id", satelliteId);
-		updates.put("name", "The satellite has a new name !");
+		Map<String, Object> updates = new HashMap<>();
+		updates.put("name", "Спутник");
 		updates.put("mass", 1.2);
 		updates.put("space_track_status", Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED);
 
         // Send updated satellite definition to the backend and retrieve the updated instance
-        okapiConnector.updateSatellite(updates,accessToken);
-        Assertions.assertEquals(okapiConnector.responseCode, 200);
+        Satellite updatedSatellite = okapiConnector.updateSatellite(satelliteId, updates, accessToken);
+
+        Assertions.assertEquals(200, okapiConnector.responseCode);
+        // Check updated fields
+        Assertions.assertEquals("Спутник", updatedSatellite.getName());
+        Assertions.assertEquals(1.2, updatedSatellite.getMass());
+        Assertions.assertEquals(Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED, updatedSatellite.getSpaceTrackStatus());
+        // Check fields that were not updated
+        Assertions.assertEquals(Collections.singletonList(1234567), updatedSatellite.getNoradIds());
+    }
+
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.Order(3)
+    void updateSatelliteWithObject()
+            throws OkapiConnector.OkapiPlatformException, IOException {
+
+        Satellite satellite = new Satellite();
+        satellite.setSatelliteId(satelliteId);
+        satellite.setName("Спутник");
+        satellite.setMass(1.2);
+        satellite.setSpaceTrackStatus(Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED);
+
+        // Send updated satellite definition to the backend and retrieve the updated instance
+        Satellite updatedSatellite = okapiConnector.updateSatellite(satellite, accessToken);
+
+        Assertions.assertEquals(200, okapiConnector.responseCode);
+        // Check updated fields
+        Assertions.assertEquals("Спутник", updatedSatellite.getName());
+        Assertions.assertEquals(1.2, updatedSatellite.getMass());
+        Assertions.assertEquals(Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED, updatedSatellite.getSpaceTrackStatus());
+        // Check fields that were not updated
+        Assertions.assertEquals(Collections.singletonList(1234567), updatedSatellite.getNoradIds());
     }
 
     @org.junit.jupiter.api.Test
