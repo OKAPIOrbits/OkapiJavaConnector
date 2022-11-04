@@ -10,13 +10,11 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.TimeZone;
 
 /**
  * This class provides helper methods to send and retrieve information to and from the OKAPI platform.
@@ -39,7 +37,7 @@ import java.util.TimeZone;
  * <ul>
  *     <li>{@link #addSatellite(Satellite, String)}</li>
  *     <li>{@link #updateSatellite(Satellite, String)}</li>
- *     <li>{@link #updateSatellite(String, Map<String, Object>, String)}</li>
+ *     <li>{@link #updateSatellite(String, List<Integer>, Map<String, Object>, String)}</li>
  *     <li>{@link #deleteSatellite(String, String)}</li>
  *     <li>{@link #getSatellites(String)}</li>
  *     <li>{@link #getConjunctions(String)} (String)}</li>
@@ -185,7 +183,6 @@ public class OkapiConnector {
 	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
 	 */
 	public String send(String endpoint, String bodyString, String accessToken) throws OkapiPlatformException {
-
 		HttpClient httpClient = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create(this.baseUrl + (endpoint.startsWith("/") ? endpoint.substring(1) : endpoint)))
@@ -228,7 +225,6 @@ public class OkapiConnector {
 	 * @return a JSON from the platform or "{}" as {@link String}
 	 */
 	public String update(String endpoint, String bodyString, String accessToken) throws OkapiPlatformException {
-
 		HttpClient httpClient = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create(this.baseUrl + (endpoint.startsWith("/") ? endpoint.substring(1) : endpoint)))
@@ -352,7 +348,6 @@ public class OkapiConnector {
 	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
 	 */
 	public String delete(String endpoint, String accessToken) throws OkapiPlatformException {
-
 		HttpClient httpClient = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create(this.baseUrl + (endpoint.startsWith("/") ? endpoint.substring(1) : endpoint)))
@@ -408,6 +403,8 @@ public class OkapiConnector {
 	/**
 	 * Updates a {@link Satellite} already present in the OKAPI backend.
 	 * All fields that are set will be updated; fields that are not set will remain as they are in the backend.
+	 * Be careful when using this method: If you create a new {@link Satellite} object,
+	 * some fields will have default values, so this method may overwrite values you don't intend to overwrite.
 	 * @params existingSatellite - a {@link Satellite} that already exists in the backend (it must contain a satelliteId)
 	 * @param accessToken - the access token enabling the access to the OKAPI services
 	 * @return the updated {@link Satellite} as received from the backend
@@ -433,8 +430,10 @@ public class OkapiConnector {
 	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
 	 * @throws IOException Raised when the communication to the backend fails.
 	 */
-	public Satellite updateSatellite(String satelliteId, Map<String, Object> updates, String accessToken) throws OkapiPlatformException, IOException {
+	public Satellite updateSatellite(String satelliteId, List<Integer> noradIds, Map<String, Object> updates, String accessToken) throws OkapiPlatformException, IOException {
+		updates.put("name", "Satellite name to be set automatically");
 		updates.put("satellite_id", satelliteId);
+		updates.put("norad_ids", noradIds);
 		String existingSatelliteAsString = this.objectMapper.writeValueAsString(updates);
 		String updatedSatellitesJsonString = update(
 				"/satellites/" + satelliteId,
