@@ -1,5 +1,6 @@
 package com.okapiorbits.platform;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.okapiorbits.platform.science.jobs.json.*;
 import org.json.JSONObject;
@@ -9,12 +10,11 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.TimeZone;
 
 /**
  * This class provides helper methods to send and retrieve information to and from the OKAPI platform.
@@ -37,6 +37,7 @@ import java.util.TimeZone;
  * <ul>
  *     <li>{@link #addSatellite(Satellite, String)}</li>
  *     <li>{@link #updateSatellite(Satellite, String)}</li>
+ *     <li>{@link #updateSatellite(String, List<Integer>, Map<String, Object>, String)}</li>
  *     <li>{@link #deleteSatellite(String, String)}</li>
  *     <li>{@link #getSatellites(String)}</li>
  *     <li>{@link #getConjunctions(String)} (String)}</li>
@@ -93,18 +94,20 @@ public class OkapiConnector {
 		this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
 		
 		// Otherwise, when we write dates into the objects they are stringified
-		// as timestamps. We want simple strings
-    this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+		// as timestamps. We want simple strings.
+    	this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+		// Don't include fields with null values in the serialized string.
+		this.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     
-    // This way, the mapper can read the simple string dates as Date objects
-    // This is the default format
-    this.resetDateFormat();
+		// This way, the mapper can read the simple string dates as Date objects
+		// This is the default format
+		this.resetDateFormat();
 	}
 	
 	private void resetDateFormat() {
-	  SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-    df.setTimeZone(TimeZone.getTimeZone("UTC"));
-    this.objectMapper.setDateFormat(df);
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+    	df.setTimeZone(TimeZone.getTimeZone("UTC"));
+    	this.objectMapper.setDateFormat(df);
 	}
 
 	/**
@@ -180,7 +183,6 @@ public class OkapiConnector {
 	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
 	 */
 	public String send(String endpoint, String bodyString, String accessToken) throws OkapiPlatformException {
-
 		HttpClient httpClient = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create(this.baseUrl + (endpoint.startsWith("/") ? endpoint.substring(1) : endpoint)))
@@ -223,7 +225,6 @@ public class OkapiConnector {
 	 * @return a JSON from the platform or "{}" as {@link String}
 	 */
 	public String update(String endpoint, String bodyString, String accessToken) throws OkapiPlatformException {
-
 		HttpClient httpClient = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create(this.baseUrl + (endpoint.startsWith("/") ? endpoint.substring(1) : endpoint)))
@@ -347,7 +348,6 @@ public class OkapiConnector {
 	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
 	 */
 	public String delete(String endpoint, String accessToken) throws OkapiPlatformException {
-
 		HttpClient httpClient = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create(this.baseUrl + (endpoint.startsWith("/") ? endpoint.substring(1) : endpoint)))
@@ -402,17 +402,41 @@ public class OkapiConnector {
 
 	/**
 	 * Updates a {@link Satellite} already present in the OKAPI backend.
-	 * @param currentSatellite - A {@link Satellite} definition already contained in the OKAPI backend collection.
-	 *                             It must contain the name, satelliteId and Space-Track status
+	 * All fields that are set will be updated; fields that are not set will remain as they are in the backend.
+	 * Be careful when using this method: If you create a new {@link Satellite} object,
+	 * some fields will have default values, so this method may overwrite values you don't intend to overwrite.
+	 * @params existingSatellite - a {@link Satellite} that already exists in the backend (it must contain a satelliteId)
 	 * @param accessToken - the access token enabling the access to the OKAPI services
-	 * @return the {@link Satellite} as received in the backend.
+	 * @return the updated {@link Satellite} as received from the backend
 	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
 	 * @throws IOException Raised when the communication to the backend fails.
 	 */
-	public Satellite updateSatellite(HashMap<String, Object> updates, String accessToken) throws OkapiPlatformException, IOException {
+	public Satellite updateSatellite(Satellite satellite, String accessToken) throws OkapiPlatformException, IOException {
+		String existingSatelliteAsString = this.objectMapper.writeValueAsString(satellite);
+		String updatedSatellitesJsonString = update(
+				"/satellites/" + satellite.getSatelliteId(),
+				existingSatelliteAsString,
+				accessToken);
+		return this.objectMapper.readValue(updatedSatellitesJsonString, Satellite.class);
+	}
+
+	/**
+	 * Updates a {@link Satellite} already present in the OKAPI backend.
+	 * All given fields will be updated; all other fields will remain as they are in the backend.
+	 * @params satelliteId - the unique OKAPI ID of the satellite
+	 * @param updates - a map of fields to update for the satellite
+	 * @param accessToken - the access token enabling the access to the OKAPI services
+	 * @return the updated {@link Satellite} as received from the backend
+	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
+	 * @throws IOException Raised when the communication to the backend fails.
+	 */
+	public Satellite updateSatellite(String satelliteId, List<Integer> noradIds, Map<String, Object> updates, String accessToken) throws OkapiPlatformException, IOException {
+		updates.put("name", "Satellite name to be set automatically");
+		updates.put("satellite_id", satelliteId);
+		updates.put("norad_ids", noradIds);
 		String existingSatelliteAsString = this.objectMapper.writeValueAsString(updates);
 		String updatedSatellitesJsonString = update(
-				"/satellites/" + updates.get("satellite_id"),
+				"/satellites/" + satelliteId,
 				existingSatelliteAsString,
 				accessToken);
 		return this.objectMapper.readValue(updatedSatellitesJsonString, Satellite.class);
@@ -420,7 +444,7 @@ public class OkapiConnector {
 
 	/**
 	 * Removes a {@link Satellite} present in the OKAPI backend.
-	 * @param satelliteId - the unique Id which identifies the satellite in the OKAPI backend.
+	 * @param satelliteId - the unique OKAPI ID of the satellite
 	 * @param accessToken - the access token enabling the access to the OKAPI services
 	 * @return the {@link Satellite} as received in the backend.
 	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.

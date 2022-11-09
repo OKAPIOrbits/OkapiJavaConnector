@@ -8,12 +8,9 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.*;
 
 import java.text.SimpleDateFormat;
-import java.util.TimeZone;
-import java.util.Date;
-import java.util.HashMap;
 import java.text.ParseException;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -21,7 +18,7 @@ class OkapiConnectorTest {
 
     private static OkapiConnector okapiConnector;
     private static String accessToken;
-    private static String satelliteId;
+    private static Satellite satellite;
 
     @org.junit.jupiter.api.BeforeAll
     public static void setUp() {
@@ -77,16 +74,19 @@ class OkapiConnectorTest {
     @org.junit.jupiter.api.Order(2)
     void addSatellite() {
         Satellite newSatellite = new Satellite();
-        newSatellite.setName("Sputnik");
-        // This is a random ID, which will be changed by the backend, but currently it is still required
+        // Name and ID will be set by the backend, so they cannot be set or updated.
+        // However, they're currently still required.
+        newSatellite.setName("Satellite name to be set automatically");
         newSatellite.setSatelliteId("550e8400-e29b-11d4-a716-446655440000");
         newSatellite.setNoradIds(Collections.singletonList(1234567));
-        newSatellite.setSpaceTrackStatus(Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED);
+        newSatellite.setDragArea(0.6);
+        newSatellite.setMaxThrustDuration(2.0);
+        newSatellite.setSpaceTrackStatus(Satellite.SpaceTrackStatus.SATELLITE_REGISTERED);
 
         // Send new satellite definition to the backend to add to the collection and retrieve the new instance from the
         // backend.
         try {
-            newSatellite = okapiConnector.addSatellite(newSatellite,accessToken);
+            satellite = okapiConnector.addSatellite(newSatellite,accessToken);
         } catch (OkapiConnector.OkapiPlatformException | IOException okapiPlatformException) {
             okapiPlatformException.printStackTrace();
         }
@@ -95,43 +95,64 @@ class OkapiConnectorTest {
         Assertions.assertNotEquals(newSatellite, null);
         Assertions.assertEquals(okapiConnector.responseCode, 200);
         Assertions.assertNotEquals(newSatellite.getSatelliteId(), null);
-        satelliteId = newSatellite.getSatelliteId();
+        // Check fields
+        Assertions.assertEquals(0.6, satellite.getDragArea());
+        Assertions.assertEquals(2.0, satellite.getMaxThrustDuration());
+        Assertions.assertEquals(Satellite.SpaceTrackStatus.SATELLITE_REGISTERED, satellite.getSpaceTrackStatus());
     }
 
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Order(3)
-    void updateSatellite()
-            throws OkapiConnector.OkapiPlatformException, IOException {
-    	
-		HashMap<String, Object> updates = new HashMap<>();
-		updates.put("satellite_id", satelliteId);
-		updates.put("name", "The satellite has a new name !");
+    void updateSatelliteWithMap() throws OkapiConnector.OkapiPlatformException, IOException {
+		Map<String, Object> updates = new HashMap<>();
 		updates.put("mass", 1.2);
 		updates.put("space_track_status", Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED);
 
         // Send updated satellite definition to the backend and retrieve the updated instance
-        okapiConnector.updateSatellite(updates,accessToken);
-        Assertions.assertEquals(okapiConnector.responseCode, 200);
+        Satellite updatedSatellite = okapiConnector.updateSatellite(satellite.getSatelliteId(), satellite.getNoradIds(), updates, accessToken);
+
+        Assertions.assertEquals(200, okapiConnector.responseCode);
+        // Check updated fields
+        Assertions.assertEquals(1.2, updatedSatellite.getMass());
+        Assertions.assertEquals(Satellite.SpaceTrackStatus.SHARING_AGREEMENT_SIGNED, updatedSatellite.getSpaceTrackStatus());
+        // Check fields that were not updated
+        Assertions.assertEquals(0.6, updatedSatellite.getDragArea());
+        Assertions.assertEquals(2.0, updatedSatellite.getMaxThrustDuration());
+    }
+
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.Order(3)
+    void updateSatelliteWithObject() throws OkapiConnector.OkapiPlatformException, IOException {
+        satellite.setMass(1.4);
+        satellite.setSpaceTrackStatus(Satellite.SpaceTrackStatus.DONT_KNOW);
+
+        // Send updated satellite definition to the backend and retrieve the updated instance
+        Satellite updatedSatellite = okapiConnector.updateSatellite(satellite, accessToken);
+
+        Assertions.assertEquals(200, okapiConnector.responseCode);
+        // Check updated fields
+        Assertions.assertEquals(1.4, updatedSatellite.getMass());
+        Assertions.assertEquals(Satellite.SpaceTrackStatus.DONT_KNOW, updatedSatellite.getSpaceTrackStatus());
+        // Check fields that were not updated
+        Assertions.assertEquals(0.6, updatedSatellite.getDragArea());
+        Assertions.assertEquals(2.0, updatedSatellite.getMaxThrustDuration());
     }
 
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Order(5)
-    void deleteSatellite()
-            throws OkapiConnector.OkapiPlatformException, IOException{
-        Satellite deletedSatellite;
-
+    void deleteSatellite() throws OkapiConnector.OkapiPlatformException, IOException {
         // Delete satellite definition from the backend collection and retrieve the deleted instance
-        deletedSatellite = okapiConnector.deleteSatellite(
-                satelliteId,
+        Satellite deletedSatellite = okapiConnector.deleteSatellite(
+                satellite.getSatelliteId(),
                 accessToken);
+
         Assertions.assertNotEquals(deletedSatellite, null);
         Assertions.assertEquals(okapiConnector.responseCode, 200);
     }
 
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Order(4)
-    void getSatellites()
-            throws OkapiConnector.OkapiPlatformException, IOException{
+    void getSatellites() throws OkapiConnector.OkapiPlatformException, IOException {
         Satellites satellites = okapiConnector.getSatellites(accessToken);
         Assertions.assertNotEquals(satellites, null);
         Assertions.assertEquals(okapiConnector.responseCode, 200);
@@ -142,8 +163,7 @@ class OkapiConnectorTest {
 	 */
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Order(5)
-	  void addGroundStationPasses()
-            throws ParseException, OkapiConnector.OkapiPlatformException, IOException {
+    void addGroundStationPasses() throws ParseException, OkapiConnector.OkapiPlatformException, IOException {
         MultiGroundStationPasses multiGroundStationPasses = new MultiGroundStationPasses();
         GroundStationPasses groundStationPasses = new GroundStationPasses();
         multiGroundStationPasses.getElements().add(groundStationPasses);
@@ -157,47 +177,44 @@ class OkapiConnectorTest {
         addPassWindow(groundStationPasses, "2020-10-13T22:15:37Z", "2020-10-13T22:24:34Z");
         addPassWindow(groundStationPasses, "2020-10-14T09:49:20Z", "2020-10-14T09:58:45Z");
         addPassWindow(groundStationPasses, "2020-10-14T12:45:58Z", "2020-10-14T12:57:41Z");
-		    
 
         // Send new ground station passes definitions to the backend to add to the DB and retrieve the new instance from the
         // backend.
         multiGroundStationPasses = okapiConnector.addMultiGroundStationPasses(multiGroundStationPasses, accessToken);
 
-
         // Retrieve the newly assigned satellite id
         if (okapiConnector.responseCode == 200) {
-              System.out.println(multiGroundStationPasses.toString());
+            System.out.println(multiGroundStationPasses.toString());
         }
 		    
         Assertions.assertNotEquals(multiGroundStationPasses, null);
         Assertions.assertEquals(okapiConnector.responseCode, 200);
-	  }
-	  
-	  private void addPassWindow(GroundStationPasses groundStationPasses, String isoStringStart, String isoStringEnd)
-	      throws ParseException {
-		    PassWindow passWindow = new PassWindow();
-		    groundStationPasses.getPasses().add(passWindow);
+    }
+
+    private void addPassWindow(GroundStationPasses groundStationPasses, String isoStringStart, String isoStringEnd)
+	    throws ParseException {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date date = df.parse(isoStringStart);
-		    passWindow.setStart(date);
-        date = df.parse(isoStringEnd);
-		    passWindow.setEnd(date);
-	  }
+        Date startDate = df.parse(isoStringStart);
+        Date endDate = df.parse(isoStringEnd);
 
-	  /**
-	   * Tests the retrieval of ground station passes
-	   */
+        PassWindow passWindow = new PassWindow();
+        passWindow.setStart(startDate);
+        passWindow.setEnd(endDate);
+
+        groundStationPasses.getPasses().add(passWindow);
+    }
+
+    /**
+     * Tests the retrieval of ground station passes
+     */
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Order(6)
-	  void getMultiGroundStationPassesInfo()
-            throws OkapiConnector.OkapiPlatformException, IOException{
-
+    void getMultiGroundStationPassesInfo() throws OkapiConnector.OkapiPlatformException, IOException {
         MultiGroundStationPassesInfo multiGroundStationPassesInfo;
 
         // Retrieve all of them
         multiGroundStationPassesInfo = okapiConnector.getMultiGroundStationPassesInfo(accessToken);
-
 
         if (okapiConnector.responseCode == 200) {
               System.out.println(multiGroundStationPassesInfo.toString());
@@ -205,5 +222,5 @@ class OkapiConnectorTest {
 		    
         Assertions.assertNotEquals(multiGroundStationPassesInfo, null);
         Assertions.assertEquals(okapiConnector.responseCode, 200);
-	  }
+    }
 }
