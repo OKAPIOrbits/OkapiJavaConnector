@@ -411,14 +411,14 @@ public class OkapiConnector {
 	 * @throws OkapiPlatformException Raised when the web status is different than 202/200 or a timeout occurs.
 	 * @throws IOException Raised when the communication to the backend fails.
 	 */
-	public Satellite updateSatellite(Satellite satellite, String accessToken) throws OkapiPlatformException, IOException {
+	/*public Satellite updateSatellite(Satellite satellite, String accessToken) throws OkapiPlatformException, IOException {
 		String existingSatelliteAsString = this.objectMapper.writeValueAsString(satellite);
 		String updatedSatellitesJsonString = update(
 				"/satellites/" + satellite.getSatelliteId(),
 				existingSatelliteAsString,
 				accessToken);
 		return this.objectMapper.readValue(updatedSatellitesJsonString, Satellite.class);
-	}
+	}*/
 
 	/**
 	 * Updates a {@link Satellite} already present in the OKAPI backend.
