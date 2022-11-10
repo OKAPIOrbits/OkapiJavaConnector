@@ -31,6 +31,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "approx_peak_risk",
     "time_of_peak_risk",
     "risk_trend",
+    "risk_trend_increase",
+    "risk_trend_decrease",
+    "risk_quartiles",
+    "probability_of_increase",
+    "probability_of_critical",
     "miss_distance",
     "relative_speed",
     "r",
@@ -125,6 +130,26 @@ public class RiskPrediction {
      */
     @JsonProperty("risk_trend")
     private List<RiskAtTca> riskTrend = new ArrayList<RiskAtTca>();
+    @JsonProperty("risk_trend_increase")
+    private List<RiskAtTca> riskTrendIncrease = new ArrayList<RiskAtTca>();
+    @JsonProperty("risk_trend_decrease")
+    private List<RiskAtTca> riskTrendDecrease = new ArrayList<RiskAtTca>();
+    @JsonProperty("risk_quartiles")
+    private List<RiskAtTca> riskQuartiles = new ArrayList<RiskAtTca>();
+    /**
+     * Probability of increasing trend / -
+     * 
+     */
+    @JsonProperty("probability_of_increase")
+    @JsonPropertyDescription("Probability of increasing trend / -")
+    private Double probabilityOfIncrease;
+    /**
+     * Probability of critical conjunction / -
+     * 
+     */
+    @JsonProperty("probability_of_critical")
+    @JsonPropertyDescription("Probability of critical conjunction / -")
+    private Double probabilityOfCritical;
     /**
      * in km
      * (Required)
@@ -448,6 +473,72 @@ public class RiskPrediction {
     @JsonProperty("risk_trend")
     public void setRiskTrend(List<RiskAtTca> riskTrend) {
         this.riskTrend = riskTrend;
+    }
+
+    @JsonProperty("risk_trend_increase")
+    public List<RiskAtTca> getRiskTrendIncrease() {
+        return riskTrendIncrease;
+    }
+
+    @JsonProperty("risk_trend_increase")
+    public void setRiskTrendIncrease(List<RiskAtTca> riskTrendIncrease) {
+        this.riskTrendIncrease = riskTrendIncrease;
+    }
+
+    @JsonProperty("risk_trend_decrease")
+    public List<RiskAtTca> getRiskTrendDecrease() {
+        return riskTrendDecrease;
+    }
+
+    @JsonProperty("risk_trend_decrease")
+    public void setRiskTrendDecrease(List<RiskAtTca> riskTrendDecrease) {
+        this.riskTrendDecrease = riskTrendDecrease;
+    }
+
+    @JsonProperty("risk_quartiles")
+    public List<RiskAtTca> getRiskQuartiles() {
+        return riskQuartiles;
+    }
+
+    @JsonProperty("risk_quartiles")
+    public void setRiskQuartiles(List<RiskAtTca> riskQuartiles) {
+        this.riskQuartiles = riskQuartiles;
+    }
+
+    /**
+     * Probability of increasing trend / -
+     * 
+     */
+    @JsonProperty("probability_of_increase")
+    public Double getProbabilityOfIncrease() {
+        return probabilityOfIncrease;
+    }
+
+    /**
+     * Probability of increasing trend / -
+     * 
+     */
+    @JsonProperty("probability_of_increase")
+    public void setProbabilityOfIncrease(Double probabilityOfIncrease) {
+        this.probabilityOfIncrease = probabilityOfIncrease;
+    }
+
+    /**
+     * Probability of critical conjunction / -
+     * 
+     */
+    @JsonProperty("probability_of_critical")
+    public Double getProbabilityOfCritical() {
+        return probabilityOfCritical;
+    }
+
+    /**
+     * Probability of critical conjunction / -
+     * 
+     */
+    @JsonProperty("probability_of_critical")
+    public void setProbabilityOfCritical(Double probabilityOfCritical) {
+        this.probabilityOfCritical = probabilityOfCritical;
     }
 
     /**
@@ -842,6 +933,26 @@ public class RiskPrediction {
         sb.append('=');
         sb.append(((this.riskTrend == null)?"<null>":this.riskTrend));
         sb.append(',');
+        sb.append("riskTrendIncrease");
+        sb.append('=');
+        sb.append(((this.riskTrendIncrease == null)?"<null>":this.riskTrendIncrease));
+        sb.append(',');
+        sb.append("riskTrendDecrease");
+        sb.append('=');
+        sb.append(((this.riskTrendDecrease == null)?"<null>":this.riskTrendDecrease));
+        sb.append(',');
+        sb.append("riskQuartiles");
+        sb.append('=');
+        sb.append(((this.riskQuartiles == null)?"<null>":this.riskQuartiles));
+        sb.append(',');
+        sb.append("probabilityOfIncrease");
+        sb.append('=');
+        sb.append(((this.probabilityOfIncrease == null)?"<null>":this.probabilityOfIncrease));
+        sb.append(',');
+        sb.append("probabilityOfCritical");
+        sb.append('=');
+        sb.append(((this.probabilityOfCritical == null)?"<null>":this.probabilityOfCritical));
+        sb.append(',');
         sb.append("missDistance");
         sb.append('=');
         sb.append(((this.missDistance == null)?"<null>":this.missDistance));
@@ -936,14 +1047,19 @@ public class RiskPrediction {
         result = ((result* 31)+((this.sat2CovarianceRScalingFactor == null)? 0 :this.sat2CovarianceRScalingFactor.hashCode()));
         result = ((result* 31)+((this.collisionProbability == null)? 0 :this.collisionProbability.hashCode()));
         result = ((result* 31)+((this.originator == null)? 0 :this.originator.hashCode()));
+        result = ((result* 31)+((this.probabilityOfIncrease == null)? 0 :this.probabilityOfIncrease.hashCode()));
+        result = ((result* 31)+((this.riskQuartiles == null)? 0 :this.riskQuartiles.hashCode()));
         result = ((result* 31)+((this.sat1CovarianceNScalingFactor == null)? 0 :this.sat1CovarianceNScalingFactor.hashCode()));
         result = ((result* 31)+((this.tca == null)? 0 :this.tca.hashCode()));
         result = ((result* 31)+((this.approxPeakRisk == null)? 0 :this.approxPeakRisk.hashCode()));
+        result = ((result* 31)+((this.riskTrendIncrease == null)? 0 :this.riskTrendIncrease.hashCode()));
+        result = ((result* 31)+((this.probabilityOfCritical == null)? 0 :this.probabilityOfCritical.hashCode()));
         result = ((result* 31)+((this.sat2CovarianceNScalingFactor == null)? 0 :this.sat2CovarianceNScalingFactor.hashCode()));
         result = ((result* 31)+((this.basedOn == null)? 0 :this.basedOn.hashCode()));
         result = ((result* 31)+((this.sat1CovarianceRScalingFactor == null)? 0 :this.sat1CovarianceRScalingFactor.hashCode()));
         result = ((result* 31)+((this.riskTrend == null)? 0 :this.riskTrend.hashCode()));
         result = ((result* 31)+((this.missDistance == null)? 0 :this.missDistance.hashCode()));
+        result = ((result* 31)+((this.riskTrendDecrease == null)? 0 :this.riskTrendDecrease.hashCode()));
         result = ((result* 31)+((this.creationDate == null)? 0 :this.creationDate.hashCode()));
         result = ((result* 31)+((this.n == null)? 0 :this.n.hashCode()));
         result = ((result* 31)+((this.r == null)? 0 :this.r.hashCode()));
@@ -964,7 +1080,7 @@ public class RiskPrediction {
             return false;
         }
         RiskPrediction rhs = ((RiskPrediction) other);
-        return ((((((((((((((((((((((((((((this.tDot == rhs.tDot)||((this.tDot!= null)&&this.tDot.equals(rhs.tDot)))&&((this.relativeSpeed == rhs.relativeSpeed)||((this.relativeSpeed!= null)&&this.relativeSpeed.equals(rhs.relativeSpeed))))&&((this.riskPredictionId == rhs.riskPredictionId)||((this.riskPredictionId!= null)&&this.riskPredictionId.equals(rhs.riskPredictionId))))&&((this.rDot == rhs.rDot)||((this.rDot!= null)&&this.rDot.equals(rhs.rDot))))&&((this.sat1CovarianceTScalingFactor == rhs.sat1CovarianceTScalingFactor)||((this.sat1CovarianceTScalingFactor!= null)&&this.sat1CovarianceTScalingFactor.equals(rhs.sat1CovarianceTScalingFactor))))&&((this.collisionProbabilityMethod == rhs.collisionProbabilityMethod)||((this.collisionProbabilityMethod!= null)&&this.collisionProbabilityMethod.equals(rhs.collisionProbabilityMethod))))&&((this.nDot == rhs.nDot)||((this.nDot!= null)&&this.nDot.equals(rhs.nDot))))&&((this.criticality == rhs.criticality)||((this.criticality!= null)&&this.criticality.equals(rhs.criticality))))&&((this.sat2CovarianceRScalingFactor == rhs.sat2CovarianceRScalingFactor)||((this.sat2CovarianceRScalingFactor!= null)&&this.sat2CovarianceRScalingFactor.equals(rhs.sat2CovarianceRScalingFactor))))&&((this.collisionProbability == rhs.collisionProbability)||((this.collisionProbability!= null)&&this.collisionProbability.equals(rhs.collisionProbability))))&&((this.originator == rhs.originator)||((this.originator!= null)&&this.originator.equals(rhs.originator))))&&((this.sat1CovarianceNScalingFactor == rhs.sat1CovarianceNScalingFactor)||((this.sat1CovarianceNScalingFactor!= null)&&this.sat1CovarianceNScalingFactor.equals(rhs.sat1CovarianceNScalingFactor))))&&((this.tca == rhs.tca)||((this.tca!= null)&&this.tca.equals(rhs.tca))))&&((this.approxPeakRisk == rhs.approxPeakRisk)||((this.approxPeakRisk!= null)&&this.approxPeakRisk.equals(rhs.approxPeakRisk))))&&((this.sat2CovarianceNScalingFactor == rhs.sat2CovarianceNScalingFactor)||((this.sat2CovarianceNScalingFactor!= null)&&this.sat2CovarianceNScalingFactor.equals(rhs.sat2CovarianceNScalingFactor))))&&((this.basedOn == rhs.basedOn)||((this.basedOn!= null)&&this.basedOn.equals(rhs.basedOn))))&&((this.sat1CovarianceRScalingFactor == rhs.sat1CovarianceRScalingFactor)||((this.sat1CovarianceRScalingFactor!= null)&&this.sat1CovarianceRScalingFactor.equals(rhs.sat1CovarianceRScalingFactor))))&&((this.riskTrend == rhs.riskTrend)||((this.riskTrend!= null)&&this.riskTrend.equals(rhs.riskTrend))))&&((this.missDistance == rhs.missDistance)||((this.missDistance!= null)&&this.missDistance.equals(rhs.missDistance))))&&((this.creationDate == rhs.creationDate)||((this.creationDate!= null)&&this.creationDate.equals(rhs.creationDate))))&&((this.n == rhs.n)||((this.n!= null)&&this.n.equals(rhs.n))))&&((this.r == rhs.r)||((this.r!= null)&&this.r.equals(rhs.r))))&&((this.suggested == rhs.suggested)||((this.suggested!= null)&&this.suggested.equals(rhs.suggested))))&&((this.t == rhs.t)||((this.t!= null)&&this.t.equals(rhs.t))))&&((this.sat2CovarianceTScalingFactor == rhs.sat2CovarianceTScalingFactor)||((this.sat2CovarianceTScalingFactor!= null)&&this.sat2CovarianceTScalingFactor.equals(rhs.sat2CovarianceTScalingFactor))))&&((this.comment == rhs.comment)||((this.comment!= null)&&this.comment.equals(rhs.comment))))&&((this.timeOfPeakRisk == rhs.timeOfPeakRisk)||((this.timeOfPeakRisk!= null)&&this.timeOfPeakRisk.equals(rhs.timeOfPeakRisk))));
+        return (((((((((((((((((((((((((((((((((this.tDot == rhs.tDot)||((this.tDot!= null)&&this.tDot.equals(rhs.tDot)))&&((this.relativeSpeed == rhs.relativeSpeed)||((this.relativeSpeed!= null)&&this.relativeSpeed.equals(rhs.relativeSpeed))))&&((this.riskPredictionId == rhs.riskPredictionId)||((this.riskPredictionId!= null)&&this.riskPredictionId.equals(rhs.riskPredictionId))))&&((this.rDot == rhs.rDot)||((this.rDot!= null)&&this.rDot.equals(rhs.rDot))))&&((this.sat1CovarianceTScalingFactor == rhs.sat1CovarianceTScalingFactor)||((this.sat1CovarianceTScalingFactor!= null)&&this.sat1CovarianceTScalingFactor.equals(rhs.sat1CovarianceTScalingFactor))))&&((this.collisionProbabilityMethod == rhs.collisionProbabilityMethod)||((this.collisionProbabilityMethod!= null)&&this.collisionProbabilityMethod.equals(rhs.collisionProbabilityMethod))))&&((this.nDot == rhs.nDot)||((this.nDot!= null)&&this.nDot.equals(rhs.nDot))))&&((this.criticality == rhs.criticality)||((this.criticality!= null)&&this.criticality.equals(rhs.criticality))))&&((this.sat2CovarianceRScalingFactor == rhs.sat2CovarianceRScalingFactor)||((this.sat2CovarianceRScalingFactor!= null)&&this.sat2CovarianceRScalingFactor.equals(rhs.sat2CovarianceRScalingFactor))))&&((this.collisionProbability == rhs.collisionProbability)||((this.collisionProbability!= null)&&this.collisionProbability.equals(rhs.collisionProbability))))&&((this.originator == rhs.originator)||((this.originator!= null)&&this.originator.equals(rhs.originator))))&&((this.probabilityOfIncrease == rhs.probabilityOfIncrease)||((this.probabilityOfIncrease!= null)&&this.probabilityOfIncrease.equals(rhs.probabilityOfIncrease))))&&((this.riskQuartiles == rhs.riskQuartiles)||((this.riskQuartiles!= null)&&this.riskQuartiles.equals(rhs.riskQuartiles))))&&((this.sat1CovarianceNScalingFactor == rhs.sat1CovarianceNScalingFactor)||((this.sat1CovarianceNScalingFactor!= null)&&this.sat1CovarianceNScalingFactor.equals(rhs.sat1CovarianceNScalingFactor))))&&((this.tca == rhs.tca)||((this.tca!= null)&&this.tca.equals(rhs.tca))))&&((this.approxPeakRisk == rhs.approxPeakRisk)||((this.approxPeakRisk!= null)&&this.approxPeakRisk.equals(rhs.approxPeakRisk))))&&((this.riskTrendIncrease == rhs.riskTrendIncrease)||((this.riskTrendIncrease!= null)&&this.riskTrendIncrease.equals(rhs.riskTrendIncrease))))&&((this.probabilityOfCritical == rhs.probabilityOfCritical)||((this.probabilityOfCritical!= null)&&this.probabilityOfCritical.equals(rhs.probabilityOfCritical))))&&((this.sat2CovarianceNScalingFactor == rhs.sat2CovarianceNScalingFactor)||((this.sat2CovarianceNScalingFactor!= null)&&this.sat2CovarianceNScalingFactor.equals(rhs.sat2CovarianceNScalingFactor))))&&((this.basedOn == rhs.basedOn)||((this.basedOn!= null)&&this.basedOn.equals(rhs.basedOn))))&&((this.sat1CovarianceRScalingFactor == rhs.sat1CovarianceRScalingFactor)||((this.sat1CovarianceRScalingFactor!= null)&&this.sat1CovarianceRScalingFactor.equals(rhs.sat1CovarianceRScalingFactor))))&&((this.riskTrend == rhs.riskTrend)||((this.riskTrend!= null)&&this.riskTrend.equals(rhs.riskTrend))))&&((this.missDistance == rhs.missDistance)||((this.missDistance!= null)&&this.missDistance.equals(rhs.missDistance))))&&((this.riskTrendDecrease == rhs.riskTrendDecrease)||((this.riskTrendDecrease!= null)&&this.riskTrendDecrease.equals(rhs.riskTrendDecrease))))&&((this.creationDate == rhs.creationDate)||((this.creationDate!= null)&&this.creationDate.equals(rhs.creationDate))))&&((this.n == rhs.n)||((this.n!= null)&&this.n.equals(rhs.n))))&&((this.r == rhs.r)||((this.r!= null)&&this.r.equals(rhs.r))))&&((this.suggested == rhs.suggested)||((this.suggested!= null)&&this.suggested.equals(rhs.suggested))))&&((this.t == rhs.t)||((this.t!= null)&&this.t.equals(rhs.t))))&&((this.sat2CovarianceTScalingFactor == rhs.sat2CovarianceTScalingFactor)||((this.sat2CovarianceTScalingFactor!= null)&&this.sat2CovarianceTScalingFactor.equals(rhs.sat2CovarianceTScalingFactor))))&&((this.comment == rhs.comment)||((this.comment!= null)&&this.comment.equals(rhs.comment))))&&((this.timeOfPeakRisk == rhs.timeOfPeakRisk)||((this.timeOfPeakRisk!= null)&&this.timeOfPeakRisk.equals(rhs.timeOfPeakRisk))));
     }
 
 

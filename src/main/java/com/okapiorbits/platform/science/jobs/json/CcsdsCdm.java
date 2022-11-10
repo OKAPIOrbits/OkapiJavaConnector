@@ -417,14 +417,14 @@ public class CcsdsCdm {
      */
     @JsonProperty("SAT1_TIME_LASTOB_START")
     @JsonPropertyDescription("The start of a time interval (UTC) that contains the time of the last accepted observation.")
-    private String sat1TimeLastobStart;
+    private Date sat1TimeLastobStart;
     /**
      * The end of a time interval (UTC) that contains the time of the last accepted observation.
      * 
      */
     @JsonProperty("SAT1_TIME_LASTOB_END")
     @JsonPropertyDescription("The end of a time interval (UTC) that contains the time of the last accepted observation.")
-    private String sat1TimeLastobEnd;
+    private Date sat1TimeLastobEnd;
     /**
      * The recommended OD time span calculated for the object.
      * 
@@ -1952,7 +1952,7 @@ public class CcsdsCdm {
      * 
      */
     @JsonProperty("SAT1_TIME_LASTOB_START")
-    public String getSat1TimeLastobStart() {
+    public Date getSat1TimeLastobStart() {
         return sat1TimeLastobStart;
     }
 
@@ -1961,7 +1961,7 @@ public class CcsdsCdm {
      * 
      */
     @JsonProperty("SAT1_TIME_LASTOB_START")
-    public void setSat1TimeLastobStart(String sat1TimeLastobStart) {
+    public void setSat1TimeLastobStart(Date sat1TimeLastobStart) {
         this.sat1TimeLastobStart = sat1TimeLastobStart;
     }
 
@@ -1970,7 +1970,7 @@ public class CcsdsCdm {
      * 
      */
     @JsonProperty("SAT1_TIME_LASTOB_END")
-    public String getSat1TimeLastobEnd() {
+    public Date getSat1TimeLastobEnd() {
         return sat1TimeLastobEnd;
     }
 
@@ -1979,7 +1979,7 @@ public class CcsdsCdm {
      * 
      */
     @JsonProperty("SAT1_TIME_LASTOB_END")
-    public void setSat1TimeLastobEnd(String sat1TimeLastobEnd) {
+    public void setSat1TimeLastobEnd(Date sat1TimeLastobEnd) {
         this.sat1TimeLastobEnd = sat1TimeLastobEnd;
     }
 

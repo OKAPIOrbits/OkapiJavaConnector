@@ -4,6 +4,7 @@ package com.okapiorbits.platform.science.jobs.json;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
@@ -21,22 +22,30 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class PassWindow {
 
     /**
-     * 
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
     @JsonProperty("start")
+    @JsonPropertyDescription("ISO8601 date/time definition.")
     private Date start;
     /**
-     * 
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
     @JsonProperty("end")
+    @JsonPropertyDescription("ISO8601 date/time definition.")
     private Date end;
 
     /**
-     * 
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
@@ -46,7 +55,9 @@ public class PassWindow {
     }
 
     /**
-     * 
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
@@ -56,7 +67,9 @@ public class PassWindow {
     }
 
     /**
-     * 
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
@@ -66,7 +79,9 @@ public class PassWindow {
     }
 
     /**
-     * 
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */

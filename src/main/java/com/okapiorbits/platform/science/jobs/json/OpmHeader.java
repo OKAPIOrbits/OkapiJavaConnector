@@ -30,7 +30,14 @@ public class OpmHeader {
     @JsonProperty("CCSDS_OPM_VERS")
     @JsonPropertyDescription("Only version 2.0 is supported.")
     private Double ccsdsOpmVers = 2.0D;
+    /**
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
+     * 
+     */
     @JsonProperty("CREATION_DATE")
+    @JsonPropertyDescription("ISO8601 date/time definition.")
     private Date creationDate;
     @JsonProperty("ORIGINATOR")
     private String originator = "OKAPI:Orbits GmbH";
@@ -55,11 +62,23 @@ public class OpmHeader {
         this.ccsdsOpmVers = ccsdsOpmVers;
     }
 
+    /**
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
+     * 
+     */
     @JsonProperty("CREATION_DATE")
     public Date getCreationDate() {
         return creationDate;
     }
 
+    /**
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
+     * 
+     */
     @JsonProperty("CREATION_DATE")
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
