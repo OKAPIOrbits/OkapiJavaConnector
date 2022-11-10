@@ -120,6 +120,7 @@ class OkapiConnectorTest {
         Assertions.assertEquals(2.0, updatedSatellite.getMaxThrustDuration());
     }
 
+    /*
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Order(3)
     void updateSatelliteWithObject() throws OkapiConnector.OkapiPlatformException, IOException {
@@ -138,7 +139,7 @@ class OkapiConnectorTest {
         // Check fields that were not updated
         Assertions.assertEquals(0.6, updatedSatellite.getDragArea());
         Assertions.assertEquals(2.0, updatedSatellite.getMaxThrustDuration());
-    }
+    }*/
 
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Order(5)
