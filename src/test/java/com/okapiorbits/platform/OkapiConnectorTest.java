@@ -124,6 +124,7 @@ class OkapiConnectorTest {
     @org.junit.jupiter.api.Order(3)
     void updateSatelliteWithObject() throws OkapiConnector.OkapiPlatformException, IOException {
 	Satellite satelliteUpdates = new Satellite();
+	satelliteUpdates.setSatelliteId(satellite.getSatelliteId());
         satelliteUpdates.setMass(1.4);
         satelliteUpdates.setSpaceTrackStatus(Satellite.SpaceTrackStatus.DONT_KNOW);
 
