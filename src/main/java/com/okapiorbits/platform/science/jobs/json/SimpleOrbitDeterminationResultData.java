@@ -1,11 +1,8 @@
 
 package com.okapiorbits.platform.science.jobs.json;
 
-import java.util.HashMap;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -21,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "od_result",
+    "tracklet_ids",
     "status"
 })
 public class SimpleOrbitDeterminationResultData {
@@ -35,6 +33,13 @@ public class SimpleOrbitDeterminationResultData {
     @JsonPropertyDescription("An orbit determination result as an array of state vectors and keplerian elements.")
     private OdResult odResult;
     /**
+     * An array of tracklet_ids of tracklets involved in creating the OD.
+     * 
+     */
+    @JsonProperty("tracklet_ids")
+    @JsonPropertyDescription("An array of tracklet_ids of tracklets involved in creating the OD.")
+    private List<String> trackletIds = new ArrayList<String>();
+    /**
      * Status
      * <p>
      * A request to execute an orbit propagation with an arbitrary orbit propagator
@@ -44,8 +49,6 @@ public class SimpleOrbitDeterminationResultData {
     @JsonProperty("status")
     @JsonPropertyDescription("A request to execute an orbit propagation with an arbitrary orbit propagator")
     private Status status;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * OdResult
@@ -67,6 +70,24 @@ public class SimpleOrbitDeterminationResultData {
     @JsonProperty("od_result")
     public void setOdResult(OdResult odResult) {
         this.odResult = odResult;
+    }
+
+    /**
+     * An array of tracklet_ids of tracklets involved in creating the OD.
+     * 
+     */
+    @JsonProperty("tracklet_ids")
+    public List<String> getTrackletIds() {
+        return trackletIds;
+    }
+
+    /**
+     * An array of tracklet_ids of tracklets involved in creating the OD.
+     * 
+     */
+    @JsonProperty("tracklet_ids")
+    public void setTrackletIds(List<String> trackletIds) {
+        this.trackletIds = trackletIds;
     }
 
     /**
@@ -93,16 +114,6 @@ public class SimpleOrbitDeterminationResultData {
         this.status = status;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -111,13 +122,13 @@ public class SimpleOrbitDeterminationResultData {
         sb.append('=');
         sb.append(((this.odResult == null)?"<null>":this.odResult));
         sb.append(',');
+        sb.append("trackletIds");
+        sb.append('=');
+        sb.append(((this.trackletIds == null)?"<null>":this.trackletIds));
+        sb.append(',');
         sb.append("status");
         sb.append('=');
         sb.append(((this.status == null)?"<null>":this.status));
-        sb.append(',');
-        sb.append("additionalProperties");
-        sb.append('=');
-        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
@@ -130,7 +141,7 @@ public class SimpleOrbitDeterminationResultData {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
+        result = ((result* 31)+((this.trackletIds == null)? 0 :this.trackletIds.hashCode()));
         result = ((result* 31)+((this.odResult == null)? 0 :this.odResult.hashCode()));
         result = ((result* 31)+((this.status == null)? 0 :this.status.hashCode()));
         return result;
@@ -145,7 +156,7 @@ public class SimpleOrbitDeterminationResultData {
             return false;
         }
         SimpleOrbitDeterminationResultData rhs = ((SimpleOrbitDeterminationResultData) other);
-        return ((((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties)))&&((this.odResult == rhs.odResult)||((this.odResult!= null)&&this.odResult.equals(rhs.odResult))))&&((this.status == rhs.status)||((this.status!= null)&&this.status.equals(rhs.status))));
+        return ((((this.trackletIds == rhs.trackletIds)||((this.trackletIds!= null)&&this.trackletIds.equals(rhs.trackletIds)))&&((this.odResult == rhs.odResult)||((this.odResult!= null)&&this.odResult.equals(rhs.odResult))))&&((this.status == rhs.status)||((this.status!= null)&&this.status.equals(rhs.status))));
     }
 
 }

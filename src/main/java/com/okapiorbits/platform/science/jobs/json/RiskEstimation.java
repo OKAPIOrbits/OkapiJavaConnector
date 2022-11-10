@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "tca",
     "collision_probability",
     "collision_probability_method",
+    "mahalanobis_distance",
     "miss_distance",
     "relative_speed",
     "sat1_hard_body_radius",
@@ -32,12 +33,24 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "r_dot",
     "t_dot",
     "n_dot",
+    "r_std",
+    "t_std",
+    "n_std",
+    "r_dot_std",
+    "t_dot_std",
+    "n_dot_std",
     "sat1_covariance_r_scaling_factor",
     "sat1_covariance_t_scaling_factor",
     "sat1_covariance_n_scaling_factor",
     "sat2_covariance_r_scaling_factor",
     "sat2_covariance_t_scaling_factor",
     "sat2_covariance_n_scaling_factor",
+    "b_plane_x",
+    "b_plane_y",
+    "b_plane_xx",
+    "b_plane_xy",
+    "b_plane_yy",
+    "b_plane_yx",
     "sat1_state_at_tca",
     "sat2_state_at_tca",
     "criticality",
@@ -89,6 +102,14 @@ public class RiskEstimation {
     @JsonProperty("collision_probability_method")
     @JsonPropertyDescription("Defines the method that was used to derive the collision probability")
     private String collisionProbabilityMethod;
+    /**
+     *  - 
+     * (Required)
+     * 
+     */
+    @JsonProperty("mahalanobis_distance")
+    @JsonPropertyDescription(" - ")
+    private Double mahalanobisDistance;
     /**
      * in km
      * (Required)
@@ -168,53 +189,149 @@ public class RiskEstimation {
     @JsonPropertyDescription("in km/s")
     private Double nDot;
     /**
-     * applied factor
+     * Radial standard deviation in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("r_std")
+    @JsonPropertyDescription("Radial standard deviation in km")
+    private Double rStd;
+    /**
+     * Along-track standard deviation in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("t_std")
+    @JsonPropertyDescription("Along-track standard deviation in km")
+    private Double tStd;
+    /**
+     * Cross-track standard deviation in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("n_std")
+    @JsonPropertyDescription("Cross-track standard deviation in km")
+    private Double nStd;
+    /**
+     * Radial velocity standard deviation in km/s
+     * (Required)
+     * 
+     */
+    @JsonProperty("r_dot_std")
+    @JsonPropertyDescription("Radial velocity standard deviation in km/s")
+    private Double rDotStd;
+    /**
+     * Along-track velocity standard deviation in km/s
+     * (Required)
+     * 
+     */
+    @JsonProperty("t_dot_std")
+    @JsonPropertyDescription("Along-track velocity standard deviation in km/s")
+    private Double tDotStd;
+    /**
+     * Cross-track velocity standard deviation in km/s
+     * (Required)
+     * 
+     */
+    @JsonProperty("n_dot_std")
+    @JsonPropertyDescription("Cross-track velocity standard deviation in km/s")
+    private Double nDotStd;
+    /**
+     * applied factor / -
      * (Required)
      * 
      */
     @JsonProperty("sat1_covariance_r_scaling_factor")
-    @JsonPropertyDescription("applied factor")
+    @JsonPropertyDescription("applied factor / -")
     private Double sat1CovarianceRScalingFactor;
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
     @JsonProperty("sat1_covariance_t_scaling_factor")
-    @JsonPropertyDescription("applied factor")
+    @JsonPropertyDescription("applied factor / -")
     private Double sat1CovarianceTScalingFactor;
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
     @JsonProperty("sat1_covariance_n_scaling_factor")
-    @JsonPropertyDescription("applied factor")
+    @JsonPropertyDescription("applied factor / -")
     private Double sat1CovarianceNScalingFactor;
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
     @JsonProperty("sat2_covariance_r_scaling_factor")
-    @JsonPropertyDescription("applied factor")
+    @JsonPropertyDescription("applied factor / -")
     private Double sat2CovarianceRScalingFactor;
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
     @JsonProperty("sat2_covariance_t_scaling_factor")
-    @JsonPropertyDescription("applied factor")
+    @JsonPropertyDescription("applied factor / -")
     private Double sat2CovarianceTScalingFactor;
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
     @JsonProperty("sat2_covariance_n_scaling_factor")
-    @JsonPropertyDescription("applied factor")
+    @JsonPropertyDescription("applied factor / -")
     private Double sat2CovarianceNScalingFactor;
+    /**
+     * in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_x")
+    @JsonPropertyDescription("in km")
+    private Double bPlaneX;
+    /**
+     * in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_y")
+    @JsonPropertyDescription("in km")
+    private Double bPlaneY;
+    /**
+     * B-plane variance XX in km²
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_xx")
+    @JsonPropertyDescription("B-plane variance XX in km\u00b2")
+    private Double bPlaneXx;
+    /**
+     * B-plane variance XY in km²
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_xy")
+    @JsonPropertyDescription("B-plane variance XY in km\u00b2")
+    private Double bPlaneXy;
+    /**
+     * B-plane variance YY in km²
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_yy")
+    @JsonPropertyDescription("B-plane variance YY in km\u00b2")
+    private Double bPlaneYy;
+    /**
+     * B-plane variance YX in km²
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_yx")
+    @JsonPropertyDescription("B-plane variance YX in km\u00b2")
+    private Double bPlaneYx;
     /**
      * CcsdsOpm
      * <p>
@@ -378,6 +495,26 @@ public class RiskEstimation {
     @JsonProperty("collision_probability_method")
     public void setCollisionProbabilityMethod(String collisionProbabilityMethod) {
         this.collisionProbabilityMethod = collisionProbabilityMethod;
+    }
+
+    /**
+     *  - 
+     * (Required)
+     * 
+     */
+    @JsonProperty("mahalanobis_distance")
+    public Double getMahalanobisDistance() {
+        return mahalanobisDistance;
+    }
+
+    /**
+     *  - 
+     * (Required)
+     * 
+     */
+    @JsonProperty("mahalanobis_distance")
+    public void setMahalanobisDistance(Double mahalanobisDistance) {
+        this.mahalanobisDistance = mahalanobisDistance;
     }
 
     /**
@@ -577,7 +714,127 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
+     * Radial standard deviation in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("r_std")
+    public Double getrStd() {
+        return rStd;
+    }
+
+    /**
+     * Radial standard deviation in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("r_std")
+    public void setrStd(Double rStd) {
+        this.rStd = rStd;
+    }
+
+    /**
+     * Along-track standard deviation in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("t_std")
+    public Double gettStd() {
+        return tStd;
+    }
+
+    /**
+     * Along-track standard deviation in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("t_std")
+    public void settStd(Double tStd) {
+        this.tStd = tStd;
+    }
+
+    /**
+     * Cross-track standard deviation in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("n_std")
+    public Double getnStd() {
+        return nStd;
+    }
+
+    /**
+     * Cross-track standard deviation in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("n_std")
+    public void setnStd(Double nStd) {
+        this.nStd = nStd;
+    }
+
+    /**
+     * Radial velocity standard deviation in km/s
+     * (Required)
+     * 
+     */
+    @JsonProperty("r_dot_std")
+    public Double getrDotStd() {
+        return rDotStd;
+    }
+
+    /**
+     * Radial velocity standard deviation in km/s
+     * (Required)
+     * 
+     */
+    @JsonProperty("r_dot_std")
+    public void setrDotStd(Double rDotStd) {
+        this.rDotStd = rDotStd;
+    }
+
+    /**
+     * Along-track velocity standard deviation in km/s
+     * (Required)
+     * 
+     */
+    @JsonProperty("t_dot_std")
+    public Double gettDotStd() {
+        return tDotStd;
+    }
+
+    /**
+     * Along-track velocity standard deviation in km/s
+     * (Required)
+     * 
+     */
+    @JsonProperty("t_dot_std")
+    public void settDotStd(Double tDotStd) {
+        this.tDotStd = tDotStd;
+    }
+
+    /**
+     * Cross-track velocity standard deviation in km/s
+     * (Required)
+     * 
+     */
+    @JsonProperty("n_dot_std")
+    public Double getnDotStd() {
+        return nDotStd;
+    }
+
+    /**
+     * Cross-track velocity standard deviation in km/s
+     * (Required)
+     * 
+     */
+    @JsonProperty("n_dot_std")
+    public void setnDotStd(Double nDotStd) {
+        this.nDotStd = nDotStd;
+    }
+
+    /**
+     * applied factor / -
      * (Required)
      * 
      */
@@ -587,7 +844,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
@@ -597,7 +854,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
@@ -607,7 +864,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
@@ -617,7 +874,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
@@ -627,7 +884,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
@@ -637,7 +894,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
@@ -647,7 +904,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
@@ -657,7 +914,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
@@ -667,7 +924,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
@@ -677,7 +934,7 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
@@ -687,13 +944,133 @@ public class RiskEstimation {
     }
 
     /**
-     * applied factor
+     * applied factor / -
      * (Required)
      * 
      */
     @JsonProperty("sat2_covariance_n_scaling_factor")
     public void setSat2CovarianceNScalingFactor(Double sat2CovarianceNScalingFactor) {
         this.sat2CovarianceNScalingFactor = sat2CovarianceNScalingFactor;
+    }
+
+    /**
+     * in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_x")
+    public Double getbPlaneX() {
+        return bPlaneX;
+    }
+
+    /**
+     * in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_x")
+    public void setbPlaneX(Double bPlaneX) {
+        this.bPlaneX = bPlaneX;
+    }
+
+    /**
+     * in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_y")
+    public Double getbPlaneY() {
+        return bPlaneY;
+    }
+
+    /**
+     * in km
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_y")
+    public void setbPlaneY(Double bPlaneY) {
+        this.bPlaneY = bPlaneY;
+    }
+
+    /**
+     * B-plane variance XX in km²
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_xx")
+    public Double getbPlaneXx() {
+        return bPlaneXx;
+    }
+
+    /**
+     * B-plane variance XX in km²
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_xx")
+    public void setbPlaneXx(Double bPlaneXx) {
+        this.bPlaneXx = bPlaneXx;
+    }
+
+    /**
+     * B-plane variance XY in km²
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_xy")
+    public Double getbPlaneXy() {
+        return bPlaneXy;
+    }
+
+    /**
+     * B-plane variance XY in km²
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_xy")
+    public void setbPlaneXy(Double bPlaneXy) {
+        this.bPlaneXy = bPlaneXy;
+    }
+
+    /**
+     * B-plane variance YY in km²
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_yy")
+    public Double getbPlaneYy() {
+        return bPlaneYy;
+    }
+
+    /**
+     * B-plane variance YY in km²
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_yy")
+    public void setbPlaneYy(Double bPlaneYy) {
+        this.bPlaneYy = bPlaneYy;
+    }
+
+    /**
+     * B-plane variance YX in km²
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_yx")
+    public Double getbPlaneYx() {
+        return bPlaneYx;
+    }
+
+    /**
+     * B-plane variance YX in km²
+     * (Required)
+     * 
+     */
+    @JsonProperty("b_plane_yx")
+    public void setbPlaneYx(Double bPlaneYx) {
+        this.bPlaneYx = bPlaneYx;
     }
 
     /**
@@ -856,6 +1233,10 @@ public class RiskEstimation {
         sb.append('=');
         sb.append(((this.collisionProbabilityMethod == null)?"<null>":this.collisionProbabilityMethod));
         sb.append(',');
+        sb.append("mahalanobisDistance");
+        sb.append('=');
+        sb.append(((this.mahalanobisDistance == null)?"<null>":this.mahalanobisDistance));
+        sb.append(',');
         sb.append("missDistance");
         sb.append('=');
         sb.append(((this.missDistance == null)?"<null>":this.missDistance));
@@ -896,6 +1277,30 @@ public class RiskEstimation {
         sb.append('=');
         sb.append(((this.nDot == null)?"<null>":this.nDot));
         sb.append(',');
+        sb.append("rStd");
+        sb.append('=');
+        sb.append(((this.rStd == null)?"<null>":this.rStd));
+        sb.append(',');
+        sb.append("tStd");
+        sb.append('=');
+        sb.append(((this.tStd == null)?"<null>":this.tStd));
+        sb.append(',');
+        sb.append("nStd");
+        sb.append('=');
+        sb.append(((this.nStd == null)?"<null>":this.nStd));
+        sb.append(',');
+        sb.append("rDotStd");
+        sb.append('=');
+        sb.append(((this.rDotStd == null)?"<null>":this.rDotStd));
+        sb.append(',');
+        sb.append("tDotStd");
+        sb.append('=');
+        sb.append(((this.tDotStd == null)?"<null>":this.tDotStd));
+        sb.append(',');
+        sb.append("nDotStd");
+        sb.append('=');
+        sb.append(((this.nDotStd == null)?"<null>":this.nDotStd));
+        sb.append(',');
         sb.append("sat1CovarianceRScalingFactor");
         sb.append('=');
         sb.append(((this.sat1CovarianceRScalingFactor == null)?"<null>":this.sat1CovarianceRScalingFactor));
@@ -919,6 +1324,30 @@ public class RiskEstimation {
         sb.append("sat2CovarianceNScalingFactor");
         sb.append('=');
         sb.append(((this.sat2CovarianceNScalingFactor == null)?"<null>":this.sat2CovarianceNScalingFactor));
+        sb.append(',');
+        sb.append("bPlaneX");
+        sb.append('=');
+        sb.append(((this.bPlaneX == null)?"<null>":this.bPlaneX));
+        sb.append(',');
+        sb.append("bPlaneY");
+        sb.append('=');
+        sb.append(((this.bPlaneY == null)?"<null>":this.bPlaneY));
+        sb.append(',');
+        sb.append("bPlaneXx");
+        sb.append('=');
+        sb.append(((this.bPlaneXx == null)?"<null>":this.bPlaneXx));
+        sb.append(',');
+        sb.append("bPlaneXy");
+        sb.append('=');
+        sb.append(((this.bPlaneXy == null)?"<null>":this.bPlaneXy));
+        sb.append(',');
+        sb.append("bPlaneYy");
+        sb.append('=');
+        sb.append(((this.bPlaneYy == null)?"<null>":this.bPlaneYy));
+        sb.append(',');
+        sb.append("bPlaneYx");
+        sb.append('=');
+        sb.append(((this.bPlaneYx == null)?"<null>":this.bPlaneYx));
         sb.append(',');
         sb.append("sat1StateAtTca");
         sb.append('=');
@@ -956,8 +1385,12 @@ public class RiskEstimation {
     public int hashCode() {
         int result = 1;
         result = ((result* 31)+((this.tDot == null)? 0 :this.tDot.hashCode()));
+        result = ((result* 31)+((this.tDotStd == null)? 0 :this.tDotStd.hashCode()));
+        result = ((result* 31)+((this.bPlaneXy == null)? 0 :this.bPlaneXy.hashCode()));
         result = ((result* 31)+((this.relativeSpeed == null)? 0 :this.relativeSpeed.hashCode()));
         result = ((result* 31)+((this.sat1HardBodyRadius == null)? 0 :this.sat1HardBodyRadius.hashCode()));
+        result = ((result* 31)+((this.bPlaneXx == null)? 0 :this.bPlaneXx.hashCode()));
+        result = ((result* 31)+((this.mahalanobisDistance == null)? 0 :this.mahalanobisDistance.hashCode()));
         result = ((result* 31)+((this.rDot == null)? 0 :this.rDot.hashCode()));
         result = ((result* 31)+((this.sat1CovarianceTScalingFactor == null)? 0 :this.sat1CovarianceTScalingFactor.hashCode()));
         result = ((result* 31)+((this.collisionProbabilityMethod == null)? 0 :this.collisionProbabilityMethod.hashCode()));
@@ -967,11 +1400,17 @@ public class RiskEstimation {
         result = ((result* 31)+((this.collisionProbability == null)? 0 :this.collisionProbability.hashCode()));
         result = ((result* 31)+((this.originator == null)? 0 :this.originator.hashCode()));
         result = ((result* 31)+((this.sat1CovarianceNScalingFactor == null)? 0 :this.sat1CovarianceNScalingFactor.hashCode()));
+        result = ((result* 31)+((this.rDotStd == null)? 0 :this.rDotStd.hashCode()));
         result = ((result* 31)+((this.tca == null)? 0 :this.tca.hashCode()));
         result = ((result* 31)+((this.sat2CovarianceNScalingFactor == null)? 0 :this.sat2CovarianceNScalingFactor.hashCode()));
         result = ((result* 31)+((this.basedOn == null)? 0 :this.basedOn.hashCode()));
         result = ((result* 31)+((this.sat1CovarianceRScalingFactor == null)? 0 :this.sat1CovarianceRScalingFactor.hashCode()));
         result = ((result* 31)+((this.sat1StateAtTca == null)? 0 :this.sat1StateAtTca.hashCode()));
+        result = ((result* 31)+((this.nDotStd == null)? 0 :this.nDotStd.hashCode()));
+        result = ((result* 31)+((this.bPlaneYy == null)? 0 :this.bPlaneYy.hashCode()));
+        result = ((result* 31)+((this.bPlaneYx == null)? 0 :this.bPlaneYx.hashCode()));
+        result = ((result* 31)+((this.rStd == null)? 0 :this.rStd.hashCode()));
+        result = ((result* 31)+((this.nStd == null)? 0 :this.nStd.hashCode()));
         result = ((result* 31)+((this.missDistance == null)? 0 :this.missDistance.hashCode()));
         result = ((result* 31)+((this.riskEstimationId == null)? 0 :this.riskEstimationId.hashCode()));
         result = ((result* 31)+((this.creationDate == null)? 0 :this.creationDate.hashCode()));
@@ -982,6 +1421,9 @@ public class RiskEstimation {
         result = ((result* 31)+((this.suggested == null)? 0 :this.suggested.hashCode()));
         result = ((result* 31)+((this.t == null)? 0 :this.t.hashCode()));
         result = ((result* 31)+((this.sat2CovarianceTScalingFactor == null)? 0 :this.sat2CovarianceTScalingFactor.hashCode()));
+        result = ((result* 31)+((this.bPlaneX == null)? 0 :this.bPlaneX.hashCode()));
+        result = ((result* 31)+((this.tStd == null)? 0 :this.tStd.hashCode()));
+        result = ((result* 31)+((this.bPlaneY == null)? 0 :this.bPlaneY.hashCode()));
         result = ((result* 31)+((this.comment == null)? 0 :this.comment.hashCode()));
         return result;
     }
@@ -995,7 +1437,7 @@ public class RiskEstimation {
             return false;
         }
         RiskEstimation rhs = ((RiskEstimation) other);
-        return (((((((((((((((((((((((((((((this.tDot == rhs.tDot)||((this.tDot!= null)&&this.tDot.equals(rhs.tDot)))&&((this.relativeSpeed == rhs.relativeSpeed)||((this.relativeSpeed!= null)&&this.relativeSpeed.equals(rhs.relativeSpeed))))&&((this.sat1HardBodyRadius == rhs.sat1HardBodyRadius)||((this.sat1HardBodyRadius!= null)&&this.sat1HardBodyRadius.equals(rhs.sat1HardBodyRadius))))&&((this.rDot == rhs.rDot)||((this.rDot!= null)&&this.rDot.equals(rhs.rDot))))&&((this.sat1CovarianceTScalingFactor == rhs.sat1CovarianceTScalingFactor)||((this.sat1CovarianceTScalingFactor!= null)&&this.sat1CovarianceTScalingFactor.equals(rhs.sat1CovarianceTScalingFactor))))&&((this.collisionProbabilityMethod == rhs.collisionProbabilityMethod)||((this.collisionProbabilityMethod!= null)&&this.collisionProbabilityMethod.equals(rhs.collisionProbabilityMethod))))&&((this.nDot == rhs.nDot)||((this.nDot!= null)&&this.nDot.equals(rhs.nDot))))&&((this.criticality == rhs.criticality)||((this.criticality!= null)&&this.criticality.equals(rhs.criticality))))&&((this.sat2CovarianceRScalingFactor == rhs.sat2CovarianceRScalingFactor)||((this.sat2CovarianceRScalingFactor!= null)&&this.sat2CovarianceRScalingFactor.equals(rhs.sat2CovarianceRScalingFactor))))&&((this.collisionProbability == rhs.collisionProbability)||((this.collisionProbability!= null)&&this.collisionProbability.equals(rhs.collisionProbability))))&&((this.originator == rhs.originator)||((this.originator!= null)&&this.originator.equals(rhs.originator))))&&((this.sat1CovarianceNScalingFactor == rhs.sat1CovarianceNScalingFactor)||((this.sat1CovarianceNScalingFactor!= null)&&this.sat1CovarianceNScalingFactor.equals(rhs.sat1CovarianceNScalingFactor))))&&((this.tca == rhs.tca)||((this.tca!= null)&&this.tca.equals(rhs.tca))))&&((this.sat2CovarianceNScalingFactor == rhs.sat2CovarianceNScalingFactor)||((this.sat2CovarianceNScalingFactor!= null)&&this.sat2CovarianceNScalingFactor.equals(rhs.sat2CovarianceNScalingFactor))))&&((this.basedOn == rhs.basedOn)||((this.basedOn!= null)&&this.basedOn.equals(rhs.basedOn))))&&((this.sat1CovarianceRScalingFactor == rhs.sat1CovarianceRScalingFactor)||((this.sat1CovarianceRScalingFactor!= null)&&this.sat1CovarianceRScalingFactor.equals(rhs.sat1CovarianceRScalingFactor))))&&((this.sat1StateAtTca == rhs.sat1StateAtTca)||((this.sat1StateAtTca!= null)&&this.sat1StateAtTca.equals(rhs.sat1StateAtTca))))&&((this.missDistance == rhs.missDistance)||((this.missDistance!= null)&&this.missDistance.equals(rhs.missDistance))))&&((this.riskEstimationId == rhs.riskEstimationId)||((this.riskEstimationId!= null)&&this.riskEstimationId.equals(rhs.riskEstimationId))))&&((this.creationDate == rhs.creationDate)||((this.creationDate!= null)&&this.creationDate.equals(rhs.creationDate))))&&((this.sat2HardBodyRadius == rhs.sat2HardBodyRadius)||((this.sat2HardBodyRadius!= null)&&this.sat2HardBodyRadius.equals(rhs.sat2HardBodyRadius))))&&((this.n == rhs.n)||((this.n!= null)&&this.n.equals(rhs.n))))&&((this.sat2StateAtTca == rhs.sat2StateAtTca)||((this.sat2StateAtTca!= null)&&this.sat2StateAtTca.equals(rhs.sat2StateAtTca))))&&((this.r == rhs.r)||((this.r!= null)&&this.r.equals(rhs.r))))&&((this.suggested == rhs.suggested)||((this.suggested!= null)&&this.suggested.equals(rhs.suggested))))&&((this.t == rhs.t)||((this.t!= null)&&this.t.equals(rhs.t))))&&((this.sat2CovarianceTScalingFactor == rhs.sat2CovarianceTScalingFactor)||((this.sat2CovarianceTScalingFactor!= null)&&this.sat2CovarianceTScalingFactor.equals(rhs.sat2CovarianceTScalingFactor))))&&((this.comment == rhs.comment)||((this.comment!= null)&&this.comment.equals(rhs.comment))));
+        return ((((((((((((((((((((((((((((((((((((((((((this.tDot == rhs.tDot)||((this.tDot!= null)&&this.tDot.equals(rhs.tDot)))&&((this.tDotStd == rhs.tDotStd)||((this.tDotStd!= null)&&this.tDotStd.equals(rhs.tDotStd))))&&((this.bPlaneXy == rhs.bPlaneXy)||((this.bPlaneXy!= null)&&this.bPlaneXy.equals(rhs.bPlaneXy))))&&((this.relativeSpeed == rhs.relativeSpeed)||((this.relativeSpeed!= null)&&this.relativeSpeed.equals(rhs.relativeSpeed))))&&((this.sat1HardBodyRadius == rhs.sat1HardBodyRadius)||((this.sat1HardBodyRadius!= null)&&this.sat1HardBodyRadius.equals(rhs.sat1HardBodyRadius))))&&((this.bPlaneXx == rhs.bPlaneXx)||((this.bPlaneXx!= null)&&this.bPlaneXx.equals(rhs.bPlaneXx))))&&((this.mahalanobisDistance == rhs.mahalanobisDistance)||((this.mahalanobisDistance!= null)&&this.mahalanobisDistance.equals(rhs.mahalanobisDistance))))&&((this.rDot == rhs.rDot)||((this.rDot!= null)&&this.rDot.equals(rhs.rDot))))&&((this.sat1CovarianceTScalingFactor == rhs.sat1CovarianceTScalingFactor)||((this.sat1CovarianceTScalingFactor!= null)&&this.sat1CovarianceTScalingFactor.equals(rhs.sat1CovarianceTScalingFactor))))&&((this.collisionProbabilityMethod == rhs.collisionProbabilityMethod)||((this.collisionProbabilityMethod!= null)&&this.collisionProbabilityMethod.equals(rhs.collisionProbabilityMethod))))&&((this.nDot == rhs.nDot)||((this.nDot!= null)&&this.nDot.equals(rhs.nDot))))&&((this.criticality == rhs.criticality)||((this.criticality!= null)&&this.criticality.equals(rhs.criticality))))&&((this.sat2CovarianceRScalingFactor == rhs.sat2CovarianceRScalingFactor)||((this.sat2CovarianceRScalingFactor!= null)&&this.sat2CovarianceRScalingFactor.equals(rhs.sat2CovarianceRScalingFactor))))&&((this.collisionProbability == rhs.collisionProbability)||((this.collisionProbability!= null)&&this.collisionProbability.equals(rhs.collisionProbability))))&&((this.originator == rhs.originator)||((this.originator!= null)&&this.originator.equals(rhs.originator))))&&((this.sat1CovarianceNScalingFactor == rhs.sat1CovarianceNScalingFactor)||((this.sat1CovarianceNScalingFactor!= null)&&this.sat1CovarianceNScalingFactor.equals(rhs.sat1CovarianceNScalingFactor))))&&((this.rDotStd == rhs.rDotStd)||((this.rDotStd!= null)&&this.rDotStd.equals(rhs.rDotStd))))&&((this.tca == rhs.tca)||((this.tca!= null)&&this.tca.equals(rhs.tca))))&&((this.sat2CovarianceNScalingFactor == rhs.sat2CovarianceNScalingFactor)||((this.sat2CovarianceNScalingFactor!= null)&&this.sat2CovarianceNScalingFactor.equals(rhs.sat2CovarianceNScalingFactor))))&&((this.basedOn == rhs.basedOn)||((this.basedOn!= null)&&this.basedOn.equals(rhs.basedOn))))&&((this.sat1CovarianceRScalingFactor == rhs.sat1CovarianceRScalingFactor)||((this.sat1CovarianceRScalingFactor!= null)&&this.sat1CovarianceRScalingFactor.equals(rhs.sat1CovarianceRScalingFactor))))&&((this.sat1StateAtTca == rhs.sat1StateAtTca)||((this.sat1StateAtTca!= null)&&this.sat1StateAtTca.equals(rhs.sat1StateAtTca))))&&((this.nDotStd == rhs.nDotStd)||((this.nDotStd!= null)&&this.nDotStd.equals(rhs.nDotStd))))&&((this.bPlaneYy == rhs.bPlaneYy)||((this.bPlaneYy!= null)&&this.bPlaneYy.equals(rhs.bPlaneYy))))&&((this.bPlaneYx == rhs.bPlaneYx)||((this.bPlaneYx!= null)&&this.bPlaneYx.equals(rhs.bPlaneYx))))&&((this.rStd == rhs.rStd)||((this.rStd!= null)&&this.rStd.equals(rhs.rStd))))&&((this.nStd == rhs.nStd)||((this.nStd!= null)&&this.nStd.equals(rhs.nStd))))&&((this.missDistance == rhs.missDistance)||((this.missDistance!= null)&&this.missDistance.equals(rhs.missDistance))))&&((this.riskEstimationId == rhs.riskEstimationId)||((this.riskEstimationId!= null)&&this.riskEstimationId.equals(rhs.riskEstimationId))))&&((this.creationDate == rhs.creationDate)||((this.creationDate!= null)&&this.creationDate.equals(rhs.creationDate))))&&((this.sat2HardBodyRadius == rhs.sat2HardBodyRadius)||((this.sat2HardBodyRadius!= null)&&this.sat2HardBodyRadius.equals(rhs.sat2HardBodyRadius))))&&((this.n == rhs.n)||((this.n!= null)&&this.n.equals(rhs.n))))&&((this.sat2StateAtTca == rhs.sat2StateAtTca)||((this.sat2StateAtTca!= null)&&this.sat2StateAtTca.equals(rhs.sat2StateAtTca))))&&((this.r == rhs.r)||((this.r!= null)&&this.r.equals(rhs.r))))&&((this.suggested == rhs.suggested)||((this.suggested!= null)&&this.suggested.equals(rhs.suggested))))&&((this.t == rhs.t)||((this.t!= null)&&this.t.equals(rhs.t))))&&((this.sat2CovarianceTScalingFactor == rhs.sat2CovarianceTScalingFactor)||((this.sat2CovarianceTScalingFactor!= null)&&this.sat2CovarianceTScalingFactor.equals(rhs.sat2CovarianceTScalingFactor))))&&((this.bPlaneX == rhs.bPlaneX)||((this.bPlaneX!= null)&&this.bPlaneX.equals(rhs.bPlaneX))))&&((this.tStd == rhs.tStd)||((this.tStd!= null)&&this.tStd.equals(rhs.tStd))))&&((this.bPlaneY == rhs.bPlaneY)||((this.bPlaneY!= null)&&this.bPlaneY.equals(rhs.bPlaneY))))&&((this.comment == rhs.comment)||((this.comment!= null)&&this.comment.equals(rhs.comment))));
     }
 
 }

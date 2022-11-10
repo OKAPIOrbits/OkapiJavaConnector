@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "differencing_solve_for_cr_relative_delta",
     "residual_filter_threshold",
     "min_ephemerides",
+    "max_ephemerides",
     "allow_additional_ephemerides",
     "allowed_additional_ephemerides_age",
     "use_maximum_fit_span",
@@ -108,40 +109,47 @@ public class OrbitDeterminationSettings {
     @JsonPropertyDescription("The threshold of the residual filter as the multiplyer of the standard deviation. 3.0 implies a 3-sigma threshold.")
     private Double residualFilterThreshold;
     /**
-     * Minimum number of ephemerides
+     * Minimum number of ephemerides to be used for OD
      * 
      */
     @JsonProperty("min_ephemerides")
-    @JsonPropertyDescription("Minimum number of ephemerides")
+    @JsonPropertyDescription("Minimum number of ephemerides to be used for OD")
     private Integer minEphemerides;
+    /**
+     * Maximum number of ephemerides to be used for OD
+     * 
+     */
+    @JsonProperty("max_ephemerides")
+    @JsonPropertyDescription("Maximum number of ephemerides to be used for OD")
+    private Integer maxEphemerides = 5000;
     /**
      * Allows the use of additional ephemerides when available from the database.
      * 
      */
     @JsonProperty("allow_additional_ephemerides")
     @JsonPropertyDescription("Allows the use of additional ephemerides when available from the database.")
-    private Boolean allowAdditionalEphemerides;
+    private Boolean allowAdditionalEphemerides = false;
     /**
      * The maximum age of ephemerides to be used in the OD process
      * 
      */
     @JsonProperty("allowed_additional_ephemerides_age")
     @JsonPropertyDescription("The maximum age of ephemerides to be used in the OD process")
-    private Double allowedAdditionalEphemeridesAge;
+    private Double allowedAdditionalEphemeridesAge = 0.0D;
     /**
-     * Limits usage of measurement data
+     * Flags whether usage of measurement data shall be limited (to duration in days)
      * 
      */
     @JsonProperty("use_maximum_fit_span")
-    @JsonPropertyDescription("Limits usage of measurement data")
-    private Boolean useMaximumFitSpan = true;
+    @JsonPropertyDescription("Flags whether usage of measurement data shall be limited (to duration in days)")
+    private Boolean useMaximumFitSpan = false;
     /**
      * The maximum time span over which the measurements can be used in the OD process (in days)
      * 
      */
     @JsonProperty("maximum_fit_span")
     @JsonPropertyDescription("The maximum time span over which the measurements can be used in the OD process (in days)")
-    private Double maximumFitSpan = 1.0D;
+    private Double maximumFitSpan = 0.0D;
     /**
      * Allows to estimate the value of cd
      * 
@@ -352,7 +360,7 @@ public class OrbitDeterminationSettings {
     }
 
     /**
-     * Minimum number of ephemerides
+     * Minimum number of ephemerides to be used for OD
      * 
      */
     @JsonProperty("min_ephemerides")
@@ -361,12 +369,30 @@ public class OrbitDeterminationSettings {
     }
 
     /**
-     * Minimum number of ephemerides
+     * Minimum number of ephemerides to be used for OD
      * 
      */
     @JsonProperty("min_ephemerides")
     public void setMinEphemerides(Integer minEphemerides) {
         this.minEphemerides = minEphemerides;
+    }
+
+    /**
+     * Maximum number of ephemerides to be used for OD
+     * 
+     */
+    @JsonProperty("max_ephemerides")
+    public Integer getMaxEphemerides() {
+        return maxEphemerides;
+    }
+
+    /**
+     * Maximum number of ephemerides to be used for OD
+     * 
+     */
+    @JsonProperty("max_ephemerides")
+    public void setMaxEphemerides(Integer maxEphemerides) {
+        this.maxEphemerides = maxEphemerides;
     }
 
     /**
@@ -406,7 +432,7 @@ public class OrbitDeterminationSettings {
     }
 
     /**
-     * Limits usage of measurement data
+     * Flags whether usage of measurement data shall be limited (to duration in days)
      * 
      */
     @JsonProperty("use_maximum_fit_span")
@@ -415,7 +441,7 @@ public class OrbitDeterminationSettings {
     }
 
     /**
-     * Limits usage of measurement data
+     * Flags whether usage of measurement data shall be limited (to duration in days)
      * 
      */
     @JsonProperty("use_maximum_fit_span")
@@ -561,6 +587,10 @@ public class OrbitDeterminationSettings {
         sb.append('=');
         sb.append(((this.minEphemerides == null)?"<null>":this.minEphemerides));
         sb.append(',');
+        sb.append("maxEphemerides");
+        sb.append('=');
+        sb.append(((this.maxEphemerides == null)?"<null>":this.maxEphemerides));
+        sb.append(',');
         sb.append("allowAdditionalEphemerides");
         sb.append('=');
         sb.append(((this.allowAdditionalEphemerides == null)?"<null>":this.allowAdditionalEphemerides));
@@ -612,6 +642,7 @@ public class OrbitDeterminationSettings {
         result = ((result* 31)+((this.differencingPositionAbsoluteDelta == null)? 0 :this.differencingPositionAbsoluteDelta.hashCode()));
         result = ((result* 31)+((this.minEphemerides == null)? 0 :this.minEphemerides.hashCode()));
         result = ((result* 31)+((this.differencingSolveForCdRelativeDelta == null)? 0 :this.differencingSolveForCdRelativeDelta.hashCode()));
+        result = ((result* 31)+((this.maxEphemerides == null)? 0 :this.maxEphemerides.hashCode()));
         result = ((result* 31)+((this.scaleFactorStdForInSun == null)? 0 :this.scaleFactorStdForInSun.hashCode()));
         result = ((result* 31)+((this.ephemerisAutoSelection == null)? 0 :this.ephemerisAutoSelection.hashCode()));
         result = ((result* 31)+((this.differencingSolveForCrRelativeDelta == null)? 0 :this.differencingSolveForCrRelativeDelta.hashCode()));
@@ -635,7 +666,7 @@ public class OrbitDeterminationSettings {
             return false;
         }
         OrbitDeterminationSettings rhs = ((OrbitDeterminationSettings) other);
-        return ((((((((((((((((((((this.scaleStdForInSun == rhs.scaleStdForInSun)||((this.scaleStdForInSun!= null)&&this.scaleStdForInSun.equals(rhs.scaleStdForInSun)))&&((this.maximumFitSpan == rhs.maximumFitSpan)||((this.maximumFitSpan!= null)&&this.maximumFitSpan.equals(rhs.maximumFitSpan))))&&((this.differencingVelocityAbsoluteDelta == rhs.differencingVelocityAbsoluteDelta)||((this.differencingVelocityAbsoluteDelta!= null)&&this.differencingVelocityAbsoluteDelta.equals(rhs.differencingVelocityAbsoluteDelta))))&&((this.allowedAdditionalEphemeridesAge == rhs.allowedAdditionalEphemeridesAge)||((this.allowedAdditionalEphemeridesAge!= null)&&this.allowedAdditionalEphemeridesAge.equals(rhs.allowedAdditionalEphemeridesAge))))&&((this.solveForCr == rhs.solveForCr)||((this.solveForCr!= null)&&this.solveForCr.equals(rhs.solveForCr))))&&((this.differencingPositionAbsoluteDelta == rhs.differencingPositionAbsoluteDelta)||((this.differencingPositionAbsoluteDelta!= null)&&this.differencingPositionAbsoluteDelta.equals(rhs.differencingPositionAbsoluteDelta))))&&((this.minEphemerides == rhs.minEphemerides)||((this.minEphemerides!= null)&&this.minEphemerides.equals(rhs.minEphemerides))))&&((this.differencingSolveForCdRelativeDelta == rhs.differencingSolveForCdRelativeDelta)||((this.differencingSolveForCdRelativeDelta!= null)&&this.differencingSolveForCdRelativeDelta.equals(rhs.differencingSolveForCdRelativeDelta))))&&((this.scaleFactorStdForInSun == rhs.scaleFactorStdForInSun)||((this.scaleFactorStdForInSun!= null)&&this.scaleFactorStdForInSun.equals(rhs.scaleFactorStdForInSun))))&&((this.ephemerisAutoSelection == rhs.ephemerisAutoSelection)||((this.ephemerisAutoSelection!= null)&&this.ephemerisAutoSelection.equals(rhs.ephemerisAutoSelection))))&&((this.differencingSolveForCrRelativeDelta == rhs.differencingSolveForCrRelativeDelta)||((this.differencingSolveForCrRelativeDelta!= null)&&this.differencingSolveForCrRelativeDelta.equals(rhs.differencingSolveForCrRelativeDelta))))&&((this.allowAdditionalEphemerides == rhs.allowAdditionalEphemerides)||((this.allowAdditionalEphemerides!= null)&&this.allowAdditionalEphemerides.equals(rhs.allowAdditionalEphemerides))))&&((this.filterResiduals == rhs.filterResiduals)||((this.filterResiduals!= null)&&this.filterResiduals.equals(rhs.filterResiduals))))&&((this.rmsMaxIterations == rhs.rmsMaxIterations)||((this.rmsMaxIterations!= null)&&this.rmsMaxIterations.equals(rhs.rmsMaxIterations))))&&((this.solveForCd == rhs.solveForCd)||((this.solveForCd!= null)&&this.solveForCd.equals(rhs.solveForCd))))&&((this.useMaximumFitSpan == rhs.useMaximumFitSpan)||((this.useMaximumFitSpan!= null)&&this.useMaximumFitSpan.equals(rhs.useMaximumFitSpan))))&&((this.rmsThreshold == rhs.rmsThreshold)||((this.rmsThreshold!= null)&&this.rmsThreshold.equals(rhs.rmsThreshold))))&&((this.enableLevenbergMarquardt == rhs.enableLevenbergMarquardt)||((this.enableLevenbergMarquardt!= null)&&this.enableLevenbergMarquardt.equals(rhs.enableLevenbergMarquardt))))&&((this.residualFilterThreshold == rhs.residualFilterThreshold)||((this.residualFilterThreshold!= null)&&this.residualFilterThreshold.equals(rhs.residualFilterThreshold))));
+        return (((((((((((((((((((((this.scaleStdForInSun == rhs.scaleStdForInSun)||((this.scaleStdForInSun!= null)&&this.scaleStdForInSun.equals(rhs.scaleStdForInSun)))&&((this.maximumFitSpan == rhs.maximumFitSpan)||((this.maximumFitSpan!= null)&&this.maximumFitSpan.equals(rhs.maximumFitSpan))))&&((this.differencingVelocityAbsoluteDelta == rhs.differencingVelocityAbsoluteDelta)||((this.differencingVelocityAbsoluteDelta!= null)&&this.differencingVelocityAbsoluteDelta.equals(rhs.differencingVelocityAbsoluteDelta))))&&((this.allowedAdditionalEphemeridesAge == rhs.allowedAdditionalEphemeridesAge)||((this.allowedAdditionalEphemeridesAge!= null)&&this.allowedAdditionalEphemeridesAge.equals(rhs.allowedAdditionalEphemeridesAge))))&&((this.solveForCr == rhs.solveForCr)||((this.solveForCr!= null)&&this.solveForCr.equals(rhs.solveForCr))))&&((this.differencingPositionAbsoluteDelta == rhs.differencingPositionAbsoluteDelta)||((this.differencingPositionAbsoluteDelta!= null)&&this.differencingPositionAbsoluteDelta.equals(rhs.differencingPositionAbsoluteDelta))))&&((this.minEphemerides == rhs.minEphemerides)||((this.minEphemerides!= null)&&this.minEphemerides.equals(rhs.minEphemerides))))&&((this.differencingSolveForCdRelativeDelta == rhs.differencingSolveForCdRelativeDelta)||((this.differencingSolveForCdRelativeDelta!= null)&&this.differencingSolveForCdRelativeDelta.equals(rhs.differencingSolveForCdRelativeDelta))))&&((this.maxEphemerides == rhs.maxEphemerides)||((this.maxEphemerides!= null)&&this.maxEphemerides.equals(rhs.maxEphemerides))))&&((this.scaleFactorStdForInSun == rhs.scaleFactorStdForInSun)||((this.scaleFactorStdForInSun!= null)&&this.scaleFactorStdForInSun.equals(rhs.scaleFactorStdForInSun))))&&((this.ephemerisAutoSelection == rhs.ephemerisAutoSelection)||((this.ephemerisAutoSelection!= null)&&this.ephemerisAutoSelection.equals(rhs.ephemerisAutoSelection))))&&((this.differencingSolveForCrRelativeDelta == rhs.differencingSolveForCrRelativeDelta)||((this.differencingSolveForCrRelativeDelta!= null)&&this.differencingSolveForCrRelativeDelta.equals(rhs.differencingSolveForCrRelativeDelta))))&&((this.allowAdditionalEphemerides == rhs.allowAdditionalEphemerides)||((this.allowAdditionalEphemerides!= null)&&this.allowAdditionalEphemerides.equals(rhs.allowAdditionalEphemerides))))&&((this.filterResiduals == rhs.filterResiduals)||((this.filterResiduals!= null)&&this.filterResiduals.equals(rhs.filterResiduals))))&&((this.rmsMaxIterations == rhs.rmsMaxIterations)||((this.rmsMaxIterations!= null)&&this.rmsMaxIterations.equals(rhs.rmsMaxIterations))))&&((this.solveForCd == rhs.solveForCd)||((this.solveForCd!= null)&&this.solveForCd.equals(rhs.solveForCd))))&&((this.useMaximumFitSpan == rhs.useMaximumFitSpan)||((this.useMaximumFitSpan!= null)&&this.useMaximumFitSpan.equals(rhs.useMaximumFitSpan))))&&((this.rmsThreshold == rhs.rmsThreshold)||((this.rmsThreshold!= null)&&this.rmsThreshold.equals(rhs.rmsThreshold))))&&((this.enableLevenbergMarquardt == rhs.enableLevenbergMarquardt)||((this.enableLevenbergMarquardt!= null)&&this.enableLevenbergMarquardt.equals(rhs.enableLevenbergMarquardt))))&&((this.residualFilterThreshold == rhs.residualFilterThreshold)||((this.residualFilterThreshold!= null)&&this.residualFilterThreshold.equals(rhs.residualFilterThreshold))));
     }
 
 }

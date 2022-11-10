@@ -65,17 +65,21 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "USER_DEFINED_RESIDUAL_4",
     "USER_DEFINED_RESIDUAL_5",
     "USER_DEFINED_RESIDUAL_6",
+    "USER_DEFINED_RESIDUAL_2_UNCORRECTED",
     "COMMENTS",
     "USER_DEFINED_IN_SUN"
 })
 public class OpmData {
 
     /**
-     * 
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
     @JsonProperty("EPOCH")
+    @JsonPropertyDescription("ISO8601 date/time definition.")
     private Date epoch;
     /**
      * In km
@@ -330,11 +334,11 @@ public class OpmData {
     @JsonPropertyDescription("Residual when from OD process. Either Range or X component in km")
     private Double userDefinedResidual1;
     /**
-     * Residual when from OD process. Either Range or Y component in km or angle 1 in deg
+     * Residual when from OD process. Either Range or Y component in km or angle 1 in deg correctred for the influence of angle 2
      * 
      */
     @JsonProperty("USER_DEFINED_RESIDUAL_2")
-    @JsonPropertyDescription("Residual when from OD process. Either Range or Y component in km or angle 1 in deg")
+    @JsonPropertyDescription("Residual when from OD process. Either Range or Y component in km or angle 1 in deg correctred for the influence of angle 2")
     private Double userDefinedResidual2;
     /**
      * Residual when from OD process. Either Range or Z component in km or angle 2 in deg
@@ -365,6 +369,13 @@ public class OpmData {
     @JsonPropertyDescription("Residual when from OD process. Z_DOT component in km/s")
     private Double userDefinedResidual6;
     /**
+     * Residual when from OD process. Angle 1 not corrected for influence of angle 2
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_2_UNCORRECTED")
+    @JsonPropertyDescription("Residual when from OD process. Angle 1 not corrected for influence of angle 2")
+    private Double userDefinedResidual2Uncorrected;
+    /**
      * Array of comments. Each entry relates to a COMMENT statement.
      * 
      */
@@ -380,7 +391,9 @@ public class OpmData {
     private Boolean userDefinedInSun;
 
     /**
-     * 
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
@@ -390,7 +403,9 @@ public class OpmData {
     }
 
     /**
-     * 
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
@@ -1052,7 +1067,7 @@ public class OpmData {
     }
 
     /**
-     * Residual when from OD process. Either Range or Y component in km or angle 1 in deg
+     * Residual when from OD process. Either Range or Y component in km or angle 1 in deg correctred for the influence of angle 2
      * 
      */
     @JsonProperty("USER_DEFINED_RESIDUAL_2")
@@ -1061,7 +1076,7 @@ public class OpmData {
     }
 
     /**
-     * Residual when from OD process. Either Range or Y component in km or angle 1 in deg
+     * Residual when from OD process. Either Range or Y component in km or angle 1 in deg correctred for the influence of angle 2
      * 
      */
     @JsonProperty("USER_DEFINED_RESIDUAL_2")
@@ -1139,6 +1154,24 @@ public class OpmData {
     @JsonProperty("USER_DEFINED_RESIDUAL_6")
     public void setUserDefinedResidual6(Double userDefinedResidual6) {
         this.userDefinedResidual6 = userDefinedResidual6;
+    }
+
+    /**
+     * Residual when from OD process. Angle 1 not corrected for influence of angle 2
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_2_UNCORRECTED")
+    public Double getUserDefinedResidual2Uncorrected() {
+        return userDefinedResidual2Uncorrected;
+    }
+
+    /**
+     * Residual when from OD process. Angle 1 not corrected for influence of angle 2
+     * 
+     */
+    @JsonProperty("USER_DEFINED_RESIDUAL_2_UNCORRECTED")
+    public void setUserDefinedResidual2Uncorrected(Double userDefinedResidual2Uncorrected) {
+        this.userDefinedResidual2Uncorrected = userDefinedResidual2Uncorrected;
     }
 
     /**
@@ -1353,6 +1386,10 @@ public class OpmData {
         sb.append('=');
         sb.append(((this.userDefinedResidual6 == null)?"<null>":this.userDefinedResidual6));
         sb.append(',');
+        sb.append("userDefinedResidual2Uncorrected");
+        sb.append('=');
+        sb.append(((this.userDefinedResidual2Uncorrected == null)?"<null>":this.userDefinedResidual2Uncorrected));
+        sb.append(',');
         sb.append("comments");
         sb.append('=');
         sb.append(((this.comments == null)?"<null>":this.comments));
@@ -1395,6 +1432,7 @@ public class OpmData {
         result = ((result* 31)+((this.solarRadCoeff == null)? 0 :this.solarRadCoeff.hashCode()));
         result = ((result* 31)+((this.zDot == null)? 0 :this.zDot.hashCode()));
         result = ((result* 31)+((this.userDefinedBc == null)? 0 :this.userDefinedBc.hashCode()));
+        result = ((result* 31)+((this.userDefinedResidual2Uncorrected == null)? 0 :this.userDefinedResidual2Uncorrected.hashCode()));
         result = ((result* 31)+((this.userDefinedResidual2 == null)? 0 :this.userDefinedResidual2 .hashCode()));
         result = ((result* 31)+((this.userDefinedResidual1 == null)? 0 :this.userDefinedResidual1 .hashCode()));
         result = ((result* 31)+((this.maneuvers == null)? 0 :this.maneuvers.hashCode()));
@@ -1429,7 +1467,7 @@ public class OpmData {
             return false;
         }
         OpmData rhs = ((OpmData) other);
-        return ((((((((((((((((((((((((((((((((((((((((((((((this.dragCoeff == rhs.dragCoeff)||((this.dragCoeff!= null)&&this.dragCoeff.equals(rhs.dragCoeff)))&&((this.czX == rhs.czX)||((this.czX!= null)&&this.czX.equals(rhs.czX))))&&((this.czDotY == rhs.czDotY)||((this.czDotY!= null)&&this.czDotY.equals(rhs.czDotY))))&&((this.czDotXDot == rhs.czDotXDot)||((this.czDotXDot!= null)&&this.czDotXDot.equals(rhs.czDotXDot))))&&((this.userDefinedResidual6 == rhs.userDefinedResidual6)||((this.userDefinedResidual6 != null)&&this.userDefinedResidual6 .equals(rhs.userDefinedResidual6))))&&((this.czDotX == rhs.czDotX)||((this.czDotX!= null)&&this.czDotX.equals(rhs.czDotX))))&&((this.userDefinedResidual5 == rhs.userDefinedResidual5)||((this.userDefinedResidual5 != null)&&this.userDefinedResidual5 .equals(rhs.userDefinedResidual5))))&&((this.cxX == rhs.cxX)||((this.cxX!= null)&&this.cxX.equals(rhs.cxX))))&&((this.czZ == rhs.czZ)||((this.czZ!= null)&&this.czZ.equals(rhs.czZ))))&&((this.userDefinedResidual4 == rhs.userDefinedResidual4)||((this.userDefinedResidual4 != null)&&this.userDefinedResidual4 .equals(rhs.userDefinedResidual4))))&&((this.czY == rhs.czY)||((this.czY!= null)&&this.czY.equals(rhs.czY))))&&((this.userDefinedResidual3 == rhs.userDefinedResidual3)||((this.userDefinedResidual3 != null)&&this.userDefinedResidual3 .equals(rhs.userDefinedResidual3))))&&((this.cxDotXDot == rhs.cxDotXDot)||((this.cxDotXDot!= null)&&this.cxDotXDot.equals(rhs.cxDotXDot))))&&((this.czDotZDot == rhs.czDotZDot)||((this.czDotZDot!= null)&&this.czDotZDot.equals(rhs.czDotZDot))))&&((this.xDot == rhs.xDot)||((this.xDot!= null)&&this.xDot.equals(rhs.xDot))))&&((this.cyDotXDot == rhs.cyDotXDot)||((this.cyDotXDot!= null)&&this.cyDotXDot.equals(rhs.cyDotXDot))))&&((this.mass == rhs.mass)||((this.mass!= null)&&this.mass.equals(rhs.mass))))&&((this.epoch == rhs.epoch)||((this.epoch!= null)&&this.epoch.equals(rhs.epoch))))&&((this.czDotZ == rhs.czDotZ)||((this.czDotZ!= null)&&this.czDotZ.equals(rhs.czDotZ))))&&((this.userDefinedInSun == rhs.userDefinedInSun)||((this.userDefinedInSun!= null)&&this.userDefinedInSun.equals(rhs.userDefinedInSun))))&&((this.solarRadCoeff == rhs.solarRadCoeff)||((this.solarRadCoeff!= null)&&this.solarRadCoeff.equals(rhs.solarRadCoeff))))&&((this.zDot == rhs.zDot)||((this.zDot!= null)&&this.zDot.equals(rhs.zDot))))&&((this.userDefinedBc == rhs.userDefinedBc)||((this.userDefinedBc!= null)&&this.userDefinedBc.equals(rhs.userDefinedBc))))&&((this.userDefinedResidual2 == rhs.userDefinedResidual2)||((this.userDefinedResidual2 != null)&&this.userDefinedResidual2 .equals(rhs.userDefinedResidual2))))&&((this.userDefinedResidual1 == rhs.userDefinedResidual1)||((this.userDefinedResidual1 != null)&&this.userDefinedResidual1 .equals(rhs.userDefinedResidual1))))&&((this.maneuvers == rhs.maneuvers)||((this.maneuvers!= null)&&this.maneuvers.equals(rhs.maneuvers))))&&((this.cyDotYDot == rhs.cyDotYDot)||((this.cyDotYDot!= null)&&this.cyDotYDot.equals(rhs.cyDotYDot))))&&((this.cyY == rhs.cyY)||((this.cyY!= null)&&this.cyY.equals(rhs.cyY))))&&((this.cyX == rhs.cyX)||((this.cyX!= null)&&this.cyX.equals(rhs.cyX))))&&((this.comments == rhs.comments)||((this.comments!= null)&&this.comments.equals(rhs.comments))))&&((this.czDotYDot == rhs.czDotYDot)||((this.czDotYDot!= null)&&this.czDotYDot.equals(rhs.czDotYDot))))&&((this.yDot == rhs.yDot)||((this.yDot!= null)&&this.yDot.equals(rhs.yDot))))&&((this.covRefFrame == rhs.covRefFrame)||((this.covRefFrame!= null)&&this.covRefFrame.equals(rhs.covRefFrame))))&&((this.dragArea == rhs.dragArea)||((this.dragArea!= null)&&this.dragArea.equals(rhs.dragArea))))&&((this.cxDotZ == rhs.cxDotZ)||((this.cxDotZ!= null)&&this.cxDotZ.equals(rhs.cxDotZ))))&&((this.cxDotY == rhs.cxDotY)||((this.cxDotY!= null)&&this.cxDotY.equals(rhs.cxDotY))))&&((this.cxDotX == rhs.cxDotX)||((this.cxDotX!= null)&&this.cxDotX.equals(rhs.cxDotX))))&&((this.userDefinedThrustUncertainty == rhs.userDefinedThrustUncertainty)||((this.userDefinedThrustUncertainty!= null)&&this.userDefinedThrustUncertainty.equals(rhs.userDefinedThrustUncertainty))))&&((this.userDefinedThrustPointingUncertainty == rhs.userDefinedThrustPointingUncertainty)||((this.userDefinedThrustPointingUncertainty!= null)&&this.userDefinedThrustPointingUncertainty.equals(rhs.userDefinedThrustPointingUncertainty))))&&((this.x == rhs.x)||((this.x!= null)&&this.x.equals(rhs.x))))&&((this.y == rhs.y)||((this.y!= null)&&this.y.equals(rhs.y))))&&((this.z == rhs.z)||((this.z!= null)&&this.z.equals(rhs.z))))&&((this.cyDotX == rhs.cyDotX)||((this.cyDotX!= null)&&this.cyDotX.equals(rhs.cyDotX))))&&((this.cyDotZ == rhs.cyDotZ)||((this.cyDotZ!= null)&&this.cyDotZ.equals(rhs.cyDotZ))))&&((this.cyDotY == rhs.cyDotY)||((this.cyDotY!= null)&&this.cyDotY.equals(rhs.cyDotY))));
+        return (((((((((((((((((((((((((((((((((((((((((((((((this.dragCoeff == rhs.dragCoeff)||((this.dragCoeff!= null)&&this.dragCoeff.equals(rhs.dragCoeff)))&&((this.czX == rhs.czX)||((this.czX!= null)&&this.czX.equals(rhs.czX))))&&((this.czDotY == rhs.czDotY)||((this.czDotY!= null)&&this.czDotY.equals(rhs.czDotY))))&&((this.czDotXDot == rhs.czDotXDot)||((this.czDotXDot!= null)&&this.czDotXDot.equals(rhs.czDotXDot))))&&((this.userDefinedResidual6 == rhs.userDefinedResidual6)||((this.userDefinedResidual6 != null)&&this.userDefinedResidual6 .equals(rhs.userDefinedResidual6))))&&((this.czDotX == rhs.czDotX)||((this.czDotX!= null)&&this.czDotX.equals(rhs.czDotX))))&&((this.userDefinedResidual5 == rhs.userDefinedResidual5)||((this.userDefinedResidual5 != null)&&this.userDefinedResidual5 .equals(rhs.userDefinedResidual5))))&&((this.cxX == rhs.cxX)||((this.cxX!= null)&&this.cxX.equals(rhs.cxX))))&&((this.czZ == rhs.czZ)||((this.czZ!= null)&&this.czZ.equals(rhs.czZ))))&&((this.userDefinedResidual4 == rhs.userDefinedResidual4)||((this.userDefinedResidual4 != null)&&this.userDefinedResidual4 .equals(rhs.userDefinedResidual4))))&&((this.czY == rhs.czY)||((this.czY!= null)&&this.czY.equals(rhs.czY))))&&((this.userDefinedResidual3 == rhs.userDefinedResidual3)||((this.userDefinedResidual3 != null)&&this.userDefinedResidual3 .equals(rhs.userDefinedResidual3))))&&((this.cxDotXDot == rhs.cxDotXDot)||((this.cxDotXDot!= null)&&this.cxDotXDot.equals(rhs.cxDotXDot))))&&((this.czDotZDot == rhs.czDotZDot)||((this.czDotZDot!= null)&&this.czDotZDot.equals(rhs.czDotZDot))))&&((this.xDot == rhs.xDot)||((this.xDot!= null)&&this.xDot.equals(rhs.xDot))))&&((this.cyDotXDot == rhs.cyDotXDot)||((this.cyDotXDot!= null)&&this.cyDotXDot.equals(rhs.cyDotXDot))))&&((this.mass == rhs.mass)||((this.mass!= null)&&this.mass.equals(rhs.mass))))&&((this.epoch == rhs.epoch)||((this.epoch!= null)&&this.epoch.equals(rhs.epoch))))&&((this.czDotZ == rhs.czDotZ)||((this.czDotZ!= null)&&this.czDotZ.equals(rhs.czDotZ))))&&((this.userDefinedInSun == rhs.userDefinedInSun)||((this.userDefinedInSun!= null)&&this.userDefinedInSun.equals(rhs.userDefinedInSun))))&&((this.solarRadCoeff == rhs.solarRadCoeff)||((this.solarRadCoeff!= null)&&this.solarRadCoeff.equals(rhs.solarRadCoeff))))&&((this.zDot == rhs.zDot)||((this.zDot!= null)&&this.zDot.equals(rhs.zDot))))&&((this.userDefinedBc == rhs.userDefinedBc)||((this.userDefinedBc!= null)&&this.userDefinedBc.equals(rhs.userDefinedBc))))&&((this.userDefinedResidual2Uncorrected == rhs.userDefinedResidual2Uncorrected)||((this.userDefinedResidual2Uncorrected!= null)&&this.userDefinedResidual2Uncorrected.equals(rhs.userDefinedResidual2Uncorrected))))&&((this.userDefinedResidual2 == rhs.userDefinedResidual2)||((this.userDefinedResidual2 != null)&&this.userDefinedResidual2 .equals(rhs.userDefinedResidual2))))&&((this.userDefinedResidual1 == rhs.userDefinedResidual1)||((this.userDefinedResidual1 != null)&&this.userDefinedResidual1 .equals(rhs.userDefinedResidual1))))&&((this.maneuvers == rhs.maneuvers)||((this.maneuvers!= null)&&this.maneuvers.equals(rhs.maneuvers))))&&((this.cyDotYDot == rhs.cyDotYDot)||((this.cyDotYDot!= null)&&this.cyDotYDot.equals(rhs.cyDotYDot))))&&((this.cyY == rhs.cyY)||((this.cyY!= null)&&this.cyY.equals(rhs.cyY))))&&((this.cyX == rhs.cyX)||((this.cyX!= null)&&this.cyX.equals(rhs.cyX))))&&((this.comments == rhs.comments)||((this.comments!= null)&&this.comments.equals(rhs.comments))))&&((this.czDotYDot == rhs.czDotYDot)||((this.czDotYDot!= null)&&this.czDotYDot.equals(rhs.czDotYDot))))&&((this.yDot == rhs.yDot)||((this.yDot!= null)&&this.yDot.equals(rhs.yDot))))&&((this.covRefFrame == rhs.covRefFrame)||((this.covRefFrame!= null)&&this.covRefFrame.equals(rhs.covRefFrame))))&&((this.dragArea == rhs.dragArea)||((this.dragArea!= null)&&this.dragArea.equals(rhs.dragArea))))&&((this.cxDotZ == rhs.cxDotZ)||((this.cxDotZ!= null)&&this.cxDotZ.equals(rhs.cxDotZ))))&&((this.cxDotY == rhs.cxDotY)||((this.cxDotY!= null)&&this.cxDotY.equals(rhs.cxDotY))))&&((this.cxDotX == rhs.cxDotX)||((this.cxDotX!= null)&&this.cxDotX.equals(rhs.cxDotX))))&&((this.userDefinedThrustUncertainty == rhs.userDefinedThrustUncertainty)||((this.userDefinedThrustUncertainty!= null)&&this.userDefinedThrustUncertainty.equals(rhs.userDefinedThrustUncertainty))))&&((this.userDefinedThrustPointingUncertainty == rhs.userDefinedThrustPointingUncertainty)||((this.userDefinedThrustPointingUncertainty!= null)&&this.userDefinedThrustPointingUncertainty.equals(rhs.userDefinedThrustPointingUncertainty))))&&((this.x == rhs.x)||((this.x!= null)&&this.x.equals(rhs.x))))&&((this.y == rhs.y)||((this.y!= null)&&this.y.equals(rhs.y))))&&((this.z == rhs.z)||((this.z!= null)&&this.z.equals(rhs.z))))&&((this.cyDotX == rhs.cyDotX)||((this.cyDotX!= null)&&this.cyDotX.equals(rhs.cyDotX))))&&((this.cyDotZ == rhs.cyDotZ)||((this.cyDotZ!= null)&&this.cyDotZ.equals(rhs.cyDotZ))))&&((this.cyDotY == rhs.cyDotY)||((this.cyDotY!= null)&&this.cyDotY.equals(rhs.cyDotY))));
     }
 
 

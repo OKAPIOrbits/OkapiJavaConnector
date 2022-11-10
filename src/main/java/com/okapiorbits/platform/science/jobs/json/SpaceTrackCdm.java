@@ -349,12 +349,14 @@ public class SpaceTrackCdm {
     @JsonPropertyDescription("Space-Track Filename")
     private String filename;
     /**
-     * Space-Track insert date and time
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
     @JsonProperty("INSERT_EPOCH")
-    @JsonPropertyDescription("Space-Track insert date and time")
+    @JsonPropertyDescription("ISO8601 date/time definition.")
     private String insertEpoch;
     /**
      * Verison of the CDM format
@@ -364,11 +366,13 @@ public class SpaceTrackCdm {
     @JsonPropertyDescription("Verison of the CDM format")
     private String ccsdsCdmVers;
     /**
-     * Message creation date/time in Coordinated Universal Time (UTC).
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("CREATION_DATE")
-    @JsonPropertyDescription("Message creation date/time in Coordinated Universal Time (UTC).")
+    @JsonPropertyDescription("ISO8601 date/time definition.")
     private String creationDate;
     @JsonProperty("CREATION_DATE_FRACTION")
     private String creationDateFraction;
@@ -396,11 +400,13 @@ public class SpaceTrackCdm {
     @JsonProperty("COMMENT_EMERGENCY_REPORTABLE")
     private String commentEmergencyReportable;
     /**
-     * The date and time in UTC of the closest approach.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("TCA")
-    @JsonPropertyDescription("The date and time in UTC of the closest approach.")
+    @JsonPropertyDescription("ISO8601 date/time definition.")
     private String tca;
     /**
      * Extension of the TCA adding milliseconds.
@@ -644,20 +650,24 @@ public class SpaceTrackCdm {
     @JsonProperty("SAT1_COMMENT_EXCLUSION_VOLUME_RADIUS")
     private String sat1CommentExclusionVolumeRadius;
     /**
-     * The start of a time interval (UTC) that contains the time of the last accepted observation.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("SAT1_TIME_LASTOB_START")
-    @JsonPropertyDescription("The start of a time interval (UTC) that contains the time of the last accepted observation.")
+    @JsonPropertyDescription("ISO8601 date/time definition.")
     private String sat1TimeLastobStart;
     @JsonProperty("SAT1_TIME_LASTOB_START_FRACTION")
     private String sat1TimeLastobStartFraction;
     /**
-     * The end of a time interval (UTC) that contains the time of the last accepted observation.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("SAT1_TIME_LASTOB_END")
-    @JsonPropertyDescription("The end of a time interval (UTC) that contains the time of the last accepted observation.")
+    @JsonPropertyDescription("ISO8601 date/time definition.")
     private String sat1TimeLastobEnd;
     @JsonProperty("SAT1_TIME_LASTOB_END_FRACTION")
     private String sat1TimeLastobEndFraction;
@@ -1108,20 +1118,24 @@ public class SpaceTrackCdm {
     @JsonProperty("SAT2_COMMENT_EXCLUSION_VOLUME_RADIUS")
     private String sat2CommentExclusionVolumeRadius;
     /**
-     * The start of a time interval (UTC) that contains the time of the last accepted observation.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("SAT2_TIME_LASTOB_START")
-    @JsonPropertyDescription("The start of a time interval (UTC) that contains the time of the last accepted observation.")
+    @JsonPropertyDescription("ISO8601 date/time definition.")
     private String sat2TimeLastobStart;
     @JsonProperty("SAT2_TIME_LASTOB_START_FRACTION")
     private String sat2TimeLastobStartFraction;
     /**
-     * The end of a time interval (UTC) that contains the time of the last accepted observation.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("SAT2_TIME_LASTOB_END")
-    @JsonPropertyDescription("The end of a time interval (UTC) that contains the time of the last accepted observation.")
+    @JsonPropertyDescription("ISO8601 date/time definition.")
     private String sat2TimeLastobEnd;
     @JsonProperty("SAT2_TIME_LASTOB_END_FRACTION")
     private String sat2TimeLastobEndFraction;
@@ -1497,7 +1511,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * Space-Track insert date and time
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
@@ -1507,7 +1523,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * Space-Track insert date and time
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * (Required)
      * 
      */
@@ -1535,7 +1553,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * Message creation date/time in Coordinated Universal Time (UTC).
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("CREATION_DATE")
@@ -1544,7 +1564,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * Message creation date/time in Coordinated Universal Time (UTC).
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("CREATION_DATE")
@@ -1627,7 +1649,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * The date and time in UTC of the closest approach.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("TCA")
@@ -1636,7 +1660,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * The date and time in UTC of the closest approach.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("TCA")
@@ -2323,7 +2349,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * The start of a time interval (UTC) that contains the time of the last accepted observation.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("SAT1_TIME_LASTOB_START")
@@ -2332,7 +2360,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * The start of a time interval (UTC) that contains the time of the last accepted observation.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("SAT1_TIME_LASTOB_START")
@@ -2351,7 +2381,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * The end of a time interval (UTC) that contains the time of the last accepted observation.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("SAT1_TIME_LASTOB_END")
@@ -2360,7 +2392,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * The end of a time interval (UTC) that contains the time of the last accepted observation.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("SAT1_TIME_LASTOB_END")
@@ -3997,7 +4031,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * The start of a time interval (UTC) that contains the time of the last accepted observation.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("SAT2_TIME_LASTOB_START")
@@ -4006,7 +4042,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * The start of a time interval (UTC) that contains the time of the last accepted observation.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("SAT2_TIME_LASTOB_START")
@@ -4025,7 +4063,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * The end of a time interval (UTC) that contains the time of the last accepted observation.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("SAT2_TIME_LASTOB_END")
@@ -4034,7 +4074,9 @@ public class SpaceTrackCdm {
     }
 
     /**
-     * The end of a time interval (UTC) that contains the time of the last accepted observation.
+     * IsoDateTime
+     * <p>
+     * ISO8601 date/time definition.
      * 
      */
     @JsonProperty("SAT2_TIME_LASTOB_END")
