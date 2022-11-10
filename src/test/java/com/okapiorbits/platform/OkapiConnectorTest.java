@@ -123,11 +123,12 @@ class OkapiConnectorTest {
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Order(3)
     void updateSatelliteWithObject() throws OkapiConnector.OkapiPlatformException, IOException {
-        satellite.setMass(1.4);
-        satellite.setSpaceTrackStatus(Satellite.SpaceTrackStatus.DONT_KNOW);
+	Satellite satelliteUpdates = new Satellite();
+        satelliteUpdates.setMass(1.4);
+        satelliteUpdates.setSpaceTrackStatus(Satellite.SpaceTrackStatus.DONT_KNOW);
 
         // Send updated satellite definition to the backend and retrieve the updated instance
-        Satellite updatedSatellite = okapiConnector.updateSatellite(satellite, accessToken);
+        Satellite updatedSatellite = okapiConnector.updateSatellite(satelliteUpdates, accessToken);
 
         Assertions.assertEquals(200, okapiConnector.responseCode);
         // Check updated fields
