@@ -38,6 +38,7 @@ class OkapiConnectorTest {
             testUrl = "https://api-staging.okapiorbits.com/"; // Staging URL, very important! Otherwise, tests will
             // run in production!
         }
+        System.out.println("Using endpoint: " + testUrl);
         if (testUsername != null && testPassword != null) {
             // initializing communication with test accounts
             okapiConnector = new OkapiConnector(
@@ -52,7 +53,7 @@ class OkapiConnectorTest {
                     testUrl
             );
         }
-        Assertions.assertNotEquals(okapiConnector, null);
+        Assertions.assertNotNull(okapiConnector);
     }
 
     @org.junit.jupiter.api.Test
@@ -64,7 +65,7 @@ class OkapiConnectorTest {
         } catch (OkapiConnector.OkapiPlatformException okapiPlatformException) {
             okapiPlatformException.printStackTrace();
         }
-        Assertions.assertNotEquals(accessToken, null);
+        Assertions.assertNotNull(accessToken);
 
     }
 
@@ -90,9 +91,9 @@ class OkapiConnectorTest {
         }
 
         // Retrieve the newly assigned satellite id
-        Assertions.assertNotEquals(newSatellite, null);
-        Assertions.assertEquals(okapiConnector.responseCode, 200);
-        Assertions.assertNotEquals(newSatellite.getSatelliteId(), null);
+        Assertions.assertNotNull(newSatellite);
+        Assertions.assertEquals(200, okapiConnector.responseCode);
+        Assertions.assertNotNull(newSatellite.getSatelliteId());
         // Check fields
         Assertions.assertEquals(0.6, satellite.getDragArea());
         Assertions.assertEquals(2.0, satellite.getMaxThrustDuration());
@@ -147,16 +148,16 @@ class OkapiConnectorTest {
                 satellite.getSatelliteId(),
                 accessToken);
 
-        Assertions.assertNotEquals(deletedSatellite, null);
-        Assertions.assertEquals(okapiConnector.responseCode, 200);
+        Assertions.assertNotNull(deletedSatellite);
+        Assertions.assertEquals(200, okapiConnector.responseCode);
     }
 
     @org.junit.jupiter.api.Test
     @org.junit.jupiter.api.Order(4)
     void getSatellites() throws OkapiConnector.OkapiPlatformException, IOException {
         Satellites satellites = okapiConnector.getSatellites(accessToken);
-        Assertions.assertNotEquals(satellites, null);
-        Assertions.assertEquals(okapiConnector.responseCode, 200);
+        Assertions.assertNotNull(satellites);
+        Assertions.assertEquals(200, okapiConnector.responseCode);
     }
 
     /**
@@ -188,8 +189,8 @@ class OkapiConnectorTest {
             System.out.println(multiGroundStationPasses.toString());
         }
 
-        Assertions.assertNotEquals(multiGroundStationPasses, null);
-        Assertions.assertEquals(okapiConnector.responseCode, 200);
+        Assertions.assertNotNull(multiGroundStationPasses);
+        Assertions.assertEquals(200, okapiConnector.responseCode);
     }
 
     private void addPassWindow(GroundStationPasses groundStationPasses, String isoStringStart, String isoStringEnd)
@@ -221,7 +222,7 @@ class OkapiConnectorTest {
             System.out.println(multiGroundStationPassesInfo.toString());
         }
 
-        Assertions.assertNotEquals(multiGroundStationPassesInfo, null);
-        Assertions.assertEquals(okapiConnector.responseCode, 200);
+        Assertions.assertNotNull(multiGroundStationPassesInfo);
+        Assertions.assertEquals(200, okapiConnector.responseCode);
     }
 }
