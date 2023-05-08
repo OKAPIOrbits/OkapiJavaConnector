@@ -174,11 +174,11 @@ public class Satellite {
     @JsonPropertyDescription("Enables use of the parameter for offset between cdm insertion epoch and earliest maneuver epoch.")
     private Boolean useOffsetCdmAndEarliestManeuver = true;
     /**
-     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in hours).
+     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in seconds).
      */
     @JsonProperty("offset_cdm_and_earliest_maneuver")
-    @JsonPropertyDescription("Time offset between CDM insertion epoch and earliest possible epoch for CAM (in hours).")
-    private Double offsetCdmAndEarliestManeuver = 7.0D;
+    @JsonPropertyDescription("Time offset between CDM insertion epoch and earliest possible epoch for CAM (in seconds).")
+    private Double offsetCdmAndEarliestManeuver = 25200.0D;
     /**
      * Enables use of the parameter to consider minimum time between cdm insertion epoch and next ground station pass.
      */
@@ -259,7 +259,8 @@ public class Satellite {
      */
     @JsonProperty("maneuver_strategy")
     @JsonPropertyDescription("Preferred collision avoidance maneuver strategy for this satellite")
-    private Satellite.ManeuverStrategy maneuverStrategy = Satellite.ManeuverStrategy.fromValue("short_term_and_long_term");
+    private List<ManeuverStrategy> maneuverStrategy = List.of(ManeuverStrategy.SHORT_TERM, ManeuverStrategy.LONG_TERM);
+
     /**
      * Send notifications to email address associated with the satellite
      */
@@ -594,7 +595,7 @@ public class Satellite {
     }
 
     /**
-     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in hours).
+     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in seconds).
      */
     @JsonProperty("offset_cdm_and_earliest_maneuver")
     public Double getOffsetCdmAndEarliestManeuver() {
@@ -602,7 +603,7 @@ public class Satellite {
     }
 
     /**
-     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in hours).
+     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in seconds).
      */
     @JsonProperty("offset_cdm_and_earliest_maneuver")
     public void setOffsetCdmAndEarliestManeuver(Double offsetCdmAndEarliestManeuver) {
@@ -817,7 +818,7 @@ public class Satellite {
      * Preferred collision avoidance maneuver strategy for this satellite
      */
     @JsonProperty("maneuver_strategy")
-    public Satellite.ManeuverStrategy getManeuverStrategy() {
+    public List<ManeuverStrategy> getManeuverStrategy() {
         return maneuverStrategy;
     }
 
@@ -825,8 +826,8 @@ public class Satellite {
      * Preferred collision avoidance maneuver strategy for this satellite
      */
     @JsonProperty("maneuver_strategy")
-    public void setManeuverStrategy(Satellite.ManeuverStrategy maneuverStrategy) {
-        this.maneuverStrategy = maneuverStrategy;
+    public void setManeuverStrategy(List<ManeuverStrategy> maneuverStrategy) {
+        this.maneuverStrategy = new ArrayList<>(maneuverStrategy);
     }
 
     /**
@@ -1161,7 +1162,8 @@ public class Satellite {
      */
     public enum ManeuverStrategy {
 
-        SHORT_TERM_AND_LONG_TERM("short_term_and_long_term");
+        SHORT_TERM("short_term"),
+        LONG_TERM("long_term");
         private final String value;
         private static final Map<String, Satellite.ManeuverStrategy> CONSTANTS = new HashMap<String,
                 Satellite.ManeuverStrategy>();
