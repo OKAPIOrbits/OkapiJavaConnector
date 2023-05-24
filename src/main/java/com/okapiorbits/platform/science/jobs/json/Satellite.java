@@ -62,7 +62,8 @@ import java.util.Objects;
         "gnss_sensor",
         "notification_verbosity",
         "enable_accepted_collision_probability_limit_recommendation",
-        "enable_miss_distance_recommendation"
+        "enable_miss_distance_recommendation",
+        "drag_maneuver_settings"
 })
 public class Satellite {
 
@@ -174,11 +175,11 @@ public class Satellite {
     @JsonPropertyDescription("Enables use of the parameter for offset between cdm insertion epoch and earliest maneuver epoch.")
     private Boolean useOffsetCdmAndEarliestManeuver = true;
     /**
-     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in hours).
+     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in seconds).
      */
     @JsonProperty("offset_cdm_and_earliest_maneuver")
-    @JsonPropertyDescription("Time offset between CDM insertion epoch and earliest possible epoch for CAM (in hours).")
-    private Double offsetCdmAndEarliestManeuver = 7.0D;
+    @JsonPropertyDescription("Time offset between CDM insertion epoch and earliest possible epoch for CAM (in seconds).")
+    private Double offsetCdmAndEarliestManeuver = 25200.0D;
     /**
      * Enables use of the parameter to consider minimum time between cdm insertion epoch and next ground station pass.
      */
@@ -259,7 +260,8 @@ public class Satellite {
      */
     @JsonProperty("maneuver_strategy")
     @JsonPropertyDescription("Preferred collision avoidance maneuver strategy for this satellite")
-    private Satellite.ManeuverStrategy maneuverStrategy = Satellite.ManeuverStrategy.fromValue("short_term_and_long_term");
+    private List<ManeuverStrategy> maneuverStrategy = List.of(ManeuverStrategy.SHORT_TERM, ManeuverStrategy.LONG_TERM);
+
     /**
      * Send notifications to email address associated with the satellite
      */
@@ -310,6 +312,10 @@ public class Satellite {
 
     @JsonProperty("enable_miss_distance_recommendation")
     private Boolean enableMissDistanceRecommendation;
+
+    @JsonProperty("drag_maneuver_settings")
+    private Satellite.DragManeuverSettings dragManeuverSettings = new DragManeuverSettings(0.54,
+            true, 7.5);
 
     /**
      * Uuid
@@ -594,7 +600,7 @@ public class Satellite {
     }
 
     /**
-     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in hours).
+     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in seconds).
      */
     @JsonProperty("offset_cdm_and_earliest_maneuver")
     public Double getOffsetCdmAndEarliestManeuver() {
@@ -602,7 +608,7 @@ public class Satellite {
     }
 
     /**
-     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in hours).
+     * Time offset between CDM insertion epoch and earliest possible epoch for CAM (in seconds).
      */
     @JsonProperty("offset_cdm_and_earliest_maneuver")
     public void setOffsetCdmAndEarliestManeuver(Double offsetCdmAndEarliestManeuver) {
@@ -817,7 +823,7 @@ public class Satellite {
      * Preferred collision avoidance maneuver strategy for this satellite
      */
     @JsonProperty("maneuver_strategy")
-    public Satellite.ManeuverStrategy getManeuverStrategy() {
+    public List<ManeuverStrategy> getManeuverStrategy() {
         return maneuverStrategy;
     }
 
@@ -825,8 +831,8 @@ public class Satellite {
      * Preferred collision avoidance maneuver strategy for this satellite
      */
     @JsonProperty("maneuver_strategy")
-    public void setManeuverStrategy(Satellite.ManeuverStrategy maneuverStrategy) {
-        this.maneuverStrategy = maneuverStrategy;
+    public void setManeuverStrategy(List<ManeuverStrategy> maneuverStrategy) {
+        this.maneuverStrategy = new ArrayList<>(maneuverStrategy);
     }
 
     /**
@@ -963,6 +969,17 @@ public class Satellite {
     @JsonProperty("enable_miss_distance_recommendation")
     public void setEnableMissDistanceRecommendation(Boolean enableMissDistanceRecommendation) {
         this.enableMissDistanceRecommendation = enableMissDistanceRecommendation;
+    }
+
+    @JsonProperty("drag_maneuver_settings")
+    public Satellite.DragManeuverSettings getDragManeuverSettings() {
+        return dragManeuverSettings;
+    }
+
+    @JsonProperty("drag_maneuver_settings")
+    public void setDragManeuverSettings(
+            Satellite.DragManeuverSettings dragManeuverSettings) {
+        this.dragManeuverSettings = dragManeuverSettings;
     }
 
     @Override
@@ -1134,6 +1151,10 @@ public class Satellite {
         sb.append('=');
         sb.append(((this.enableMissDistanceRecommendation == null) ? nullString: this.enableMissDistanceRecommendation));
         sb.append(',');
+        sb.append("dragManeuverSettings");
+        sb.append('=');
+        sb.append(((this.dragManeuverSettings == null) ? nullString: this.dragManeuverSettings));
+        sb.append(',');
         if (sb.charAt((sb.length() - 1)) == ',') {
             sb.setCharAt((sb.length() - 1), ']');
         } else {
@@ -1143,25 +1164,73 @@ public class Satellite {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(satelliteId, name, info, noradIds, area, dragArea, mass, thrustUncertainty, thrustPointingUncertainty, thrustOutput, maxThrustDuration, minThrustDuration, inSunConstraint, minTimeInSun, symmetricManoeuvres, useGroundStationPasses, useOffsetCdmAndEarliestManeuver, offsetCdmAndEarliestManeuver, useMinTimeTillPass, minTimeTillPass, propulsionType, acceptedCollisionProbability, acceptedMinimumDistance, useAiRiskPrediction, spaceTrackStatus, spaceTrackStatusOther, spaceTrackCompanyName, spaceTrackPocName, spaceTrackPocAddress, spaceTrackLogin, active, maneuverStrategy, sendMailNotifications, sendSlackNotifications, sendTeamsNotifications, slackWebhook, teamsWebhook, gnssSensor, notificationVerbosity, enableAcceptedCollisionProbabilityLimitRecommendation, enableMissDistanceRecommendation);
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Satellite satellite = (Satellite) o;
-        return Objects.equals(satelliteId, satellite.satelliteId) && Objects.equals(name, satellite.name) && Objects.equals(info, satellite.info) && Objects.equals(noradIds, satellite.noradIds) && Objects.equals(area, satellite.area) && Objects.equals(dragArea, satellite.dragArea) && Objects.equals(mass, satellite.mass) && Objects.equals(thrustUncertainty, satellite.thrustUncertainty) && Objects.equals(thrustPointingUncertainty, satellite.thrustPointingUncertainty) && Objects.equals(thrustOutput, satellite.thrustOutput) && Objects.equals(maxThrustDuration, satellite.maxThrustDuration) && Objects.equals(minThrustDuration, satellite.minThrustDuration) && Objects.equals(inSunConstraint, satellite.inSunConstraint) && Objects.equals(minTimeInSun, satellite.minTimeInSun) && Objects.equals(symmetricManoeuvres, satellite.symmetricManoeuvres) && Objects.equals(useGroundStationPasses, satellite.useGroundStationPasses) && Objects.equals(useOffsetCdmAndEarliestManeuver, satellite.useOffsetCdmAndEarliestManeuver) && Objects.equals(offsetCdmAndEarliestManeuver, satellite.offsetCdmAndEarliestManeuver) && Objects.equals(useMinTimeTillPass, satellite.useMinTimeTillPass) && Objects.equals(minTimeTillPass, satellite.minTimeTillPass) && propulsionType == satellite.propulsionType && Objects.equals(acceptedCollisionProbability, satellite.acceptedCollisionProbability) && Objects.equals(acceptedMinimumDistance, satellite.acceptedMinimumDistance) && Objects.equals(useAiRiskPrediction, satellite.useAiRiskPrediction) && spaceTrackStatus == satellite.spaceTrackStatus && Objects.equals(spaceTrackStatusOther, satellite.spaceTrackStatusOther) && Objects.equals(spaceTrackCompanyName, satellite.spaceTrackCompanyName) && Objects.equals(spaceTrackPocName, satellite.spaceTrackPocName) && Objects.equals(spaceTrackPocAddress, satellite.spaceTrackPocAddress) && Objects.equals(spaceTrackLogin, satellite.spaceTrackLogin) && Objects.equals(active, satellite.active) && maneuverStrategy == satellite.maneuverStrategy && Objects.equals(sendMailNotifications, satellite.sendMailNotifications) && Objects.equals(sendSlackNotifications, satellite.sendSlackNotifications) && Objects.equals(sendTeamsNotifications, satellite.sendTeamsNotifications) && Objects.equals(slackWebhook, satellite.slackWebhook) && Objects.equals(teamsWebhook, satellite.teamsWebhook) && Objects.equals(gnssSensor, satellite.gnssSensor) && notificationVerbosity == satellite.notificationVerbosity && Objects.equals(enableAcceptedCollisionProbabilityLimitRecommendation, satellite.enableAcceptedCollisionProbabilityLimitRecommendation) && Objects.equals(enableMissDistanceRecommendation, satellite.enableMissDistanceRecommendation);
+        return Objects.equals(satelliteId, satellite.satelliteId) &&
+                Objects.equals(name, satellite.name) && Objects.equals(info, satellite.info) &&
+                Objects.equals(noradIds, satellite.noradIds) && Objects.equals(area, satellite.area) &&
+                Objects.equals(dragArea, satellite.dragArea) && Objects.equals(mass, satellite.mass) &&
+                Objects.equals(thrustUncertainty, satellite.thrustUncertainty) &&
+                Objects.equals(thrustPointingUncertainty, satellite.thrustPointingUncertainty) &&
+                Objects.equals(thrustOutput, satellite.thrustOutput) &&
+                Objects.equals(maxThrustDuration, satellite.maxThrustDuration) &&
+                Objects.equals(minThrustDuration, satellite.minThrustDuration) &&
+                Objects.equals(inSunConstraint, satellite.inSunConstraint) &&
+                Objects.equals(minTimeInSun, satellite.minTimeInSun) &&
+                Objects.equals(symmetricManoeuvres, satellite.symmetricManoeuvres) &&
+                Objects.equals(useGroundStationPasses, satellite.useGroundStationPasses) &&
+                Objects.equals(useOffsetCdmAndEarliestManeuver, satellite.useOffsetCdmAndEarliestManeuver) &&
+                Objects.equals(offsetCdmAndEarliestManeuver, satellite.offsetCdmAndEarliestManeuver) &&
+                Objects.equals(useMinTimeTillPass, satellite.useMinTimeTillPass) &&
+                Objects.equals(minTimeTillPass, satellite.minTimeTillPass) &&
+                propulsionType == satellite.propulsionType &&
+                Objects.equals(acceptedCollisionProbability, satellite.acceptedCollisionProbability) &&
+                Objects.equals(acceptedMinimumDistance, satellite.acceptedMinimumDistance) &&
+                Objects.equals(useAiRiskPrediction, satellite.useAiRiskPrediction) &&
+                spaceTrackStatus == satellite.spaceTrackStatus &&
+                Objects.equals(spaceTrackStatusOther, satellite.spaceTrackStatusOther) &&
+                Objects.equals(spaceTrackCompanyName, satellite.spaceTrackCompanyName) &&
+                Objects.equals(spaceTrackPocName, satellite.spaceTrackPocName) &&
+                Objects.equals(spaceTrackPocAddress, satellite.spaceTrackPocAddress) &&
+                Objects.equals(spaceTrackLogin, satellite.spaceTrackLogin) &&
+                Objects.equals(active, satellite.active) &&
+                Objects.equals(maneuverStrategy, satellite.maneuverStrategy) &&
+                Objects.equals(sendMailNotifications, satellite.sendMailNotifications) &&
+                Objects.equals(sendSlackNotifications, satellite.sendSlackNotifications) &&
+                Objects.equals(sendTeamsNotifications, satellite.sendTeamsNotifications) &&
+                Objects.equals(slackWebhook, satellite.slackWebhook) &&
+                Objects.equals(teamsWebhook, satellite.teamsWebhook) &&
+                Objects.equals(gnssSensor, satellite.gnssSensor) &&
+                notificationVerbosity == satellite.notificationVerbosity &&
+                Objects.equals(enableAcceptedCollisionProbabilityLimitRecommendation,
+                        satellite.enableAcceptedCollisionProbabilityLimitRecommendation) &&
+                Objects.equals(enableMissDistanceRecommendation, satellite.enableMissDistanceRecommendation) &&
+                Objects.equals(dragManeuverSettings, satellite.dragManeuverSettings);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(satelliteId, name, info, noradIds, area, dragArea, mass, thrustUncertainty,
+                thrustPointingUncertainty, thrustOutput, maxThrustDuration, minThrustDuration, inSunConstraint,
+                minTimeInSun, symmetricManoeuvres, useGroundStationPasses, useOffsetCdmAndEarliestManeuver,
+                offsetCdmAndEarliestManeuver, useMinTimeTillPass, minTimeTillPass, propulsionType,
+                acceptedCollisionProbability, acceptedMinimumDistance, useAiRiskPrediction, spaceTrackStatus,
+                spaceTrackStatusOther, spaceTrackCompanyName, spaceTrackPocName, spaceTrackPocAddress, spaceTrackLogin,
+                active, maneuverStrategy, sendMailNotifications, sendSlackNotifications, sendTeamsNotifications,
+                slackWebhook, teamsWebhook, gnssSensor, notificationVerbosity,
+                enableAcceptedCollisionProbabilityLimitRecommendation, enableMissDistanceRecommendation,
+                dragManeuverSettings);
+    }
 
     /**
      * Preferred collision avoidance maneuver strategy for this satellite
      */
     public enum ManeuverStrategy {
 
-        SHORT_TERM_AND_LONG_TERM("short_term_and_long_term");
+        SHORT_TERM("short_term"),
+        LONG_TERM("long_term");
         private final String value;
         private static final Map<String, Satellite.ManeuverStrategy> CONSTANTS = new HashMap<String,
                 Satellite.ManeuverStrategy>();
@@ -1325,7 +1394,90 @@ public class Satellite {
                 return constant;
             }
         }
-
     }
+
+    /**
+     * Drag Maneuver Settings
+     */
+    @JsonPropertyOrder({
+            "high_drag_area",
+            "use_offset_cdm_earliest_drag_maneuver",
+            "offset_cdm_earliest_drag_maneuver"
+    })
+    public static class DragManeuverSettings {
+        @JsonProperty("high_drag_area")
+        private Double highDragArea;
+        @JsonProperty("use_offset_cdm_earliest_drag_maneuver")
+        private Boolean useOffsetCdmEarliestDragManeuver;
+        @JsonProperty("offset_cdm_earliest_drag_maneuver")
+        private Double offsetCdmEarliestDragManeuver;
+
+        public DragManeuverSettings() {
+            // Default constructor
+        }
+
+        public DragManeuverSettings(Double highDragArea, Boolean useOffsetCdmEarliestDragManeuver,
+                                    Double offsetCdmEarliestDragManeuver) {
+            this.highDragArea = highDragArea;
+            this.useOffsetCdmEarliestDragManeuver = useOffsetCdmEarliestDragManeuver;
+            this.offsetCdmEarliestDragManeuver = offsetCdmEarliestDragManeuver;
+        }
+
+        @JsonProperty("high_drag_area")
+        public Double getHighDragArea() {
+            return highDragArea;
+        }
+
+        @JsonProperty("high_drag_area")
+        public void setHighDragArea(Double highDragArea) {
+            this.highDragArea = highDragArea;
+        }
+
+        @JsonProperty("use_offset_cdm_earliest_drag_maneuver")
+        public Boolean getUseOffsetCdmEarliestDragManeuver() {
+            return useOffsetCdmEarliestDragManeuver;
+        }
+
+        @JsonProperty("use_offset_cdm_earliest_drag_maneuver")
+        public void setUseOffsetCdmEarliestDragManeuver(Boolean useOffsetCdmEarliestDragManeuver) {
+            this.useOffsetCdmEarliestDragManeuver = useOffsetCdmEarliestDragManeuver;
+        }
+
+        @JsonProperty("offset_cdm_earliest_drag_maneuver")
+        public Double getOffsetCdmEarliestDragManeuver() {
+            return offsetCdmEarliestDragManeuver;
+        }
+
+        @JsonProperty("offset_cdm_earliest_drag_maneuver")
+        public void setOffsetCdmEarliestDragManeuver(Double offsetCdmEarliestDragManeuver) {
+            this.offsetCdmEarliestDragManeuver = offsetCdmEarliestDragManeuver;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            DragManeuverSettings that = (DragManeuverSettings) o;
+            return Objects.equals(highDragArea, that.highDragArea) &&
+                    Objects.equals(useOffsetCdmEarliestDragManeuver, that.useOffsetCdmEarliestDragManeuver) &&
+                    Objects.equals(offsetCdmEarliestDragManeuver, that.offsetCdmEarliestDragManeuver);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(highDragArea, useOffsetCdmEarliestDragManeuver, offsetCdmEarliestDragManeuver);
+        }
+
+        @Override
+        public String toString() {
+            return "DragManeuverSettings{" +
+                    "HighDragArea=" + highDragArea +
+                    ", useOffsetCdmEarliestDragManeuver=" + useOffsetCdmEarliestDragManeuver +
+                    ", offsetCdmEarliestDragManeuver=" + offsetCdmEarliestDragManeuver +
+                    '}';
+        }
+    }
+
+
 
 }
