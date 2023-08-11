@@ -1135,19 +1135,20 @@ public class RiskPrediction {
      * RiskBasedOn
      * <p>
      * Describes on what basis a risk estimation or prediction was calculated.
-     * 
      */
     public enum RiskBasedOn {
 
         SPACE_TRACK("SPACE_TRACK"),
+        SPACE_TRACK_CUSTOM("SPACE_TRACK_CUSTOM"),
         GNSS("GNSS"),
         FUSED("FUSED"),
         UNKNOWN("UNKNOWN");
         private final String value;
-        private final static Map<String, RiskPrediction.RiskBasedOn> CONSTANTS = new HashMap<String, RiskPrediction.RiskBasedOn>();
+        private final static Map<String, RiskPrediction.RiskBasedOn> CONSTANTS =
+                new HashMap<String, RiskPrediction.RiskBasedOn>();
 
         static {
-            for (RiskPrediction.RiskBasedOn c: values()) {
+            for (RiskPrediction.RiskBasedOn c : values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
